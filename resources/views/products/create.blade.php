@@ -17,20 +17,21 @@
                         <input
                             type="text"
                             name="code"
+                            id="code"
                             value="{{ old('code') }}"
-                            placeholder="Kosongkan untuk kode otomatis"
-                            class="w-full border rounded px-3 py-2"
+                            placeholder="Pilih kategori untuk membuat kode otomatis"
+                            class="w-full border rounded px-3 py-2 bg-gray-100 dark:bg-gray-700"
+                            readonly
                         >
 
                         <p class="text-sm text-gray-500 mt-1">
-                            Contoh kode otomatis: ELE-0001, ATK-0001.
+                            Kode barang akan dibuat otomatis berdasarkan kategori.
                         </p>
 
                         @error('code')
                             <p class="text-red-600 text-sm">{{ $message }}</p>
                         @enderror
                     </div>
-
                     <div>
                         <label class="block mb-1">Nama Barang</label>
 
@@ -49,7 +50,7 @@
                     <div>
                         <label class="block mb-1">Kategori</label>
 
-                        <select name="category_id" class="w-full border rounded px-3 py-2">
+                        <select name="category_id" id="category_id" class="w-full border rounded px-3 py-2">
                             <option value="">Pilih Kategori</option>
 
                             @foreach($categories as $category)
@@ -137,4 +138,43 @@
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categorySelect = document.getElementById('category_id');
+            const codeInput = document.getElementById('code');
+
+            async function generateCode(categoryId) {
+                if (!categoryId) {
+                    codeInput.value = '';
+                    codeInput.placeholder = 'Pilih kategori untuk membuat kode otomatis';
+                    return;
+                }
+
+                codeInput.value = 'Membuat kode...';
+
+                try {
+                    const response = await fetch(`{{ route('products.generate-code') }}?category_id=${categoryId}`);
+                    const data = await response.json();
+
+                    if (data.code) {
+                        codeInput.value = data.code;
+                    } else {
+                        codeInput.value = '';
+                        codeInput.placeholder = 'Kode gagal dibuat';
+                    }
+                } catch (error) {
+                    codeInput.value = '';
+                    codeInput.placeholder = 'Terjadi kesalahan saat membuat kode';
+                }
+            }
+
+            categorySelect.addEventListener('change', function () {
+                generateCode(this.value);
+            });
+
+            if (categorySelect.value) {
+                generateCode(categorySelect.value);
+            }
+        });
+    </script>
 </x-app-layout>

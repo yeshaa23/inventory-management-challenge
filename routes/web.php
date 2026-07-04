@@ -21,6 +21,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class)
         ->middleware('role:Admin,Staff');
 
+    Route::get('/products/generate-code/preview', [ProductController::class, 'generateCodePreview'])
+        ->middleware('role:Admin,Staff')
+        ->name('products.generate-code');
+
     Route::resource('products', ProductController::class)
         ->middleware('role:Admin,Staff');
 

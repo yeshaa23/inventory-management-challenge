@@ -235,6 +235,19 @@ class ProductController extends Controller
             ->with('success', 'Barang berhasil dihapus.');
     }
 
+    public function generateCodePreview(Request $request)
+    {
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $code = $this->generateProductCode((int) $request->category_id);
+
+        return response()->json([
+            'code' => $code,
+        ]);
+    }
+
     private function generateProductCode(int $categoryId): string
     {
         $category = Category::find($categoryId);

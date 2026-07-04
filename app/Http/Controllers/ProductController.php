@@ -77,8 +77,12 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
-
-        return view('products.create', compact('categories'));
+        $locations = Product::select('location')
+            ->whereNotNull('location')
+            ->distinct()
+            ->orderBy('location')
+            ->pluck('location');
+        return view('products.create', compact('categories', 'locations'));
     }
 
     public function store(Request $request)
@@ -88,14 +92,19 @@ class ProductController extends Controller
             'code' => 'nullable|string|max:255|unique:products,code',
             'name' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
-            'location' => 'required|string|max:255',
+            'location_select' => 'required|string|max:255',
+            'location_other' => 'nullable|required_if:location_select,other|string|max:255',
             'condition' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $location = $request->location_select === 'other'
+            ? $request->location_other
+            : $request->location_select;
+
         $duplicateExists = Product::where('name', $request->name)
             ->where('category_id', $request->category_id)
-            ->where('location', $request->location)
+            ->where('location', $location)
             ->exists();
 
         if ($duplicateExists) {
@@ -110,9 +119,9 @@ class ProductController extends Controller
             'category_id',
             'name',
             'stock',
-            'location',
             'condition',
         ]);
+        $data['location'] = $location;
 
         $data['code'] = $request->filled('code')
             ? $request->code
@@ -134,6 +143,7 @@ class ProductController extends Controller
         return redirect()
             ->route('products.index')
             ->with('success', 'Barang berhasil ditambahkan.');
+
     }
 
     public function show(Product $product)
@@ -146,8 +156,12 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::orderBy('name')->get();
-
-        return view('products.edit', compact('product', 'categories'));
+        $locations = Product::select('location')
+            ->whereNotNull('location')
+            ->distinct()
+            ->orderBy('location')
+            ->pluck('location');
+        return view('products.edit', compact('product', 'categories', 'locations'));
     }
 
     public function update(Request $request, Product $product)
@@ -157,14 +171,19 @@ class ProductController extends Controller
             'code' => 'required|string|max:255|unique:products,code,' . $product->id,
             'name' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
-            'location' => 'required|string|max:255',
+            'location_select' => 'required|string|max:255',
+            'location_other' => 'nullable|required_if:location_select,other|string|max:255',
             'condition' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $location = $request->location_select === 'other'
+            ? $request->location_other
+            : $request->location_select;
+
         $duplicateExists = Product::where('name', $request->name)
             ->where('category_id', $request->category_id)
-            ->where('location', $request->location)
+            ->where('location', $location)
             ->where('id', '!=', $product->id)
             ->exists();
 
@@ -183,9 +202,9 @@ class ProductController extends Controller
             'code',
             'name',
             'stock',
-            'location',
             'condition',
         ]);
+        $data['location'] = $location;
 
         if ($request->hasFile('image')) {
             if ($product->image) {

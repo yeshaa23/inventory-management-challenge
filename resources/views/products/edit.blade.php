@@ -76,17 +76,63 @@
 
                     <div>
                         <label class="block mb-1">Lokasi Penyimpanan</label>
+                        @php
+                            $defaultLocations = [
+                                'Gudang Utama',
+                                'Ruang IT',
+                                'Ruang Administrasi',
+                                'Ruang Meeting',
+                                'Kantor Cabang',
+                            ];
 
-                        <input
-                            type="text"
-                            name="location"
-                            value="{{ old('location', $product->location) }}"
+                            $allLocations = collect($locations)
+                                ->merge($defaultLocations)
+                                ->unique()
+                                ->values();
+
+                            $isCustomLocation = ! $allLocations->contains($product->location);
+                        @endphp
+
+                        <select
+                            name="location_select"
+                            id="location_select"
                             class="w-full border rounded px-3 py-2"
                         >
+                            <option value="">Pilih Lokasi Penyimpanan</option>
 
-                        @error('location')
+                            @foreach($allLocations as $location)
+                                <option value="{{ $location }}"
+                                    {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == $location ? 'selected' : '' }}
+                                >
+                                    {{ $location }}
+                                </option>
+                            @endforeach
+
+                            <option value="other" {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == 'other' ? 'selected' : '' }}>
+                                Lokasi Lainnya
+                            </option>
+                        </select>
+
+                        @error('location_select')
                             <p class="text-red-600 text-sm">{{ $message }}</p>
                         @enderror
+
+                        <div id="location_other_wrapper" class="mt-3 hidden">
+                            <label class="block mb-1">Masukkan Lokasi Baru</label>
+
+                            <input
+                                type="text"
+                                name="location_other"
+                                id="location_other"
+                                value="{{ old('location_other', $isCustomLocation ? $product->location : '') }}"
+                                placeholder="Contoh: Gudang Cabang Surabaya, Luar Kantor Pusat"
+                                class="w-full border rounded px-3 py-2"
+                            >
+
+                            @error('location_other')
+                                <p class="text-red-600 text-sm">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <div>
@@ -138,4 +184,26 @@
             </form>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const locationSelect = document.getElementById('location_select');
+            const locationOtherWrapper = document.getElementById('location_other_wrapper');
+            const locationOtherInput = document.getElementById('location_other');
+
+            function toggleLocationOther() {
+                if (locationSelect.value === 'other') {
+                    locationOtherWrapper.classList.remove('hidden');
+                    locationOtherInput.setAttribute('required', 'required');
+                } else {
+                    locationOtherWrapper.classList.add('hidden');
+                    locationOtherInput.removeAttribute('required');
+                }
+            }
+
+            if (locationSelect) {
+                locationSelect.addEventListener('change', toggleLocationOther);
+                toggleLocationOther();
+            }
+        });
+    </script>
 </x-app-layout>

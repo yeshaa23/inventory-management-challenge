@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy PHP app to Azure Web App - telkomsel-inventory-ayesha
+name: CI and CD Laravel App to Azure - telkomsel-inventory-ayesha
 
 on:
   push:
@@ -10,19 +10,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  ci:
+    name: CI - Build, Test, and Coverage
     runs-on: ubuntu-latest
+
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: Setup PHP 8.2 with Xdebug
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, pdo_mysql, zip, gd, dom, fileinfo
+          extensions: mbstring, pdo_mysql, sqlite3, zip, gd, dom, fileinfo
+          coverage: xdebug
           tools: composer:v2
 
       - name: Install Composer dependencies
@@ -39,32 +43,60 @@ jobs:
           npm run build
           rm -rf node_modules
 
-      - name: Clear Laravel cache before upload
+      - name: Prepare Laravel test environment
         run: |
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache/data
+          mkdir -p storage/framework/sessions
+          mkdir -p bootstrap/cache
+
+      - name: Run automated tests with coverage
+        env:
+          APP_ENV: testing
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+          QUEUE_CONNECTION: sync
+        run: php artisan test --coverage --coverage-html coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Prepare production artifact
+        run: |
+          composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
           php artisan config:clear
           php artisan route:clear
           php artisan view:clear || true
           rm -f .env
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for CD job
         uses: actions/upload-artifact@v4
         with:
           name: php-app
           path: .
 
-  deploy:
+  cd:
+    name: CD - Deploy to Azure
     runs-on: ubuntu-latest
-    needs: build
+    needs: ci
+
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact from CI job
         uses: actions/download-artifact@v4
         with:
           name: php-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -72,10 +104,14 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_78BDDA2477A84B338D2186C9E08673A0 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7714E323A83948FA8827AE551D914379 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'telkomsel-inventory-ayesha'
           slot-name: 'Production'
           package: .
+
+      - name: Post-deploy smoke test
+        run: |
+          sleep 20
+          curl -f -L https://telkomsel-inventory-ayesha-bactfuhzfmg0gcad.indonesiacentral-01.azurewebsites.net/login

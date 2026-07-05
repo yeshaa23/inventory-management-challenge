@@ -11,41 +11,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
-        return view('auth.register');
+        $roles = Role::orderBy('name')->get();
+
+        return view('auth.register', compact('roles'));
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'role' => ['required', 'string', 'in:Admin,Staff,Manager'],
+            'role_id' => ['required', 'exists:roles,id'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $selectedRole = Role::where('name', $validated['role'])->first();
-        $fallbackRole = Role::where('name', 'Staff')->first();
-
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role_id' => $selectedRole?->id ?? $fallbackRole?->id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'role_id' => $request->role_id,
+            'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));

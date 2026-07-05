@@ -64,7 +64,7 @@ jobs:
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
           XDEBUG_MODE: coverage
-        run: php artisan test --coverage --min=50 --coverage-html coverage
+        run: php artisan test --coverage --min=60 --coverage-html coverage
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -96,7 +96,6 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
-      id-token: write
       contents: read
 
     steps:
@@ -105,18 +104,12 @@ jobs:
         with:
           name: php-app
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_90B45A6E0EEB475E8051B607A8206B24 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_78BDDA2477A84B338D2186C9E08673A0 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7714E323A83948FA8827AE551D914379 }}
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'telkomsel-inventory-ayesha'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
 
       - name: Post-deploy smoke test

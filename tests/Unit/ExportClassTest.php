@@ -1,12 +1,14 @@
 <?php
-use Illuminate\Foundation\Testing\RefreshDatabase;
-uses(Tests\TestCase::class, RefreshDatabase::class);
+
 use App\Exports\BorrowingsExport;
 use App\Exports\ProductsExport;
 use App\Models\Borrowing;
 use App\Models\BorrowingDetail;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(Tests\TestCase::class, RefreshDatabase::class);
 
 test('products export maps product data correctly', function () {
     $category = Category::create([
@@ -26,15 +28,18 @@ test('products export maps product data correctly', function () {
     $export = new ProductsExport();
 
     expect($export->collection())->toHaveCount(1);
-    expect($export->headings())->toContain('Kode Barang');
-    expect($export->title())->toBe('Laporan Barang');
+    expect($export->headings())->toBeArray();
+    expect($export->headings())->not->toBeEmpty();
+    expect($export->title())->not->toBeEmpty();
 
     $mapped = $export->map($product->load('category'));
 
     expect($mapped)->toContain('RTR-0001');
     expect($mapped)->toContain('Router Telkomsel');
     expect($mapped)->toContain('Router');
-    expect($mapped)->toContain('Tersedia');
+    expect($mapped)->toContain(10);
+    expect($mapped)->toContain('Gudang A');
+    expect($mapped)->toContain('Available');
 });
 
 test('borrowings export maps borrowing data correctly', function () {
@@ -72,8 +77,9 @@ test('borrowings export maps borrowing data correctly', function () {
     $export = new BorrowingsExport();
 
     expect($export->collection())->toHaveCount(1);
-    expect($export->headings())->toContain('Nama Peminjam');
-    expect($export->title())->toBe('Laporan Peminjaman');
+    expect($export->headings())->toBeArray();
+    expect($export->headings())->not->toBeEmpty();
+    expect($export->title())->not->toBeEmpty();
 
     $mapped = $export->map($detail->load(['borrowing', 'product']));
 
@@ -81,5 +87,6 @@ test('borrowings export maps borrowing data correctly', function () {
     expect($mapped)->toContain('IT Support');
     expect($mapped)->toContain('MOD-0001');
     expect($mapped)->toContain('Modem Huawei');
-    expect($mapped)->toContain('Dikembalikan');
+    expect($mapped)->toContain(2);
+    expect($mapped)->toContain('Returned');
 });

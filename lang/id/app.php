@@ -404,4 +404,17 @@ return [
     'search_product' => 'Cari Barang',
     'search_products_placeholder' => 'Cari kode, nama, atau lokasi',
     'note' => 'Catatan',
+
+    'auth_register_hero_title' => 'Buat akun sesuai kebutuhan akses inventaris.',
+    'auth_register_hero_desc' => 'Daftarkan akun baru dan pilih role yang sesuai agar pengguna dapat mengakses fitur berdasarkan tanggung jawabnya.',
+    'create_account' => 'Buat Akun Baru',
+    'register_desc' => 'Isi data akun dan pilih role pengguna untuk mulai menggunakan sistem.',
+    'account_role' => 'Role Akun',
+    'choose_account_role' => 'Pilih role akun',
+    'role_admin' => 'Admin',
+    'role_staff' => 'Staff',
+    'role_manager' => 'Manager',
+    'role_selection_note' => 'Untuk kebutuhan demo, role dapat dipilih saat registrasi. Pada sistem produksi, role sebaiknya diatur oleh Admin.',
+    'borrowing_management' => 'Borrowing Management',
+    'borrowing_management_desc' => 'Pencatatan peminjaman, pengembalian, dan jatuh tempo',
 ];

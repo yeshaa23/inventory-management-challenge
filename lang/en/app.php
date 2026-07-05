@@ -404,4 +404,17 @@ return [
     'search_product' => 'Search Product',
     'search_products_placeholder' => 'Search code, name, or location',
     'note' => 'Note',
+
+    'auth_register_hero_title' => 'Create an account based on inventory access needs.',
+    'auth_register_hero_desc' => 'Register a new account and choose the proper role so users can access features based on their responsibilities.',
+    'create_account' => 'Create New Account',
+    'register_desc' => 'Fill in the account details and choose a user role to start using the system.',
+    'account_role' => 'Account Role',
+    'choose_account_role' => 'Choose account role',
+    'role_admin' => 'Admin',
+    'role_staff' => 'Staff',
+    'role_manager' => 'Manager',
+    'role_selection_note' => 'For demo purposes, the role can be selected during registration. In a production system, roles should be managed by Admin.',
+    'borrowing_management' => 'Borrowing Management',
+    'borrowing_management_desc' => 'Borrowing records, returns, and due date tracking',
 ];

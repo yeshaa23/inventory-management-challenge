@@ -36,6 +36,39 @@
         </div>
 
         <div>
+            <x-input-label for="role" :value="__('app.account_role')" />
+
+            <select
+                id="role"
+                name="role"
+                required
+                class="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-900 bg-white focus:border-red-600 focus:ring-red-600"
+            >
+                <option value="" disabled {{ old('role') ? '' : 'selected' }}>
+                    {{ __('app.choose_account_role') }}
+                </option>
+
+                <option value="Staff" {{ old('role') === 'Staff' ? 'selected' : '' }}>
+                    {{ __('app.role_staff') }}
+                </option>
+
+                <option value="Manager" {{ old('role') === 'Manager' ? 'selected' : '' }}>
+                    {{ __('app.role_manager') }}
+                </option>
+
+                <option value="Admin" {{ old('role') === 'Admin' ? 'selected' : '' }}>
+                    {{ __('app.role_admin') }}
+                </option>
+            </select>
+
+            <p class="gsm-auth-helper-text">
+                {{ __('app.role_selection_note') }}
+            </p>
+
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+        </div>
+
+        <div>
             <x-input-label for="password" :value="__('app.password')" />
 
             <x-text-input

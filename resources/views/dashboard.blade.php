@@ -277,38 +277,130 @@
 
     <script>
         const monthlyData = @json($monthlyBorrowings);
-        const labels = monthlyData.map(item => @json(__('app.month')) + ' ' + item.month);
-        const data = monthlyData.map(item => item.total);
+
+        const labels = monthlyData.map(function (item) {
+            return item.label;
+        });
+
+        const data = monthlyData.map(function (item) {
+            return item.total;
+        });
+
+        const pastelBackgroundColors = [
+            'rgba(254, 202, 202, 0.85)',
+            'rgba(254, 215, 170, 0.85)',
+            'rgba(253, 230, 138, 0.85)',
+            'rgba(187, 247, 208, 0.85)',
+            'rgba(191, 219, 254, 0.85)',
+            'rgba(216, 180, 254, 0.85)',
+            'rgba(244, 202, 252, 0.85)',
+            'rgba(196, 181, 253, 0.85)',
+            'rgba(165, 243, 252, 0.85)',
+            'rgba(209, 250, 229, 0.85)',
+            'rgba(254, 240, 138, 0.85)',
+            'rgba(253, 186, 116, 0.85)'
+        ];
+
+        const pastelBorderColors = [
+            'rgba(248, 113, 113, 1)',
+            'rgba(251, 146, 60, 1)',
+            'rgba(250, 204, 21, 1)',
+            'rgba(74, 222, 128, 1)',
+            'rgba(96, 165, 250, 1)',
+            'rgba(168, 85, 247, 1)',
+            'rgba(232, 121, 249, 1)',
+            'rgba(139, 92, 246, 1)',
+            'rgba(34, 211, 238, 1)',
+            'rgba(16, 185, 129, 1)',
+            'rgba(234, 179, 8, 1)',
+            'rgba(249, 115, 22, 1)'
+        ];
+
+        const backgroundColors = data.map(function (_, index) {
+            return pastelBackgroundColors[index % pastelBackgroundColors.length];
+        });
+
+        const borderColors = data.map(function (_, index) {
+            return pastelBorderColors[index % pastelBorderColors.length];
+        });
+
         const ctx = document.getElementById('borrowingChart');
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: @json(__('app.borrowing_count_label')),
-                    data: data,
-                    borderWidth: 1,
-                    borderRadius: 12
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: @json(__('app.borrowing_count_label')),
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
+                            borderWidth: 1.5,
+                            borderRadius: 14,
+                            borderSkipped: false
+                        }
+                    ]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            padding: 12,
+                            cornerRadius: 12,
+                            displayColors: true,
+                            callbacks: {
+                                title: function (context) {
+                                    return context[0].label;
+                                },
+                                label: function (context) {
+                                    return @json(__('app.borrowing_count_label')) + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                },
+                                maxRotation: 25,
+                                minRotation: 0,
+                                autoSkip: false
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.15)'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grace: '10%',
+                            ticks: {
+                                precision: 0,
+                                color: '#64748b',
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.15)'
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     </script>
 </x-app-layout>

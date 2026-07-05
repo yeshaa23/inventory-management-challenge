@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Borrowing;
 use App\Models\BorrowingDetail;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -12,6 +13,7 @@ class DashboardController extends Controller
     public function index()
     {
         $totalProducts = Product::count();
+
         $availableStock = Product::sum('stock');
 
         $borrowedItems = BorrowingDetail::whereHas('borrowing', function ($query) {
@@ -38,17 +40,23 @@ class DashboardController extends Controller
             ->get();
 
         $monthlyBorrowings = Borrowing::select('borrow_date')
+            ->whereNotNull('borrow_date')
             ->get()
             ->groupBy(function ($borrowing) {
-                return \Carbon\Carbon::parse($borrowing->borrow_date)->month;
+                return Carbon::parse($borrowing->borrow_date)->format('Y-m');
             })
-            ->map(function ($items, $month) {
+            ->sortKeys()
+            ->map(function ($items, $period) {
+                $date = Carbon::createFromFormat('Y-m-d', $period . '-01')
+                    ->locale(app()->getLocale());
+
                 return (object) [
-                    'month' => (int) $month,
+                    'label' => $date->translatedFormat('F Y'),
+                    'month' => (int) $date->format('m'),
+                    'year' => (int) $date->format('Y'),
                     'total' => $items->count(),
                 ];
             })
-            ->sortBy('month')
             ->values();
 
         $categorySummaries = Product::select(

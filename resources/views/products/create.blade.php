@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Tambah Barang</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.add_product') }}</h2>
         </div>
     </x-slot>
 
@@ -10,15 +10,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">New Inventory Item</p>
-                    <h3>Form Tambah Barang</h3>
+                    <p class="gsm-eyebrow">{{ __('app.new_inventory_item') }}</p>
+                    <h3>{{ __('app.product_form_add') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Tambahkan data barang baru beserta kategori, stok, lokasi penyimpanan, kondisi, dan gambar barang.
+                        {{ __('app.product_form_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                    Kembali
+                    {{ __('app.back') }}
                 </a>
             </div>
 
@@ -28,18 +28,18 @@
                 <div class="gsm-form-main">
                     <div class="gsm-form-grid">
                         <div class="gsm-field">
-                            <label for="code">Kode Barang</label>
+                            <label for="code">{{ __('app.product_code') }}</label>
 
                             <input
                                 type="text"
                                 name="code"
                                 id="code"
                                 value="{{ old('code') }}"
-                                placeholder="Pilih kategori untuk membuat kode otomatis"
+                                placeholder="{{ __('app.choose_category_auto_code') }}"
                                 readonly
                             >
 
-                            <small>Kode barang dibuat otomatis berdasarkan kategori.</small>
+                            <small>{{ __('app.auto_code_desc') }}</small>
 
                             @error('code')
                                 <p class="gsm-error-text">{{ $message }}</p>
@@ -47,14 +47,14 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="name">Nama Barang</label>
+                            <label for="name">{{ __('app.product_name') }}</label>
 
                             <input
                                 type="text"
                                 name="name"
                                 id="name"
                                 value="{{ old('name') }}"
-                                placeholder="Contoh: Laptop Lenovo ThinkPad"
+                                placeholder="{{ __('app.example_laptop') }}"
                             >
 
                             @error('name')
@@ -63,10 +63,10 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="category_id">Kategori</label>
+                            <label for="category_id">{{ __('app.category') }}</label>
 
                             <select name="category_id" id="category_id">
-                                <option value="">Pilih Kategori</option>
+                                <option value="">{{ __('app.choose_category') }}</option>
 
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="stock">Stok</label>
+                            <label for="stock">{{ __('app.stock') }}</label>
 
                             <input
                                 type="number"
@@ -98,7 +98,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="location_select">Lokasi Penyimpanan</label>
+                            <label for="location_select">{{ __('app.storage_location') }}</label>
 
                             @php
                                 $defaultLocations = [
@@ -117,7 +117,7 @@
                             @endphp
 
                             <select name="location_select" id="location_select">
-                                <option value="">Pilih Lokasi Penyimpanan</option>
+                                <option value="">{{ __('app.choose_location') }}</option>
 
                                 @foreach($allLocations as $location)
                                     <option value="{{ $location }}" {{ old('location_select') == $location ? 'selected' : '' }}>
@@ -126,7 +126,7 @@
                                 @endforeach
 
                                 <option value="other" {{ old('location_select') == 'other' ? 'selected' : '' }}>
-                                    Lokasi Lainnya
+                                    {{ __('app.other_location') }}
                                 </option>
                             </select>
 
@@ -135,14 +135,14 @@
                             @enderror
 
                             <div id="location_other_wrapper" class="gsm-nested-field hidden">
-                                <label for="location_other">Masukkan Lokasi Baru</label>
+                                <label for="location_other">{{ __('app.new_location') }}</label>
 
                                 <input
                                     type="text"
                                     name="location_other"
                                     id="location_other"
                                     value="{{ old('location_other') }}"
-                                    placeholder="Contoh: Gudang Cabang Surabaya"
+                                    placeholder="{{ __('app.example_branch_warehouse') }}"
                                 >
 
                                 @error('location_other')
@@ -152,13 +152,13 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="condition">Kondisi Barang</label>
+                            <label for="condition">{{ __('app.product_condition') }}</label>
 
                             <select name="condition" id="condition">
-                                <option value="">Pilih Kondisi</option>
-                                <option value="Baik" {{ old('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                                <option value="Rusak Ringan" {{ old('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                                <option value="Rusak Berat" {{ old('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                                <option value="">{{ __('app.choose_condition') }}</option>
+                                <option value="Baik" {{ old('condition') == 'Baik' ? 'selected' : '' }}>{{ __('app.good') }}</option>
+                                <option value="Rusak Ringan" {{ old('condition') == 'Rusak Ringan' ? 'selected' : '' }}>{{ __('app.minor_damage') }}</option>
+                                <option value="Rusak Berat" {{ old('condition') == 'Rusak Berat' ? 'selected' : '' }}>{{ __('app.major_damage') }}</option>
                             </select>
 
                             @error('condition')
@@ -167,7 +167,7 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label for="image">Upload Gambar Barang</label>
+                            <label for="image">{{ __('app.upload_product_image') }}</label>
 
                             <input
                                 type="file"
@@ -176,7 +176,7 @@
                                 accept="image/png, image/jpeg, image/jpg"
                             >
 
-                            <small>Format gambar: JPG, JPEG, atau PNG. Maksimal 2 MB.</small>
+                            <small>{{ __('app.image_format_help') }}</small>
 
                             @error('image')
                                 <p class="gsm-error-text">{{ $message }}</p>
@@ -186,11 +186,11 @@
 
                     <div class="gsm-form-actions">
                         <button type="submit" class="gsm-button-primary">
-                            Simpan Barang
+                            {{ __('app.save_product') }}
                         </button>
 
                         <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                            Batal
+                            {{ __('app.cancel') }}
                         </a>
                     </div>
                 </div>
@@ -198,17 +198,17 @@
                 <aside class="gsm-helper-card">
                     <div class="gsm-helper-icon">◈</div>
 
-                    <h4>Preview Data Barang</h4>
+                    <h4>{{ __('app.preview_product_data') }}</h4>
 
                     <div class="gsm-preview-box">
-                        <p>Kode Barang</p>
-                        <strong id="preview-code">Belum dibuat</strong>
+                        <p>{{ __('app.product_code') }}</p>
+                        <strong id="preview-code">{{ __('app.code_not_generated') }}</strong>
                     </div>
 
                     <ul>
-                        <li>Pilih kategori untuk membuat kode otomatis.</li>
-                        <li>Gunakan lokasi yang tersedia atau pilih Lokasi Lainnya.</li>
-                        <li>Pastikan stok dan kondisi barang sesuai data fisik.</li>
+                        <li>{{ __('app.choose_category_auto_code') }}.</li>
+                        <li>{{ __('app.product_create_tip_2') }}</li>
+                        <li>{{ __('app.product_create_tip_3') }}</li>
                     </ul>
                 </aside>
             </form>
@@ -228,13 +228,13 @@
 
                 if (!categoryId) {
                     codeInput.value = '';
-                    codeInput.placeholder = 'Pilih kategori untuk membuat kode otomatis';
-                    previewCode.textContent = 'Belum dibuat';
+                    codeInput.placeholder = @json(__('app.choose_category_auto_code'));
+                    previewCode.textContent = @json(__('app.code_not_generated'));
                     return;
                 }
 
-                codeInput.value = 'Membuat kode...';
-                previewCode.textContent = 'Membuat kode...';
+                codeInput.value = @json(__('app.creating_code'));
+                previewCode.textContent = @json(__('app.creating_code'));
 
                 try {
                     const response = await fetch(`{{ route('products.generate-code') }}?category_id=${categoryId}`);
@@ -245,13 +245,13 @@
                         previewCode.textContent = data.code;
                     } else {
                         codeInput.value = '';
-                        codeInput.placeholder = 'Kode gagal dibuat';
-                        previewCode.textContent = 'Kode gagal dibuat';
+                        codeInput.placeholder = @json(__('app.code_generation_failed'));
+                        previewCode.textContent = @json(__('app.code_generation_failed'));
                     }
                 } catch (error) {
                     codeInput.value = '';
-                    codeInput.placeholder = 'Terjadi kesalahan saat membuat kode';
-                    previewCode.textContent = 'Gagal membuat kode';
+                    codeInput.placeholder = @json(__('app.code_creation_error'));
+                    previewCode.textContent = @json(__('app.code_generation_failed'));
                 }
             }
 

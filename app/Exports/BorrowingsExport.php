@@ -21,17 +21,17 @@ class BorrowingsExport implements FromCollection, WithHeadings, WithMapping, Wit
     public function headings(): array
     {
         return [
-            'Nama Peminjam',
-            'Divisi',
-            'Kode Barang',
-            'Nama Barang',
-            'Jumlah',
-            'Tanggal Pinjam',
-            'Tanggal Jatuh Tempo',
-            'Tanggal Kembali',
-            'Status',
-            'Kondisi Saat Kembali',
-            'Catatan Pengembalian',
+            __('app.borrower_name'),
+            __('app.division'),
+            __('app.product_code'),
+            __('app.product_name'),
+            __('app.quantity'),
+            __('app.borrow_date'),
+            __('app.due_date'),
+            __('app.return_date'),
+            __('app.status'),
+            __('app.return_condition'),
+            __('app.return_note'),
         ];
     }
 
@@ -47,13 +47,18 @@ class BorrowingsExport implements FromCollection, WithHeadings, WithMapping, Wit
             optional($detail->borrowing->due_date)->format('Y-m-d') ?? '-',
             optional($detail->borrowing->return_date)->format('Y-m-d') ?? '-',
             $detail->borrowing->display_status_label ?? '-',
-            $detail->borrowing->return_condition ?? '-',
+            match ($detail->borrowing->return_condition ?? null) {
+                'Baik' => __('app.good'),
+                'Rusak Ringan' => __('app.minor_damage'),
+                'Rusak Berat' => __('app.major_damage'),
+                default => '-',
+            },
             $detail->borrowing->return_note ?? '-',
         ];
     }
 
     public function title(): string
     {
-        return 'Laporan Peminjaman';
+        return __('app.borrowing_report');
     }
 }

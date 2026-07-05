@@ -142,7 +142,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('products.index')
-            ->with('success', 'Barang berhasil ditambahkan.');
+            ->with('success', __('app.success_create_product'));
 
     }
 
@@ -228,7 +228,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('products.index')
-            ->with('success', 'Barang berhasil diperbarui.');
+            ->with('success', __('app.success_update_product'));
     }
 
     public function destroy(Product $product)
@@ -251,7 +251,7 @@ class ProductController extends Controller
 
         return redirect()
             ->route('products.index')
-            ->with('success', 'Barang berhasil dihapus.');
+            ->with('success', __('app.success_delete_product'));
     }
 
     public function generateCodePreview(Request $request)

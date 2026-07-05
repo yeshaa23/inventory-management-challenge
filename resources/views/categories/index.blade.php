@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Data Kategori</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.category_data') }}</h2>
         </div>
     </x-slot>
 
@@ -12,7 +12,7 @@
                 <div class="gsm-alert-icon">✓</div>
 
                 <div>
-                    <h3>Berhasil</h3>
+                    <h3>{{ __('app.success') }}</h3>
                     <p>{{ session('success') }}</p>
                 </div>
             </div>
@@ -21,15 +21,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Category Management</p>
-                    <h3>Master Data Kategori</h3>
+                    <p class="gsm-eyebrow">{{ __('app.category_management') }}</p>
+                    <h3>{{ __('app.category_master_data') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Kelola kategori barang untuk membantu pengelompokan inventaris kantor.
+                        {{ __('app.category_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('categories.create') }}" class="gsm-button-primary">
-                    Tambah Kategori
+                    {{ __('app.add_category') }}
                 </a>
             </div>
 
@@ -38,10 +38,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kategori</th>
-                            <th>Deskripsi</th>
-                            <th>Jumlah Barang</th>
-                            <th>Aksi</th>
+                            <th>{{ __('app.category_name') }}</th>
+                            <th>{{ __('app.description') }}</th>
+                            <th>{{ __('app.product_count') }}</th>
+                            <th>{{ __('app.actions') }}</th>
                         </tr>
                     </thead>
 
@@ -66,7 +66,7 @@
                                             </p>
 
                                             <p class="text-xs text-slate-500">
-                                                Dibuat {{ $category->created_at?->format('d M Y') }}
+                                                {{ __('app.created_on') }} {{ $category->created_at?->format('d M Y') }}
                                             </p>
                                         </div>
                                     </div>
@@ -78,18 +78,18 @@
 
                                 <td>
                                     <span class="gsm-badge info">
-                                        {{ $category->products()->count() }} barang
+                                        {{ $category->products()->count() }} {{ __('app.products') }}
                                     </span>
                                 </td>
 
                                 <td>
                                     <div class="gsm-action-group">
                                         <a href="{{ route('categories.show', $category) }}" class="gsm-action-link view">
-                                            Detail
+                                            {{ __('app.detail') }}
                                         </a>
 
                                         <a href="{{ route('categories.edit', $category) }}" class="gsm-action-link edit">
-                                            Edit
+                                            {{ __('app.edit') }}
                                         </a>
 
                                         <form id="delete-category-{{ $category->id }}" action="{{ route('categories.destroy', $category) }}" method="POST">
@@ -98,10 +98,10 @@
 
                                             <button
                                                 type="button"
-                                                onclick="openConfirmModal('Yakin ingin menghapus kategori ini? Pastikan tidak ada barang penting yang masih terhubung dengan kategori ini.', 'delete-category-{{ $category->id }}')"
+                                                onclick="openConfirmModal('{{ __('app.confirm_delete_category') }}', 'delete-category-{{ $category->id }}')"
                                                 class="gsm-action-link delete"
                                             >
-                                                Hapus
+                                                {{ __('app.delete') }}
                                             </button>
                                         </form>
                                     </div>
@@ -112,9 +112,9 @@
                                 <td colspan="5">
                                     <div class="gsm-empty-state">
                                         <div>
-                                            <p class="font-bold">Belum ada data kategori.</p>
+                                            <p class="font-bold">{{ __('app.no_category_data') }}</p>
                                             <p class="text-sm mt-1">
-                                                Klik Tambah Kategori untuk mulai mengelompokkan barang inventaris.
+                                                {{ __('app.start_category_hint') }}
                                             </p>
                                         </div>
                                     </div>

@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Detail Barang</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.product_detail') }}</h2>
         </div>
     </x-slot>
 
@@ -10,20 +10,20 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Inventory Detail</p>
+                    <p class="gsm-eyebrow">{{ __('app.inventory_detail') }}</p>
                     <h3>{{ $product->name }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Informasi lengkap barang inventaris, lokasi penyimpanan, stok, dan kondisi barang.
+                        {{ __('app.product_detail_desc') }}
                     </p>
                 </div>
 
                 <div class="flex flex-wrap gap-2">
                     <a href="{{ route('products.edit', $product) }}" class="gsm-button-primary">
-                        Edit Barang
+                        {{ __('app.edit_product') }}
                     </a>
 
                     <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                        Kembali
+                        {{ __('app.back') }}
                     </a>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                                 <div class="text-6xl font-black">
                                     {{ strtoupper(substr($product->name, 0, 1)) }}
                                 </div>
-                                <p class="mt-2 font-bold">Tidak ada gambar</p>
+                                <p class="mt-2 font-bold">{{ __('app.no_image') }}</p>
                             </div>
                         </div>
                     @endif
@@ -51,53 +51,53 @@
                 <div class="lg:col-span-2">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="gsm-detail-card">
-                            <span>Kode Barang</span>
+                            <span>{{ __('app.product_code') }}</span>
                             <strong>{{ $product->code }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>Nama Barang</span>
+                            <span>{{ __('app.product_name') }}</span>
                             <strong>{{ $product->name }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>Kategori</span>
+                            <span>{{ __('app.category') }}</span>
                             <strong>{{ $product->category->name ?? '-' }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>Stok</span>
+                            <span>{{ __('app.stock') }}</span>
                             <strong>{{ $product->stock }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>Lokasi Penyimpanan</span>
+                            <span>{{ __('app.storage_location') }}</span>
                             <strong>{{ $product->location }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>Kondisi</span>
+                            <span>{{ __('app.condition') }}</span>
 
                             @if($product->condition === 'Baik')
-                                <strong><span class="gsm-badge success">Baik</span></strong>
+                                <strong><span class="gsm-badge success">{{ __('app.good') }}</span></strong>
                             @elseif($product->condition === 'Rusak Ringan')
-                                <strong><span class="gsm-badge warning">Rusak Ringan</span></strong>
+                                <strong><span class="gsm-badge warning">{{ __('app.minor_damage') }}</span></strong>
                             @else
-                                <strong><span class="gsm-badge danger">Rusak Berat</span></strong>
+                                <strong><span class="gsm-badge danger">{{ __('app.major_damage') }}</span></strong>
                             @endif
                         </div>
 
                         <div class="gsm-detail-card md:col-span-2">
-                            <span>Status Stok</span>
+                            <span>{{ __('app.status_stock') }}</span>
 
                             @if($product->stock_status === 'available')
-                                <strong><span class="gsm-badge success">{{ $product->stock_status_label }}</span></strong>
+                                <strong><span class="gsm-badge success">{{ __('app.' . $product->stock_status) }}</span></strong>
                             @elseif($product->stock_status === 'low_stock')
-                                <strong><span class="gsm-badge warning">{{ $product->stock_status_label }}</span></strong>
+                                <strong><span class="gsm-badge warning">{{ __('app.' . $product->stock_status) }}</span></strong>
                             @elseif($product->stock_status === 'out_of_stock')
-                                <strong><span class="gsm-badge danger">{{ $product->stock_status_label }}</span></strong>
+                                <strong><span class="gsm-badge danger">{{ __('app.' . $product->stock_status) }}</span></strong>
                             @else
-                                <strong><span class="gsm-badge info">{{ $product->stock_status_label }}</span></strong>
+                                <strong><span class="gsm-badge info">{{ __('app.' . $product->stock_status) }}</span></strong>
                             @endif
                         </div>
                     </div>

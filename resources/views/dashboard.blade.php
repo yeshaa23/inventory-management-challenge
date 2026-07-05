@@ -1,33 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Overview</p>
-            <h2>Dashboard Inventaris</h2>
+            <p class="gsm-eyebrow">{{ __('app.overview') }}</p>
+            <h2>{{ __('app.inventory_dashboard') }}</h2>
         </div>
     </x-slot>
 
     <div class="gsm-dashboard">
         <section class="gsm-hero-card">
             <div>
-                <span class="gsm-hero-badge">Telkomsel Inventory Center</span>
+                <span class="gsm-hero-badge">{{ __('app.inventory_center') }}</span>
 
                 <h1>
-                    Kelola inventaris kantor dengan lebih cepat dan terkontrol.
+                    {{ __('app.dashboard_hero_title') }}
                 </h1>
 
                 <p>
-                    Pantau stok barang, peminjaman aktif, barang rusak, stok menipis,
-                    hingga riwayat pengembalian dalam satu dashboard.
+                    {{ __('app.dashboard_hero_desc') }}
                 </p>
 
                 <div class="gsm-hero-actions">
                     @if(auth()->user()->hasRole(['Admin', 'Staff']))
                         <a href="{{ route('products.create') }}" class="gsm-button-primary">
-                            Tambah Barang
+                            {{ __('app.add_product') }}
                         </a>
 
                         <a href="{{ route('borrowings.create') }}" class="gsm-button-white">
-                            Tambah Peminjaman
+                            {{ __('app.add_borrowing') }}
                         </a>
                     @endif
                 </div>
@@ -38,19 +37,19 @@
                     <div class="gsm-phone-top"></div>
 
                     <div class="gsm-phone-content">
-                        <span>Total Stock</span>
+                        <span>{{ __('app.total_stock') }}</span>
                         <strong>{{ $availableStock }}</strong>
-                        <p>{{ $totalProducts }} jenis barang tercatat</p>
+                        <p>{{ $totalProducts }} {{ __('app.items_recorded') }}</p>
                     </div>
 
                     <div class="gsm-phone-mini-grid">
                         <div>
-                            <span>Borrowed</span>
+                            <span>{{ __('app.borrowed_short') }}</span>
                             <strong>{{ $borrowedItems }}</strong>
                         </div>
 
                         <div>
-                            <span>Low Stock</span>
+                            <span>{{ __('app.low_stock_short') }}</span>
                             <strong>{{ $lowStockProducts->count() }}</strong>
                         </div>
                     </div>
@@ -65,10 +64,9 @@
                         <div class="gsm-alert-icon">!</div>
 
                         <div>
-                            <h3>Stok Menipis</h3>
+                            <h3>{{ __('app.low_stock') }}</h3>
                             <p>
-                                Ada {{ $lowStockProducts->count() }} barang dengan stok 1 sampai 5.
-                                Segera lakukan pengecekan atau pengadaan ulang.
+                                {{ __('app.low_stock_alert_desc', ['count' => $lowStockProducts->count()]) }}
                             </p>
                         </div>
                     </div>
@@ -79,10 +77,9 @@
                         <div class="gsm-alert-icon">!</div>
 
                         <div>
-                            <h3>Peminjaman Terlambat</h3>
+                            <h3>{{ __('app.overdue_alert_title') }}</h3>
                             <p>
-                                Ada {{ $overdueBorrowings->count() }} peminjaman yang melewati tanggal jatuh tempo.
-                                Perlu dilakukan follow up pengembalian.
+                                {{ __('app.overdue_alert_desc', ['count' => $overdueBorrowings->count()]) }}
                             </p>
                         </div>
                     </div>
@@ -93,58 +90,58 @@
         <section class="gsm-stat-grid">
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon red">▦</div>
-                <p>Total Jenis Barang</p>
+                <p>{{ __('app.total_product_types') }}</p>
                 <h3>{{ $totalProducts }}</h3>
-                <span>Item master</span>
+                <span>{{ __('app.item_master') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon blue">◈</div>
-                <p>Total Stok</p>
+                <p>{{ __('app.total_stock') }}</p>
                 <h3>{{ $availableStock }}</h3>
-                <span>Unit tersedia</span>
+                <span>{{ __('app.available_units') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon yellow">↔</div>
-                <p>Barang Dipinjam</p>
+                <p>{{ __('app.borrowed_items') }}</p>
                 <h3>{{ $borrowedItems }}</h3>
-                <span>Masih aktif</span>
+                <span>{{ __('app.still_active') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon red">!</div>
-                <p>Peminjaman Terlambat</p>
+                <p>{{ __('app.overdue_alert_title') }}</p>
                 <h3>{{ $overdueBorrowings->count() }}</h3>
-                <span>Butuh follow up</span>
+                <span>{{ __('app.needs_follow_up') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon yellow">↓</div>
-                <p>Stok Menipis</p>
+                <p>{{ __('app.low_stock') }}</p>
                 <h3>{{ $lowStockProducts->count() }}</h3>
-                <span>Stok 1 sampai 5</span>
+                <span>{{ __('app.stock_one_to_five') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon dark">×</div>
-                <p>Stok Habis</p>
+                <p>{{ __('app.out_of_stock_title') }}</p>
                 <h3>{{ $outOfStockProducts->count() }}</h3>
-                <span>Perlu restock</span>
+                <span>{{ __('app.needs_restock') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon orange">⚠</div>
-                <p>Barang Rusak</p>
+                <p>{{ __('app.damaged_products') }}</p>
                 <h3>{{ $damagedProducts->count() }}</h3>
-                <span>Perlu pengecekan</span>
+                <span>{{ __('app.needs_checking') }}</span>
             </div>
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon green">★</div>
-                <p>Top Dipinjam</p>
+                <p>{{ __('app.top_borrowed') }}</p>
                 <h3>{{ $topBorrowedProducts->first()->total_borrowed ?? 0 }}</h3>
-                <span>Frekuensi tertinggi</span>
+                <span>{{ __('app.highest_frequency') }}</span>
             </div>
         </section>
 
@@ -152,8 +149,8 @@
             <div class="gsm-panel xl:col-span-2">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Monthly Tracking</p>
-                        <h3>Grafik Peminjaman per Bulan</h3>
+                        <p class="gsm-eyebrow">{{ __('app.monthly_tracking') }}</p>
+                        <h3>{{ __('app.monthly_borrowing_chart') }}</h3>
                     </div>
                 </div>
 
@@ -165,8 +162,8 @@
             <div class="gsm-panel">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Most Used</p>
-                        <h3>Top 5 Barang Dipinjam</h3>
+                        <p class="gsm-eyebrow">{{ __('app.most_used') }}</p>
+                        <h3>{{ __('app.top_5_borrowed_products') }}</h3>
                     </div>
                 </div>
 
@@ -182,7 +179,7 @@
                         </div>
                     @empty
                         <div class="gsm-empty-state small">
-                            Belum ada data peminjaman barang.
+                            {{ __('app.no_product_borrowing_data') }}
                         </div>
                     @endforelse
                 </div>
@@ -193,8 +190,8 @@
             <div class="gsm-panel">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Category Summary</p>
-                        <h3>Ringkasan Barang per Kategori</h3>
+                        <p class="gsm-eyebrow">{{ __('app.category_summary') }}</p>
+                        <h3>{{ __('app.products_per_category_summary') }}</h3>
                     </div>
                 </div>
 
@@ -202,9 +199,9 @@
                     <table class="gsm-table">
                         <thead>
                             <tr>
-                                <th>Kategori</th>
-                                <th>Jenis Barang</th>
-                                <th>Total Stok</th>
+                                <th>{{ __('app.category') }}</th>
+                                <th>{{ __('app.product_types') }}</th>
+                                <th>{{ __('app.total_stock') }}</th>
                             </tr>
                         </thead>
 
@@ -219,7 +216,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <div class="gsm-empty-state small">
-                                            Belum ada data kategori barang.
+                                            {{ __('app.no_category_product_data') }}
                                         </div>
                                     </td>
                                 </tr>
@@ -232,8 +229,8 @@
             <div class="gsm-panel">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Overdue</p>
-                        <h3>Peminjaman Terlambat</h3>
+                        <p class="gsm-eyebrow">{{ __('app.overdue') }}</p>
+                        <h3>{{ __('app.overdue_alert_title') }}</h3>
                     </div>
                 </div>
 
@@ -241,10 +238,10 @@
                     <table class="gsm-table">
                         <thead>
                             <tr>
-                                <th>Nama Peminjam</th>
-                                <th>Divisi</th>
-                                <th>Jatuh Tempo</th>
-                                <th>Status</th>
+                                <th>{{ __('app.borrower_name') }}</th>
+                                <th>{{ __('app.division') }}</th>
+                                <th>{{ __('app.due_date') }}</th>
+                                <th>{{ __('app.status') }}</th>
                             </tr>
                         </thead>
 
@@ -256,7 +253,7 @@
                                     <td>{{ $borrowing->due_date?->format('d M Y') }}</td>
                                     <td>
                                         <span class="gsm-badge danger">
-                                            Terlambat
+                                            {{ __('app.overdue') }}
                                         </span>
                                     </td>
                                 </tr>
@@ -264,7 +261,7 @@
                                 <tr>
                                     <td colspan="4">
                                         <div class="gsm-empty-state small">
-                                            Tidak ada peminjaman yang terlambat.
+                                            {{ __('app.no_overdue_borrowings') }}
                                         </div>
                                     </td>
                                 </tr>
@@ -280,7 +277,7 @@
 
     <script>
         const monthlyData = @json($monthlyBorrowings);
-        const labels = monthlyData.map(item => 'Bulan ' + item.month);
+        const labels = monthlyData.map(item => @json(__('app.month')) + ' ' + item.month);
         const data = monthlyData.map(item => item.total);
         const ctx = document.getElementById('borrowingChart');
 
@@ -289,7 +286,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Jumlah Peminjaman',
+                    label: @json(__('app.borrowing_count_label')),
                     data: data,
                     borderWidth: 1,
                     borderRadius: 12

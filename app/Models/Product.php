@@ -51,10 +51,10 @@ class Product extends Model
     public function getStockStatusLabelAttribute(): string
     {
         return match ($this->stock_status) {
-            'out_of_stock' => 'Habis',
-            'low_stock' => 'Stok Menipis',
-            'damaged' => 'Perlu Perhatian',
-            default => 'Tersedia',
+            'out_of_stock' => __('app.out_of_stock'),
+            'low_stock' => __('app.low_stock'),
+            'damaged' => __('app.damaged'),
+            default => __('app.available'),
         };
     }
 }

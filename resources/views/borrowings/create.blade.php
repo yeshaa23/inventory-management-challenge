@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Borrowing</p>
-            <h2>Tambah Peminjaman</h2>
+            <p class="gsm-eyebrow">{{ __('app.borrowing') }}</p>
+            <h2>{{ __('app.add_borrowing') }}</h2>
         </div>
     </x-slot>
 
@@ -10,15 +10,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">New Borrowing</p>
-                    <h3>Form Tambah Peminjaman</h3>
+                    <p class="gsm-eyebrow">{{ __('app.new_borrowing') }}</p>
+                    <h3>{{ __('app.add_borrowing_form') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Catat peminjaman barang berdasarkan nama peminjam, divisi, tanggal pinjam, dan tanggal jatuh tempo.
+                        {{ __('app.borrowing_form_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
-                    Kembali
+                    {{ __('app.back') }}
                 </a>
             </div>
 
@@ -28,7 +28,7 @@
                 <div class="gsm-form-main">
                     <div class="gsm-form-grid">
                         <div class="gsm-field">
-                            <label for="borrower_name">Nama Peminjam</label>
+                            <label for="borrower_name">{{ __('app.borrower_name') }}</label>
 
                             <input
                                 type="text"
@@ -44,10 +44,10 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="division">Divisi</label>
+                            <label for="division">{{ __('app.division') }}</label>
 
                             <select name="division" id="division">
-                                <option value="">Pilih Divisi</option>
+                                <option value="">{{ __('app.choose_division') }}</option>
                                 <option value="IT" {{ old('division') == 'IT' ? 'selected' : '' }}>IT</option>
                                 <option value="Finance" {{ old('division') == 'Finance' ? 'selected' : '' }}>Finance</option>
                                 <option value="Human Resources" {{ old('division') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
@@ -56,7 +56,7 @@
                                 <option value="Operations" {{ old('division') == 'Operations' ? 'selected' : '' }}>Operations</option>
                                 <option value="Customer Service" {{ old('division') == 'Customer Service' ? 'selected' : '' }}>Customer Service</option>
                                 <option value="General Affairs" {{ old('division') == 'General Affairs' ? 'selected' : '' }}>General Affairs</option>
-                                <option value="Lainnya" {{ old('division') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                <option value="Other" {{ old('division') == 'Other' ? 'selected' : '' }}>{{ __('app.other') }}</option>
                             </select>
 
                             @error('division')
@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="borrow_date">Tanggal Pinjam</label>
+                            <label for="borrow_date">{{ __('app.borrow_date') }}</label>
 
                             <input
                                 type="date"
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="due_date">Tanggal Jatuh Tempo</label>
+                            <label for="due_date">{{ __('app.due_date') }}</label>
 
                             <input
                                 type="date"
@@ -89,7 +89,7 @@
                                 value="{{ old('due_date') }}"
                             >
 
-                            <small>Digunakan untuk mendeteksi peminjaman terlambat.</small>
+                            <small>{{ __('app.due_date_help') }}</small>
 
                             @error('due_date')
                                 <p class="gsm-error-text">{{ $message }}</p>
@@ -97,10 +97,10 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label for="product_id">Barang</label>
+                            <label for="product_id">{{ __('app.product') }}</label>
 
                             <select name="product_id" id="product_id">
-                                <option value="">Pilih Barang</option>
+                                <option value="">{{ __('app.choose_product') }}</option>
 
                                 @foreach($products as $product)
                                     <option
@@ -110,7 +110,7 @@
                                         data-stock="{{ $product->stock }}"
                                         {{ old('product_id') == $product->id ? 'selected' : '' }}
                                     >
-                                        {{ $product->code }} - {{ $product->name }} | Stok: {{ $product->stock }}
+                                        {{ $product->code }} - {{ $product->name }} | {{ __('app.stock') }}: {{ $product->stock }}
                                     </option>
                                 @endforeach
                             </select>
@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="quantity">Jumlah</label>
+                            <label for="quantity">{{ __('app.quantity') }}</label>
 
                             <input
                                 type="number"
@@ -140,11 +140,11 @@
 
                     <div class="gsm-form-actions">
                         <button class="gsm-button-primary">
-                            Simpan Peminjaman
+                            {{ __('app.save_borrowing') }}
                         </button>
 
                         <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
-                            Batal
+                            {{ __('app.cancel') }}
                         </a>
                     </div>
                 </div>
@@ -152,17 +152,17 @@
                 <aside class="gsm-helper-card">
                     <div class="gsm-helper-icon">↔</div>
 
-                    <h4>Preview Peminjaman</h4>
+                    <h4>{{ __('app.preview_borrowing') }}</h4>
 
                     <div class="gsm-preview-box">
-                        <p>Barang Dipilih</p>
-                        <strong id="preview-product">Belum dipilih</strong>
+                        <p>{{ __('app.selected_product') }}</p>
+                        <strong id="preview-product">{{ __('app.not_selected_yet') }}</strong>
                     </div>
 
                     <ul>
-                        <li>Pilih barang yang masih memiliki stok.</li>
-                        <li>Isi tanggal jatuh tempo agar status terlambat dapat terdeteksi.</li>
-                        <li>Pastikan divisi peminjam sudah sesuai.</li>
+                        <li>{{ __('app.borrowing_tip_1') }}</li>
+                        <li>{{ __('app.borrowing_tip_2') }}</li>
+                        <li>{{ __('app.borrowing_tip_3') }}</li>
                     </ul>
                 </aside>
             </form>
@@ -178,14 +178,16 @@
                 const selectedOption = productSelect.options[productSelect.selectedIndex];
 
                 if (!selectedOption || !selectedOption.value) {
-                    previewProduct.textContent = 'Belum dipilih';
+                    previewProduct.textContent = @json(__('app.not_selected_yet'));
                     return;
                 }
 
                 const code = selectedOption.dataset.code || '-';
                 const stock = selectedOption.dataset.stock || '0';
 
-                previewProduct.textContent = `${code} | Stok ${stock}`;
+                const stockText = @json(__('app.stock'));
+
+                previewProduct.textContent = `${code} | ${stockText} ${stock}`;
             }
 
             if (productSelect) {

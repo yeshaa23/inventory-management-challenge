@@ -3,7 +3,7 @@
         @csrf
 
         <div>
-            <x-input-label for="email" value="Email" />
+            <x-input-label for="email" :value="__('app.email')" />
 
             <x-text-input
                 id="email"
@@ -20,7 +20,7 @@
         </div>
 
         <div>
-            <x-input-label for="password" value="Password" />
+            <x-input-label for="password" :value="__('app.password')" />
 
             <x-text-input
                 id="password"
@@ -28,7 +28,7 @@
                 name="password"
                 required
                 autocomplete="current-password"
-                placeholder="Masukkan password"
+                placeholder="{{ __('app.login_placeholder_password') }}"
             />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -44,7 +44,7 @@
                 >
 
                 <span class="ms-2 text-sm text-slate-600">
-                    Remember me
+                    {{ __('app.remember_me') }}
                 </span>
             </label>
 
@@ -53,17 +53,17 @@
                     class="text-sm font-semibold text-red-600 hover:text-red-700"
                     href="{{ route('password.request') }}"
                 >
-                    Forgot password?
+                    {{ __('app.forgot_password') }}
                 </a>
             @endif
         </div>
 
         <button type="submit" class="gsm-button-primary w-full">
-            Log in
+            {{ __('app.login') }}
         </button>
 
         <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 text-sm text-slate-600">
-            <p class="font-bold text-slate-800 mb-2">Akun Testing</p>
+            <p class="font-bold text-slate-800 mb-2">{{ __('app.test_accounts') }}</p>
             <p>Admin: admin@example.com / password</p>
             <p>Staff: staff@example.com / password</p>
             <p>Manager: manager@example.com / password</p>
@@ -71,9 +71,9 @@
 
         @if (Route::has('register'))
             <p class="text-center text-sm text-slate-500">
-                Belum punya akun?
+                {{ __('app.dont_have_account') }}
                 <a href="{{ route('register') }}" class="font-bold text-red-600 hover:text-red-700">
-                    Register
+                    {{ __('app.register') }}
                 </a>
             </p>
         @endif

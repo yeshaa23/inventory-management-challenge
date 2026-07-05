@@ -45,7 +45,7 @@ class BorrowingController extends Controller
         if ($product->stock < $request->quantity) {
             return back()
                 ->withErrors([
-                    'quantity' => 'Stok barang tidak mencukupi.',
+                    'quantity' => __('app.error_insufficient_stock'),
                 ])
                 ->withInput();
         }
@@ -81,7 +81,7 @@ class BorrowingController extends Controller
 
         return redirect()
             ->route('borrowings.index')
-            ->with('success', 'Peminjaman berhasil ditambahkan.');
+            ->with('success', __('app.success_create_borrowing'));
     }
 
     public function show(Borrowing $borrowing)
@@ -96,7 +96,7 @@ class BorrowingController extends Controller
         if ($borrowing->status === 'returned') {
             return redirect()
                 ->route('borrowings.index')
-                ->with('error', 'Barang sudah dikembalikan.');
+                ->with('error', __('app.error_already_returned'));
         }
 
         $borrowing->load('details.product');
@@ -114,7 +114,7 @@ class BorrowingController extends Controller
         if ($borrowing->status === 'returned') {
             return redirect()
                 ->route('borrowings.index')
-                ->with('error', 'Barang sudah dikembalikan.');
+                ->with('error', __('app.error_already_returned'));
         }
 
         DB::transaction(function () use ($request, $borrowing) {
@@ -151,7 +151,7 @@ class BorrowingController extends Controller
 
         return redirect()
             ->route('borrowings.index')
-            ->with('success', 'Barang berhasil dikembalikan.');
+            ->with('success', __('app.success_return_borrowing'));
     }
 
     public function destroy(Borrowing $borrowing)
@@ -177,6 +177,6 @@ class BorrowingController extends Controller
 
         return redirect()
             ->route('borrowings.index')
-            ->with('success', 'Riwayat peminjaman berhasil dihapus.');
+            ->with('success', __('app.success_delete_borrowing'));
     }
 }

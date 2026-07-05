@@ -1,13 +1,15 @@
 <section>
     <header>
-        <p class="gsm-eyebrow">Profile Information</p>
+        <p class="gsm-eyebrow">
+            {{ __('app.profile_information') }}
+        </p>
 
         <h2 class="text-lg font-bold text-slate-900 dark:text-white">
-            Informasi Profil
+            {{ __('app.profile_information') }}
         </h2>
 
         <p class="mt-1 text-sm text-slate-500 dark:text-slate-300">
-            Perbarui nama, email, dan foto profil akun Anda.
+            {{ __('app.profile_information_desc') }}
         </p>
     </header>
 
@@ -60,11 +62,11 @@
 
             <div class="gsm-profile-photo-content">
                 <label for="profile_photo">
-                    Foto Profil
+                    {{ __('app.profile_photo') }}
                 </label>
 
                 <p>
-                    Gunakan foto JPG atau PNG maksimal 2 MB.
+                    {{ __('app.profile_photo_desc') }}
                 </p>
 
                 <input
@@ -84,7 +86,7 @@
 
         <div class="gsm-field">
             <label for="name">
-                Nama
+                {{ __('app.name') }}
             </label>
 
             <input
@@ -106,7 +108,7 @@
 
         <div class="gsm-field">
             <label for="email">
-                Email
+                {{ __('app.email') }}
             </label>
 
             <input
@@ -127,7 +129,7 @@
 
         <div class="flex items-center gap-4">
             <button type="submit" class="gsm-button-primary">
-                Simpan Profil
+                {{ __('app.save_profile') }}
             </button>
 
             @if (session('status') === 'profile-updated')
@@ -138,7 +140,7 @@
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-slate-500 dark:text-slate-300"
                 >
-                    Tersimpan.
+                    {{ __('app.saved') }}
                 </p>
             @endif
         </div>

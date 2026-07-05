@@ -21,13 +21,13 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, WithT
     public function headings(): array
     {
         return [
-            'Kode Barang',
-            'Nama Barang',
-            'Kategori',
-            'Stok',
-            'Lokasi Penyimpanan',
-            'Kondisi Barang',
-            'Status Stok',
+            __('app.product_code'),
+            __('app.product_name'),
+            __('app.category'),
+            __('app.stock'),
+            __('app.storage_location'),
+            __('app.product_condition'),
+            __('app.status_stock'),
         ];
     }
 
@@ -39,13 +39,18 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, WithT
             $product->category->name ?? '-',
             $product->stock,
             $product->location,
-            $product->condition,
+            match ($product->condition) {
+                'Baik' => __('app.good'),
+                'Rusak Ringan' => __('app.minor_damage'),
+                'Rusak Berat' => __('app.major_damage'),
+                default => $product->condition,
+            },
             $product->stock_status_label,
         ];
     }
 
     public function title(): string
     {
-        return 'Laporan Barang';
+        return __('app.product_report');
     }
 }

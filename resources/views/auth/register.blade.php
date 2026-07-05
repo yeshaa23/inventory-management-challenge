@@ -3,7 +3,7 @@
         @csrf
 
         <div>
-            <x-input-label for="name" value="Name" />
+            <x-input-label for="name" :value="__('app.name')" />
 
             <x-text-input
                 id="name"
@@ -13,14 +13,14 @@
                 required
                 autofocus
                 autocomplete="name"
-                placeholder="Nama lengkap"
+                placeholder="{{ __('app.full_name_placeholder') }}"
             />
 
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="email" value="Email" />
+            <x-input-label for="email" :value="__('app.email')" />
 
             <x-text-input
                 id="email"
@@ -36,7 +36,7 @@
         </div>
 
         <div>
-            <x-input-label for="password" value="Password" />
+            <x-input-label for="password" :value="__('app.password')" />
 
             <x-text-input
                 id="password"
@@ -44,14 +44,14 @@
                 name="password"
                 required
                 autocomplete="new-password"
-                placeholder="Minimal 8 karakter"
+                placeholder="{{ __('app.min_8_chars') }}"
             />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="password_confirmation" value="Confirm Password" />
+            <x-input-label for="password_confirmation" :value="__('app.confirm_password')" />
 
             <x-text-input
                 id="password_confirmation"
@@ -59,20 +59,20 @@
                 name="password_confirmation"
                 required
                 autocomplete="new-password"
-                placeholder="Ulangi password"
+                placeholder="{{ __('app.repeat_password') }}"
             />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <button type="submit" class="gsm-button-primary w-full">
-            Register
+            {{ __('app.register') }}
         </button>
 
         <p class="text-center text-sm text-slate-500">
-            Sudah punya akun?
+            {{ __('app.already_have_account') }}
             <a href="{{ route('login') }}" class="font-bold text-red-600 hover:text-red-700">
-                Log in
+                {{ __('app.login') }}
             </a>
         </p>
     </form>

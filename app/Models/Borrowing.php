@@ -51,9 +51,9 @@ class Borrowing extends Model
     public function getDisplayStatusLabelAttribute(): string
     {
         return match ($this->display_status) {
-            'overdue' => 'Terlambat',
-            'returned' => 'Dikembalikan',
-            default => 'Dipinjam',
+            'overdue' => __('app.overdue'),
+            'returned' => __('app.returned'),
+            default => __('app.borrowed'),
         };
     }
 }

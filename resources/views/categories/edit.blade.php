@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Edit Kategori</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.edit') }} {{ __('app.category') }}</h2>
         </div>
     </x-slot>
 
@@ -11,10 +11,10 @@
             <div class="gsm-panel gsm-form-main">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Category Form</p>
-                        <h3>Form Edit Kategori</h3>
+                        <p class="gsm-eyebrow">{{ __('app.category_form') }}</p>
+                        <h3>{{ __('app.edit_category_form') }}</h3>
                         <p class="text-sm text-slate-500 mt-1">
-                            Perbarui nama dan deskripsi kategori barang.
+                            {{ __('app.edit_category_desc') }}
                         </p>
                     </div>
                 </div>
@@ -25,13 +25,13 @@
 
                     <div class="gsm-form-grid">
                         <div class="gsm-field gsm-field-full">
-                            <label>Nama Kategori</label>
+                            <label>{{ __('app.category_name') }}</label>
 
                             <input
                                 type="text"
                                 name="name"
                                 value="{{ old('name', $category->name) }}"
-                                placeholder="Contoh: Elektronik, ATK, Furniture"
+                                placeholder="{{ __('app.category_tip_2') }}"
                             >
 
                             @error('name')
@@ -40,12 +40,12 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label>Deskripsi</label>
+                            <label>{{ __('app.description') }}</label>
 
                             <textarea
                                 name="description"
                                 rows="5"
-                                placeholder="Tulis deskripsi singkat kategori"
+                                placeholder="{{ __('app.description_category') }}"
                             >{{ old('description', $category->description) }}</textarea>
 
                             @error('description')
@@ -56,11 +56,11 @@
 
                     <div class="gsm-form-actions">
                         <button class="gsm-button-primary">
-                            Update Kategori
+                            {{ __('app.update_category') }}
                         </button>
 
                         <a href="{{ route('categories.index') }}" class="gsm-button-secondary">
-                            Kembali
+                            {{ __('app.back') }}
                         </a>
                     </div>
                 </form>
@@ -69,16 +69,16 @@
             <aside class="gsm-helper-card">
                 <div class="gsm-helper-icon">✎</div>
 
-                <h4>Informasi</h4>
+                <h4>{{ __('app.information') }}</h4>
 
                 <div class="gsm-preview-box">
-                    <p>Kategori</p>
+                    <p>{{ __('app.category') }}</p>
                     <strong>{{ $category->name }}</strong>
                 </div>
 
                 <ul>
-                    <li>Perubahan nama kategori akan terlihat pada data barang terkait.</li>
-                    <li>Pastikan kategori tetap mudah dipahami oleh staff.</li>
+                    <li>{{ __('app.category_change_note_1') }}</li>
+                    <li>{{ __('app.category_change_note_2') }}</li>
                 </ul>
             </aside>
         </section>

@@ -17,26 +17,26 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('app.dashboard') }}
                     </x-nav-link>
 
                     @if(auth()->user()->hasRole(['Admin', 'Staff']))
                         <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                            {{ __('Kategori') }}
+                            {{ __('app.categories') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                            {{ __('Barang') }}
+                            {{ __('app.products') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')">
-                            {{ __('Peminjaman') }}
+                            {{ __('app.borrowings') }}
                         </x-nav-link>
                     @endif
 
                     @if(auth()->user()->hasRole(['Admin', 'Manager']))
                         <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
-                            {{ __('Laporan') }}
+                            {{ __('app.reports') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -48,7 +48,7 @@
                     class="theme-toggle-btn me-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 transition"
                 >
                     <span class="theme-toggle-icon me-1">🌙</span>
-                    <span class="theme-toggle-text">Dark Mode</span>
+                    <span class="theme-toggle-text">{{ __('app.dark_mode') }}</span>
                 </button>
 
                 <x-dropdown align="right" width="48">
@@ -74,7 +74,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('app.profile') }}
                         </x-dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
@@ -84,7 +84,7 @@
                                 :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();"
                             >
-                                {{ __('Log Out') }}
+                                {{ __('app.logout') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -126,26 +126,26 @@
     >
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('app.dashboard') }}
             </x-responsive-nav-link>
 
             @if(auth()->user()->hasRole(['Admin', 'Staff']))
                 <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                    {{ __('Kategori') }}
+                    {{ __('app.categories') }}
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
-                    {{ __('Barang') }}
+                    {{ __('app.products') }}
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')">
-                    {{ __('Peminjaman') }}
+                    {{ __('app.borrowings') }}
                 </x-responsive-nav-link>
             @endif
 
             @if(auth()->user()->hasRole(['Admin', 'Manager']))
                 <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
-                    {{ __('Laporan') }}
+                    {{ __('app.reports') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -162,7 +162,7 @@
 
                 @if(Auth::user()->role)
                     <div class="font-medium text-sm text-gray-500 dark:text-gray-300">
-                        Role: {{ Auth::user()->role->name }}
+                        {{ __('app.role') }}: {{ Auth::user()->role->name }}
                     </div>
                 @endif
             </div>
@@ -173,11 +173,11 @@
                     class="theme-toggle-btn w-full text-start px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                 >
                     <span class="theme-toggle-icon me-1">🌙</span>
-                    <span class="theme-toggle-text">Dark Mode</span>
+                    <span class="theme-toggle-text">{{ __('app.dark_mode') }}</span>
                 </button>
 
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('app.profile') }}
                 </x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -187,7 +187,7 @@
                         :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();"
                     >
-                        {{ __('Log Out') }}
+                        {{ __('app.logout') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
@@ -200,12 +200,14 @@
         const toggleButtons = document.querySelectorAll('.theme-toggle-btn');
         const toggleTexts = document.querySelectorAll('.theme-toggle-text');
         const toggleIcons = document.querySelectorAll('.theme-toggle-icon');
+        const darkModeText = @json(__('app.dark_mode'));
+        const lightModeText = @json(__('app.light_mode'));
 
         function setThemeText() {
             const isDark = document.documentElement.classList.contains('dark');
 
             toggleTexts.forEach(function (text) {
-                text.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+                text.textContent = isDark ? lightModeText : darkModeText;
             });
 
             toggleIcons.forEach(function (icon) {

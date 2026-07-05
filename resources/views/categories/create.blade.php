@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Tambah Kategori</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.add_category') }}</h2>
         </div>
     </x-slot>
 
@@ -11,10 +11,10 @@
             <div class="gsm-panel gsm-form-main">
                 <div class="gsm-panel-header">
                     <div>
-                        <p class="gsm-eyebrow">Category Form</p>
-                        <h3>Form Tambah Kategori</h3>
+                        <p class="gsm-eyebrow">{{ __('app.category_form') }}</p>
+                        <h3>{{ __('app.add_category_form') }}</h3>
                         <p class="text-sm text-slate-500 mt-1">
-                            Tambahkan kategori baru untuk mengelompokkan barang inventaris.
+                            {{ __('app.add_category_desc') }}
                         </p>
                     </div>
                 </div>
@@ -24,13 +24,13 @@
 
                     <div class="gsm-form-grid">
                         <div class="gsm-field gsm-field-full">
-                            <label>Nama Kategori</label>
+                            <label>{{ __('app.category_name') }}</label>
 
                             <input
                                 type="text"
                                 name="name"
                                 value="{{ old('name') }}"
-                                placeholder="Contoh: Elektronik, ATK, Furniture"
+                                placeholder="{{ __('app.category_tip_2') }}"
                             >
 
                             @error('name')
@@ -39,12 +39,12 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label>Deskripsi</label>
+                            <label>{{ __('app.description') }}</label>
 
                             <textarea
                                 name="description"
                                 rows="5"
-                                placeholder="Tulis deskripsi singkat kategori"
+                                placeholder="{{ __('app.description_category') }}"
                             >{{ old('description') }}</textarea>
 
                             @error('description')
@@ -55,11 +55,11 @@
 
                     <div class="gsm-form-actions">
                         <button class="gsm-button-primary">
-                            Simpan Kategori
+                            {{ __('app.save_category') }}
                         </button>
 
                         <a href="{{ route('categories.index') }}" class="gsm-button-secondary">
-                            Kembali
+                            {{ __('app.back') }}
                         </a>
                     </div>
                 </form>
@@ -68,12 +68,12 @@
             <aside class="gsm-helper-card">
                 <div class="gsm-helper-icon">▦</div>
 
-                <h4>Tips Kategori</h4>
+                <h4>{{ __('app.category_tips') }}</h4>
 
                 <ul>
-                    <li>Gunakan nama kategori yang singkat dan mudah dipahami.</li>
-                    <li>Contoh kategori: Elektronik, ATK, Furniture, Perangkat Jaringan.</li>
-                    <li>Kategori akan digunakan saat membuat kode barang otomatis.</li>
+                    <li>{{ __('app.category_tip_1') }}</li>
+                    <li>{{ __('app.category_tip_2') }}</li>
+                    <li>{{ __('app.category_tip_3') }}</li>
                 </ul>
             </aside>
         </section>

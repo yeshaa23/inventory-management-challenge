@@ -21,39 +21,38 @@
 
                     <div>
                         <h1>Telkomsel Inventory</h1>
-                        <p>Internal Asset Management System</p>
+                        <p>{{ __('app.auth_brand_desc') }}</p>
                     </div>
                 </div>
 
                 <div class="gsm-auth-hero">
                     <span class="gsm-auth-badge">
-                        Inventory Center
+                        {{ __('app.inventory_center') }}
                     </span>
 
                     <h2>
-                        One dashboard for all your inventory needs
+                        {{ __('app.auth_hero_title') }}
                     </h2>
 
                     <p>
-                        Kelola data barang, kategori, peminjaman, pengembalian,
-                        serta laporan inventaris dalam satu sistem yang rapi dan terkontrol.
+                        {{ __('app.auth_hero_desc') }}
                     </p>
                 </div>
 
                 <div class="gsm-auth-features">
                     <div>
-                        <strong>Role Access</strong>
-                        <span>Admin, Staff, dan Manager</span>
+                        <strong>{{ __('app.role_access') }}</strong>
+                        <span>{{ __('app.role_access_desc') }}</span>
                     </div>
 
                     <div>
-                        <strong>Inventory Tracking</strong>
-                        <span>Stok, lokasi, kondisi, dan status barang</span>
+                        <strong>{{ __('app.inventory_tracking') }}</strong>
+                        <span>{{ __('app.inventory_tracking_desc') }}</span>
                     </div>
 
                     <div>
-                        <strong>Reports</strong>
-                        <span>Dashboard, export, dan audit log</span>
+                        <strong>{{ __('app.reports') }}</strong>
+                        <span>{{ __('app.reports_desc_short') }}</span>
                     </div>
                 </div>
             </div>
@@ -61,8 +60,8 @@
             <div class="gsm-auth-right">
                 <div class="gsm-auth-card">
                     <div class="gsm-auth-card-header">
-                        <h2>Welcome Back</h2>
-                        <p>Masuk untuk mengelola inventaris kantor.</p>
+                        <h2>{{ __('app.welcome_back') }}</h2>
+                        <p>{{ __('app.login_desc') }}</p>
                     </div>
 
                     {{ $slot }}

@@ -1,12 +1,6 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | General
-    |--------------------------------------------------------------------------
-    */
-
     'app_name' => 'Telkomsel Inventory',
     'system_name' => 'Office Inventory Management System',
     'dashboard' => 'Dashboard',
@@ -19,27 +13,26 @@ return [
     'description' => 'Description',
     'information' => 'Information',
     'date' => 'Date',
+    'time' => 'Time',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'action' => 'Action',
     'actions' => 'Actions',
-    'no_data' => 'No data available.',
-    'loading' => 'Loading...',
+    'module' => 'Module',
+    'no' => 'No',
     'all' => 'All',
     'yes' => 'Yes',
-    'no' => 'No',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Navigation
-    |--------------------------------------------------------------------------
-    */
-
+    'no_answer' => 'No',
+    'success' => 'Success',
+    'failed' => 'Failed',
+    'printed_at' => 'Printed at',
+    'none' => '-',
+    'month' => 'Month',
+    'total' => 'Total',
     'main_menu' => 'Main Menu',
     'inventory_center' => 'Inventory Center',
     'inventory_monitoring' => 'Inventory Monitoring',
     'inventory_monitoring_desc' => 'Manage office assets quickly, neatly, and efficiently.',
-
     'categories' => 'Categories',
     'products' => 'Products',
     'borrowings' => 'Borrowings',
@@ -49,13 +42,7 @@ return [
     'settings' => 'Settings',
     'account' => 'Account',
     'logout' => 'Logout',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Buttons & Actions
-    |--------------------------------------------------------------------------
-    */
-
+    'role' => 'Role',
     'add' => 'Add',
     'create' => 'Create Data',
     'edit' => 'Edit',
@@ -77,48 +64,81 @@ return [
     'export_excel' => 'Export Excel',
     'export_csv' => 'Export CSV',
     'print' => 'Print',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication
-    |--------------------------------------------------------------------------
-    */
-
-    'login' => 'Login',
+    'login' => 'Log in',
     'register' => 'Register',
     'email' => 'Email',
     'password' => 'Password',
     'remember_me' => 'Remember me',
-    'forgot_password' => 'Forgot your password?',
+    'forgot_password' => 'Forgot password?',
+    'forgot_password_desc' => 'Forgot your password? No problem. Enter your email address and we will send you a password reset link.',
+    'email_password_reset_link' => 'Email Password Reset Link',
     'confirm_password' => 'Confirm Password',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
     'name' => 'Name',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Dashboard
-    |--------------------------------------------------------------------------
-    */
-
+    'confirm' => 'Confirm',
+    'secure_area_desc' => 'This is a secure area of the application. Please confirm your password before continuing.',
+    'reset_password' => 'Reset Password',
+    'verify_email' => 'Verify Email',
+    'verify_email_desc' => 'Thanks for signing up. Before getting started, verify your email address by clicking the link we emailed to you.',
+    'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    'resend_verification_email' => 'Resend Verification Email',
+    'test_accounts' => 'Test Accounts',
+    'dont_have_account' => 'Don\'t have an account?',
+    'already_have_account' => 'Already have an account?',
+    'login_placeholder_password' => 'Enter password',
+    'full_name_placeholder' => 'Full name',
+    'min_8_chars' => 'Minimum 8 characters',
+    'repeat_password' => 'Repeat password',
+    'auth_brand_desc' => 'Internal Asset Management System',
+    'auth_hero_title' => 'One dashboard for all your inventory needs',
+    'auth_hero_desc' => 'Manage products, categories, borrowings, returns, and inventory reports in one neat and controlled system.',
+    'role_access' => 'Role Access',
+    'role_access_desc' => 'Admin, Staff, and Manager',
+    'inventory_tracking' => 'Inventory Tracking',
+    'inventory_tracking_desc' => 'Stock, location, condition, and product status',
+    'reports_desc_short' => 'Dashboard, export, and audit log',
+    'welcome_back' => 'Welcome Back',
+    'login_desc' => 'Log in to manage office inventory.',
     'inventory_dashboard' => 'Inventory Dashboard',
-    'dashboard_desc' => 'Monitor product, category, borrowing, and inventory report data at a glance.',
-    'total_products' => 'Total Products',
-    'total_categories' => 'Total Categories',
-    'total_borrowings' => 'Total Borrowings',
-    'total_reports' => 'Total Reports',
-    'low_stock' => 'Low Stock',
-    'available_stock' => 'Available Stock',
+    'dashboard_hero_title' => 'Manage office inventory faster and with better control.',
+    'dashboard_hero_desc' => 'Monitor product stock, active borrowings, damaged products, low stock, and return history in one dashboard.',
+    'total_stock' => 'Total Stock',
+    'items_recorded' => 'product types recorded',
+    'borrowed_short' => 'Borrowed',
+    'low_stock_short' => 'Low Stock',
+    'low_stock_alert_title' => 'Low Stock',
+    'low_stock_alert_desc' => 'There are :count products with stock between 1 and 5. Check or restock them soon.',
+    'overdue_alert_title' => 'Overdue Borrowings',
+    'overdue_alert_desc' => 'There are :count borrowings past the due date. Return follow-up is required.',
+    'total_product_types' => 'Total Product Types',
+    'item_master' => 'Item master',
+    'available_units' => 'Available units',
     'borrowed_items' => 'Borrowed Items',
-    'returned_items' => 'Returned Items',
-    'recent_activity' => 'Recent Activity',
-    'recent_borrowings' => 'Recent Borrowings',
-    'inventory_summary' => 'Inventory Summary',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Categories
-    |--------------------------------------------------------------------------
-    */
-
+    'still_active' => 'Still active',
+    'needs_follow_up' => 'Needs follow-up',
+    'stock_one_to_five' => 'Stock 1 to 5',
+    'out_of_stock' => 'Out of Stock',
+    'out_of_stock_title' => 'Out of Stock',
+    'needs_restock' => 'Needs restock',
+    'damaged_products' => 'Damaged Products',
+    'needs_checking' => 'Needs checking',
+    'top_borrowed' => 'Top Borrowed',
+    'highest_frequency' => 'Highest frequency',
+    'monthly_tracking' => 'Monthly Tracking',
+    'monthly_borrowing_chart' => 'Monthly Borrowing Chart',
+    'most_used' => 'Most Used',
+    'top_5_borrowed_products' => 'Top 5 Borrowed Products',
+    'no_product_borrowing_data' => 'No product borrowing data yet.',
+    'category_summary' => 'Category Summary',
+    'products_per_category_summary' => 'Product Summary by Category',
+    'product_types' => 'Product Types',
+    'no_category_product_data' => 'No category product data yet.',
+    'overdue' => 'Overdue',
+    'due_date' => 'Due Date',
+    'no_overdue_borrowings' => 'No overdue borrowings.',
+    'borrowing_count_label' => 'Borrowing Count',
+    'master_data' => 'Master Data',
     'category' => 'Category',
     'category_data' => 'Category Data',
     'category_name' => 'Category Name',
@@ -127,14 +147,31 @@ return [
     'create_category' => 'Create Category',
     'update_category' => 'Update Category',
     'delete_category' => 'Delete Category',
-    'category_desc' => 'Manage product categories to organize inventory items more easily.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Products
-    |--------------------------------------------------------------------------
-    */
-
+    'category_form' => 'Category Form',
+    'add_category_form' => 'Add Category Form',
+    'edit_category_form' => 'Edit Category Form',
+    'add_category_desc' => 'Add a new category to group inventory products.',
+    'edit_category_desc' => 'Update the product category name and description.',
+    'category_management' => 'Category Management',
+    'category_master_data' => 'Category Master Data',
+    'category_desc' => 'Manage product categories to organize office inventory.',
+    'category_detail' => 'Category Detail',
+    'category_detail_desc' => 'Category details and connected product count.',
+    'description_category' => 'Category Description',
+    'no_category_description' => 'No description available for this category.',
+    'product_count' => 'Product Count',
+    'created_date' => 'Created Date',
+    'created_on' => 'Created',
+    'save_category' => 'Save Category',
+    'category_tips' => 'Category Tips',
+    'category_tip_1' => 'Use a short and easy-to-understand category name.',
+    'category_tip_2' => 'Example categories: Electronics, Office Supplies, Furniture, Network Devices.',
+    'category_tip_3' => 'The category will be used to generate product codes automatically.',
+    'category_change_note_1' => 'Category name changes will appear in related product data.',
+    'category_change_note_2' => 'Make sure the category remains easy for staff to understand.',
+    'no_category_data' => 'No category data yet.',
+    'start_category_hint' => 'Click Add Category to start grouping inventory products.',
+    'confirm_delete_category' => 'Are you sure you want to delete this category? Make sure no important products are still connected to it.',
     'product' => 'Product',
     'product_data' => 'Product Data',
     'product_list' => 'Product List',
@@ -144,35 +181,68 @@ return [
     'update_product' => 'Update Product',
     'delete_product' => 'Delete Product',
     'product_detail' => 'Product Detail',
+    'new_inventory_item' => 'New Inventory Item',
+    'edit_inventory_item' => 'Edit Inventory Item',
+    'inventory_detail' => 'Inventory Detail',
+    'product_form_add' => 'Add Product Form',
+    'product_form_edit' => 'Edit Product Form',
     'product_code' => 'Product Code',
+    'code' => 'Code',
     'product_name' => 'Product Name',
     'stock' => 'Stock',
-    'location' => 'Storage Location',
-    'condition' => 'Product Condition',
+    'location' => 'Location',
+    'storage_location' => 'Storage Location',
+    'condition' => 'Condition',
+    'product_condition' => 'Product Condition',
     'image' => 'Image',
     'product_image' => 'Product Image',
-    'upload_image' => 'Upload Image',
+    'upload_product_image' => 'Upload Product Image',
+    'upload_new_image' => 'Upload New Image',
     'choose_category' => 'Choose Category',
     'choose_location' => 'Choose Storage Location',
     'choose_condition' => 'Choose Condition',
     'other_location' => 'Other Location',
     'new_location' => 'Enter New Location',
     'auto_code_desc' => 'The product code is generated automatically based on the selected category.',
+    'choose_category_auto_code' => 'Choose a category to generate the code automatically',
     'product_form_desc' => 'Add a new product with category, stock, storage location, condition, and product image.',
+    'product_edit_desc' => 'Update inventory product data including stock, location, condition, and image.',
+    'product_detail_desc' => 'Complete inventory product information, storage location, stock, and condition.',
     'preview_product_data' => 'Product Data Preview',
+    'current_product_data' => 'Current Product Data',
     'code_not_generated' => 'Not generated yet',
     'good' => 'Good',
     'minor_damage' => 'Minor Damage',
     'major_damage' => 'Major Damage',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Borrowings
-    |--------------------------------------------------------------------------
-    */
-
+    'available' => 'Available',
+    'low_stock' => 'Low Stock',
+    'damaged' => 'Needs Attention',
+    'all_categories' => 'All Categories',
+    'all_conditions' => 'All Conditions',
+    'all_locations' => 'All Locations',
+    'all_statuses' => 'All Statuses',
+    'sort_by' => 'Sort By',
+    'newest' => 'Newest',
+    'oldest' => 'Oldest',
+    'name_az' => 'Name A-Z',
+    'lowest_stock' => 'Lowest Stock',
+    'highest_stock' => 'Highest Stock',
+    'status_stock' => 'Stock Status',
+    'product_management' => 'Inventory Management',
+    'product_index_desc' => 'Manage product data, stock, storage locations, condition, and inventory availability status.',
+    'no_product_data' => 'No product data yet.',
+    'start_product_hint' => 'Click Add Product to start recording inventory.',
+    'no_image' => 'No image',
+    'save_product' => 'Save Product',
+    'image_format_help' => 'Image format: JPG, JPEG, or PNG. Maximum 2 MB.',
+    'product_create_tip_1' => 'Choose a category to generate an automatic code.',
+    'product_create_tip_2' => 'Use an available location or choose Other Location.',
+    'product_create_tip_3' => 'Make sure the stock and condition match the physical product.',
+    'confirm_delete_product' => 'Are you sure you want to delete this product? Deleted data cannot be restored.',
+    'product_total_desc' => 'Total :count products recorded in the system.',
     'borrowing' => 'Borrowing',
     'borrowing_data' => 'Borrowing Data',
+    'borrowing_history' => 'Borrowing History',
     'borrowing_list' => 'Borrowing List',
     'add_borrowing' => 'Add Borrowing',
     'edit_borrowing' => 'Edit Borrowing',
@@ -180,55 +250,99 @@ return [
     'update_borrowing' => 'Update Borrowing',
     'delete_borrowing' => 'Delete Borrowing',
     'borrowing_detail' => 'Borrowing Detail',
+    'new_borrowing' => 'New Borrowing',
+    'add_borrowing_form' => 'Add Borrowing Form',
+    'borrowing_form_desc' => 'Record product borrowings by borrower name, division, borrow date, and due date.',
     'borrower_name' => 'Borrower Name',
     'division' => 'Division',
-    'quantity' => 'Quantity',
+    'choose_division' => 'Choose Division',
+    'other' => 'Other',
     'borrow_date' => 'Borrow Date',
     'return_date' => 'Return Date',
-    'return_item' => 'Return Item',
+    'return_item' => 'Return Product',
     'return_form' => 'Return Form',
+    'return_item_form' => 'Product Return Form',
+    'return_condition' => 'Condition When Returned',
+    'return_note' => 'Return Note',
+    'return_condition_short' => 'Return Condition',
     'borrowing_status' => 'Borrowing Status',
     'borrowed' => 'Borrowed',
     'returned' => 'Returned',
     'pending' => 'Pending',
-    'overdue' => 'Overdue',
     'choose_product' => 'Choose Product',
-    'borrowing_desc' => 'Manage inventory borrowing and return records.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reports
-    |--------------------------------------------------------------------------
-    */
-
+    'quantity' => 'Quantity',
+    'due_date_help' => 'Used to detect overdue borrowings.',
+    'save_borrowing' => 'Save Borrowing',
+    'preview_borrowing' => 'Borrowing Preview',
+    'selected_product' => 'Selected Product',
+    'not_selected_yet' => 'Not selected yet',
+    'borrowing_tip_1' => 'Choose products that still have stock.',
+    'borrowing_tip_2' => 'Fill in the due date so overdue status can be detected.',
+    'borrowing_tip_3' => 'Make sure the borrower division is correct.',
+    'borrowing_history_label' => 'Borrowing History',
+    'borrowing_data_title' => 'Product Borrowing Data',
+    'borrowing_index_desc' => 'Manage borrowings, returns, borrower divisions, and overdue products.',
+    'borrowed_product' => 'Borrowed Product',
+    'no_borrowing_data' => 'No borrowing data yet.',
+    'start_borrowing_hint' => 'Click Add Borrowing to record a product borrowing.',
+    'return_process' => 'Return Process',
+    'return_form_desc' => 'Record the product condition when returned and add notes if needed.',
+    'borrower_information' => 'Borrower Information',
+    'borrowed_item' => 'Borrowed Item',
+    'borrowed_items_table' => 'Borrowed Items',
+    'return_checklist' => 'Return Checklist',
+    'return_tip_1' => 'Check the physical condition before storing the product again.',
+    'return_tip_2' => 'Record damage or missing accessories.',
+    'return_tip_3' => 'Stock will automatically increase after the return is saved.',
+    'save_return' => 'Save Return',
+    'borrow_detail_desc' => 'Borrowing details, borrower division, borrowed products, and return information.',
+    'return_note_placeholder' => 'Example: Product is complete, minor scratches, missing cable, and so on.',
+    'confirm_delete_borrowing' => 'Are you sure you want to delete this borrowing history? If still borrowed, product stock will be restored.',
+    'borrowing_total_desc' => 'Total :count borrowing transactions recorded in the system.',
     'report' => 'Report',
     'report_data' => 'Report Data',
     'report_center' => 'Report Center',
-    'product_report' => 'Product Report',
+    'reporting_center' => 'Reporting Center',
+    'inventory_report_title' => 'Inventory Report',
+    'report_workspace' => 'Report Workspace',
+    'report_hero_title' => 'Formal reports for asset and borrowing monitoring.',
+    'report_hero_desc' => 'Unlike the dashboard, which provides a quick summary, this page focuses on recaps, complete lists, and report exports for documentation needs.',
+    'download_report' => 'Download Report',
+    'download_report_desc' => 'Choose PDF for formal reports, Excel for data processing, or CSV for integration needs.',
+    'pdf_product_data' => 'PDF Product Data',
+    'pdf_borrowings' => 'PDF Borrowings',
+    'download_center' => 'Download Center',
+    'export_report' => 'Export Report',
+    'export_report_desc' => 'Use the buttons below to download reports as needed.',
+    'inventory_report' => 'Inventory Report',
+    'borrowing_report_label' => 'Borrowing Report',
+    'product_report' => 'Product Data Report',
     'borrowing_report' => 'Borrowing Report',
-    'report_desc' => 'View and export product and borrowing inventory reports.',
-    'download_product_report' => 'Download Product Report',
-    'download_borrowing_report' => 'Download Borrowing Report',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Activity Logs
-    |--------------------------------------------------------------------------
-    */
-
-    'activity_log' => 'Activity Log',
-    'activity_log_data' => 'Activity Log Data',
+    'borrowing_history_report' => 'Borrowing History Report',
+    'product_report_desc' => 'Contains product code, name, category, stock, location, condition, and stock status.',
+    'borrowing_report_desc' => 'Contains borrower, division, product, borrow date, due date, status, and return condition.',
+    'inventory_data' => 'Inventory Data',
+    'borrowings_data' => 'Borrowing Data',
+    'low_stock_report' => 'Low Stock Report',
+    'overdue_borrowing_report' => 'Overdue Borrowing Report',
+    'no_low_stock_products' => 'No products with low stock.',
+    'no_overdue_borrowing_short' => 'No overdue borrowings.',
+    'total_transactions' => 'Total Transactions',
+    'system_audit' => 'System Audit',
+    'audit_trail' => 'Audit Trail',
+    'activity_hero_title' => 'Monitor important data changes in the system.',
+    'activity_hero_desc' => 'Activity logs help admins see who adds, updates, deletes, or returns inventory data.',
+    'total_log' => 'Total Logs',
+    'activity_total_desc' => 'Latest activities are shown first to make data change checks easier.',
+    'audit_log' => 'Audit Log',
+    'system_activity_history' => 'System Activity History',
+    'admin_only_data' => 'This data can only be viewed by Admin.',
     'activity' => 'Activity',
     'user' => 'User',
-    'role' => 'Role',
-    'activity_desc' => 'Monitor user activities within the inventory system.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Profile & Settings
-    |--------------------------------------------------------------------------
-    */
-
+    'no_activity_data' => 'No activity has been recorded yet.',
+    'activity_empty_desc' => 'Activities will appear after category, product, or borrowing data is managed.',
+    'system' => 'System',
+    'wib' => 'WIB',
     'profile_information' => 'Profile Information',
     'profile_information_desc' => 'Update your account name, email, and profile picture.',
     'profile_photo' => 'Profile Picture',
@@ -236,7 +350,6 @@ return [
     'profile_photo_desc' => 'Use a JPG or PNG image with a maximum size of 2 MB.',
     'save_profile' => 'Save Profile',
     'saved' => 'Saved.',
-
     'display_settings' => 'Display Settings',
     'settings_desc' => 'Manage display mode and application language preferences.',
     'display_mode' => 'Display Mode',
@@ -247,18 +360,12 @@ return [
     'language_desc' => 'Choose your preferred application display language.',
     'indonesian' => 'Indonesian',
     'english' => 'English',
-
     'update_password' => 'Update Password',
-    'current_password' => 'Current Password',
-    'new_password' => 'New Password',
+    'update_password_desc' => 'Ensure your account is using a long, random password to stay secure.',
     'delete_account' => 'Delete Account',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Confirmation & Messages
-    |--------------------------------------------------------------------------
-    */
-
+    'delete_account_desc' => 'Once your account is deleted, all account data will be permanently deleted. Make sure you have saved any information you need.',
+    'delete_account_confirm_title' => 'Are you sure you want to delete your account?',
+    'delete_account_confirm_desc' => 'Enter your password to confirm that you want to permanently delete your account.',
     'confirm_action' => 'Confirm Action',
     'confirm_default_message' => 'Are you sure?',
     'yes_continue' => 'Yes, Continue',
@@ -266,6 +373,35 @@ return [
     'success_create' => 'Data has been created successfully.',
     'success_update' => 'Data has been updated successfully.',
     'success_delete' => 'Data has been deleted successfully.',
-    'success_return' => 'Item has been returned successfully.',
+    'success_return' => 'Product has been returned successfully.',
+    'creating_code' => 'Generating code...',
+    'code_creation_error' => 'An error occurred while generating the code',
+    'add_borrowing_hint' => 'Click the Add Borrowing button to record an item borrowing transaction.',
+    'item_detail' => 'item details',
+    'delete_borrowing_confirmation' => 'Are you sure you want to delete this borrowing history? If the item is still borrowed, the stock will be restored.',
     'failed_action' => 'The action failed.',
+    'success_create_category' => 'Category has been added successfully.',
+    'success_update_category' => 'Category has been updated successfully.',
+    'success_delete_category' => 'Category has been deleted successfully.',
+    'success_create_product' => 'Product has been added successfully.',
+    'success_update_product' => 'Product has been updated successfully.',
+    'success_delete_product' => 'Product has been deleted successfully.',
+    'success_create_borrowing' => 'Borrowing has been added successfully.',
+    'success_return_borrowing' => 'Product has been returned successfully.',
+    'success_delete_borrowing' => 'Borrowing history has been deleted successfully.',
+    'error_already_returned' => 'Product has already been returned.',
+    'error_insufficient_stock' => 'Product stock is insufficient.',
+    'example_laptop' => 'Example: Lenovo ThinkPad Laptop',
+    'example_branch_warehouse' => 'Example: Surabaya Branch Warehouse',
+    'update_inventory_item' => 'Update Inventory Item',
+    'product_summary' => 'Product Summary',
+    'update_image_hint' => 'Leave empty if you do not want to replace the image.',
+    'product_edit_tip_1' => 'Make sure stock changes match the actual product condition.',
+    'product_edit_tip_2' => 'Location can be selected from the list or entered as a new location.',
+    'product_edit_tip_3' => 'If the condition is damaged, the data will appear in the damaged product report.',
+    'code_generation_failed' => 'Failed to generate code',
+    'inventory_items' => 'Inventory Items',
+    'search_product' => 'Search Product',
+    'search_products_placeholder' => 'Search code, name, or location',
+    'note' => 'Note',
 ];

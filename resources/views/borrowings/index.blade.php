@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Borrowing</p>
-            <h2>Riwayat Peminjaman</h2>
+            <p class="gsm-eyebrow">{{ __('app.borrowing') }}</p>
+            <h2>{{ __('app.borrowing_history') }}</h2>
         </div>
     </x-slot>
 
@@ -12,7 +12,7 @@
                 <div class="gsm-alert-icon">✓</div>
 
                 <div>
-                    <h3>Berhasil</h3>
+                    <h3>{{ __('app.success') }}</h3>
                     <p>{{ session('success') }}</p>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="gsm-alert-icon">!</div>
 
                 <div>
-                    <h3>Gagal</h3>
+                    <h3>{{ __('app.failed') }}</h3>
                     <p>{{ session('error') }}</p>
                 </div>
             </div>
@@ -32,15 +32,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Borrowing History</p>
-                    <h3>Data Peminjaman Barang</h3>
+                    <p class="gsm-eyebrow">{{ __('app.borrowing_history_label') }}</p>
+                    <h3>{{ __('app.borrowing_data_title') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Kelola peminjaman, pengembalian, divisi peminjam, dan keterlambatan barang.
+                        {{ __('app.borrowing_index_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('borrowings.create') }}" class="gsm-button-primary">
-                    Tambah Peminjaman
+                    {{ __('app.add_borrowing') }}
                 </a>
             </div>
 
@@ -48,13 +48,13 @@
                 <table class="gsm-table">
                     <thead>
                         <tr>
-                            <th>Nama Peminjam</th>
-                            <th>Divisi</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Jatuh Tempo</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th>{{ __('app.borrower_name') }}</th>
+                            <th>{{ __('app.division') }}</th>
+                            <th>{{ __('app.borrow_date') }}</th>
+                            <th>{{ __('app.due_date') }}</th>
+                            <th>{{ __('app.return_date') }}</th>
+                            <th>{{ __('app.status') }}</th>
+                            <th>{{ __('app.actions') }}</th>
                         </tr>
                     </thead>
 
@@ -73,7 +73,7 @@
                                             </p>
 
                                             <p class="text-xs text-slate-500">
-                                                {{ $borrowing->details->count() }} item detail
+                                                {{ $borrowing->details->count() }} {{ __('app.item_detail') }}
                                             </p>
                                         </div>
                                     </div>
@@ -87,15 +87,15 @@
                                 <td>
                                     @if($borrowing->display_status === 'overdue')
                                         <span class="gsm-badge danger">
-                                            Terlambat
+                                            {{ __('app.overdue') }}
                                         </span>
                                     @elseif($borrowing->display_status === 'borrowed')
                                         <span class="gsm-badge warning">
-                                            Dipinjam
+                                            {{ __('app.borrowed') }}
                                         </span>
                                     @else
                                         <span class="gsm-badge success">
-                                            Dikembalikan
+                                            {{ __('app.returned') }}
                                         </span>
                                     @endif
                                 </td>
@@ -103,12 +103,12 @@
                                 <td>
                                     <div class="gsm-action-group">
                                         <a href="{{ route('borrowings.show', $borrowing) }}" class="gsm-action-link view">
-                                            Detail
+                                            {{ __('app.detail') }}
                                         </a>
 
                                         @if($borrowing->status === 'borrowed')
                                             <a href="{{ route('borrowings.return.form', $borrowing) }}" class="gsm-action-link edit">
-                                                Kembalikan
+                                                {{ __('app.return_item') }}
                                             </a>
                                         @endif
 
@@ -118,10 +118,10 @@
 
                                             <button
                                                 type="button"
-                                                onclick="openConfirmModal('Yakin ingin menghapus riwayat peminjaman ini? Jika masih dipinjam, stok akan dikembalikan.', 'delete-borrowing-{{ $borrowing->id }}')"
+                                                onclick="openConfirmModal(@js(__('app.delete_borrowing_confirmation')), 'delete-borrowing-{{ $borrowing->id }}')"
                                                 class="gsm-action-link delete"
                                             >
-                                                Hapus
+                                                {{ __('app.delete') }}
                                             </button>
                                         </form>
                                     </div>
@@ -132,9 +132,9 @@
                                 <td colspan="7">
                                     <div class="gsm-empty-state">
                                         <div>
-                                            <p class="font-bold">Belum ada data peminjaman.</p>
+                                            <p class="font-bold">{{ __('app.no_borrowing_data') }}</p>
                                             <p class="text-sm mt-1">
-                                                Klik Tambah Peminjaman untuk mencatat transaksi peminjaman barang.
+                                                {{ __('app.add_borrowing_hint') }}
                                             </p>
                                         </div>
                                     </div>

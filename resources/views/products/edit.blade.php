@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Edit Barang</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.edit_product') }}</h2>
         </div>
     </x-slot>
 
@@ -10,15 +10,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Update Inventory Item</p>
-                    <h3>Form Edit Barang</h3>
+                    <p class="gsm-eyebrow">{{ __('app.update_inventory_item') }}</p>
+                    <h3>{{ __('app.product_form_edit') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Perbarui data barang, stok, lokasi penyimpanan, kondisi, dan gambar barang.
+                        {{ __('app.product_edit_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                    Kembali
+                    {{ __('app.back') }}
                 </a>
             </div>
 
@@ -29,7 +29,7 @@
                 <div class="gsm-form-main">
                     <div class="gsm-form-grid">
                         <div class="gsm-field">
-                            <label for="code">Kode Barang</label>
+                            <label for="code">{{ __('app.product_code') }}</label>
 
                             <input
                                 type="text"
@@ -44,14 +44,14 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="name">Nama Barang</label>
+                            <label for="name">{{ __('app.product_name') }}</label>
 
                             <input
                                 type="text"
                                 name="name"
                                 id="name"
                                 value="{{ old('name', $product->name) }}"
-                                placeholder="Contoh: Laptop Lenovo ThinkPad"
+                                placeholder="{{ __('app.example_laptop') }}"
                             >
 
                             @error('name')
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="category_id">Kategori</label>
+                            <label for="category_id">{{ __('app.category') }}</label>
 
                             <select name="category_id" id="category_id">
                                 @foreach($categories as $category)
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="stock">Stok</label>
+                            <label for="stock">{{ __('app.stock') }}</label>
 
                             <input
                                 type="number"
@@ -93,7 +93,7 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="location_select">Lokasi Penyimpanan</label>
+                            <label for="location_select">{{ __('app.storage_location') }}</label>
 
                             @php
                                 $defaultLocations = [
@@ -113,7 +113,7 @@
                             @endphp
 
                             <select name="location_select" id="location_select">
-                                <option value="">Pilih Lokasi Penyimpanan</option>
+                                <option value="">{{ __('app.choose_location') }}</option>
 
                                 @foreach($allLocations as $location)
                                     <option value="{{ $location }}"
@@ -124,7 +124,7 @@
                                 @endforeach
 
                                 <option value="other" {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == 'other' ? 'selected' : '' }}>
-                                    Lokasi Lainnya
+                                    {{ __('app.other_location') }}
                                 </option>
                             </select>
 
@@ -133,14 +133,14 @@
                             @enderror
 
                             <div id="location_other_wrapper" class="gsm-nested-field hidden">
-                                <label for="location_other">Masukkan Lokasi Baru</label>
+                                <label for="location_other">{{ __('app.new_location') }}</label>
 
                                 <input
                                     type="text"
                                     name="location_other"
                                     id="location_other"
                                     value="{{ old('location_other', $isCustomLocation ? $product->location : '') }}"
-                                    placeholder="Contoh: Gudang Cabang Surabaya"
+                                    placeholder="{{ __('app.example_branch_warehouse') }}"
                                 >
 
                                 @error('location_other')
@@ -150,12 +150,12 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="condition">Kondisi Barang</label>
+                            <label for="condition">{{ __('app.product_condition') }}</label>
 
                             <select name="condition" id="condition">
-                                <option value="Baik" {{ old('condition', $product->condition) == 'Baik' ? 'selected' : '' }}>Baik</option>
-                                <option value="Rusak Ringan" {{ old('condition', $product->condition) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                                <option value="Rusak Berat" {{ old('condition', $product->condition) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                                <option value="Baik" {{ old('condition', $product->condition) == 'Baik' ? 'selected' : '' }}>{{ __('app.good') }}</option>
+                                <option value="Rusak Ringan" {{ old('condition', $product->condition) == 'Rusak Ringan' ? 'selected' : '' }}>{{ __('app.minor_damage') }}</option>
+                                <option value="Rusak Berat" {{ old('condition', $product->condition) == 'Rusak Berat' ? 'selected' : '' }}>{{ __('app.major_damage') }}</option>
                             </select>
 
                             @error('condition')
@@ -164,7 +164,7 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label for="image">Gambar Barang</label>
+                            <label for="image">{{ __('app.product_image') }}</label>
 
                             @if($product->image)
                                 <div class="mb-3">
@@ -183,7 +183,7 @@
                                 accept="image/png, image/jpeg, image/jpg"
                             >
 
-                            <small>Kosongkan jika tidak ingin mengganti gambar.</small>
+                            <small>{{ __('app.update_image_hint') }}</small>
 
                             @error('image')
                                 <p class="gsm-error-text">{{ $message }}</p>
@@ -193,11 +193,11 @@
 
                     <div class="gsm-form-actions">
                         <button class="gsm-button-primary">
-                            Update Barang
+                            {{ __('app.update_product') }}
                         </button>
 
                         <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                            Batal
+                            {{ __('app.cancel') }}
                         </a>
                     </div>
                 </div>
@@ -205,17 +205,17 @@
                 <aside class="gsm-helper-card">
                     <div class="gsm-helper-icon">◈</div>
 
-                    <h4>Ringkasan Barang</h4>
+                    <h4>{{ __('app.product_summary') }}</h4>
 
                     <div class="gsm-preview-box">
-                        <p>Kode Barang</p>
+                        <p>{{ __('app.product_code') }}</p>
                         <strong>{{ $product->code }}</strong>
                     </div>
 
                     <ul>
-                        <li>Pastikan perubahan stok sesuai kondisi aktual barang.</li>
-                        <li>Lokasi dapat dipilih dari daftar atau diisi sebagai lokasi baru.</li>
-                        <li>Jika kondisi rusak, data akan terlihat di laporan barang rusak.</li>
+                        <li>{{ __('app.product_edit_tip_1') }}</li>
+                        <li>{{ __('app.product_edit_tip_2') }}</li>
+                        <li>{{ __('app.product_edit_tip_3') }}</li>
                     </ul>
                 </aside>
             </form>

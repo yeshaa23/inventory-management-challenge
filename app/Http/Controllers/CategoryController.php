@@ -41,7 +41,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('categories.index')
-            ->with('success', 'Kategori berhasil ditambahkan.');
+            ->with('success', __('app.success_create_category'));
     }
 
     public function show(Category $category)
@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('categories.index')
-            ->with('success', 'Kategori berhasil diperbarui.');
+            ->with('success', __('app.success_update_category'));
     }
 
     public function destroy(Category $category)
@@ -99,6 +99,6 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('categories.index')
-            ->with('success', 'Kategori berhasil dihapus.');
+            ->with('success', __('app.success_delete_category'));
     }
 }

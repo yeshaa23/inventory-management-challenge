@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">System Audit</p>
-            <h2>Riwayat Aktivitas</h2>
+            <p class="gsm-eyebrow">{{ __('app.system_audit') }}</p>
+            <h2>{{ __('app.activity_logs') }}</h2>
         </div>
     </x-slot>
 
@@ -13,24 +13,24 @@
                     <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-red-600/30"></div>
 
                     <div class="relative z-10">
-                        <span class="gsm-hero-badge">Audit Trail</span>
+                        <span class="gsm-hero-badge">{{ __('app.audit_trail') }}</span>
 
                         <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">
-                            Pantau perubahan data penting pada sistem.
+                            {{ __('app.activity_hero_title') }}
                         </h1>
 
                         <p class="mt-5 text-slate-300 leading-8 max-w-2xl">
-                            Riwayat aktivitas membantu admin melihat siapa yang menambah, mengubah, menghapus, atau mengembalikan data inventaris.
+                            {{ __('app.activity_hero_desc') }}
                         </p>
                     </div>
                 </div>
 
                 <div class="rounded-[30px] border border-red-100 bg-red-50 p-6 flex flex-col justify-between">
                     <div>
-                        <p class="gsm-eyebrow">Total Log</p>
+                        <p class="gsm-eyebrow">{{ __('app.total_log') }}</p>
                         <h3 class="text-5xl font-black text-red-600">{{ $activityLogs->total() }}</h3>
                         <p class="mt-3 text-sm text-slate-500 leading-6">
-                            Aktivitas terbaru ditampilkan paling atas untuk memudahkan pengecekan perubahan data.
+                            {{ __('app.activity_total_desc') }}
                         </p>
                     </div>
                 </div>
@@ -40,10 +40,10 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Audit Log</p>
-                    <h3>Riwayat Aktivitas Sistem</h3>
+                    <p class="gsm-eyebrow">{{ __('app.audit_log') }}</p>
+                    <h3>{{ __('app.system_activity_history') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Data ini hanya dapat dilihat oleh Admin.
+                        {{ __('app.admin_only_data') }}
                     </p>
                 </div>
             </div>
@@ -52,11 +52,11 @@
                 <table class="gsm-table">
                     <thead>
                         <tr>
-                            <th>Waktu</th>
-                            <th>User</th>
-                            <th>Aksi</th>
-                            <th>Modul</th>
-                            <th>Deskripsi</th>
+                            <th>{{ __('app.time') }}</th>
+                            <th>{{ __('app.user') }}</th>
+                            <th>{{ __('app.actions') }}</th>
+                            <th>{{ __('app.module') }}</th>
+                            <th>{{ __('app.description') }}</th>
                         </tr>
                     </thead>
 
@@ -118,9 +118,9 @@
                                 <td colspan="5">
                                     <div class="gsm-empty-state">
                                         <div>
-                                            <p class="font-bold">Belum ada aktivitas yang tercatat.</p>
+                                            <p class="font-bold">{{ __('app.no_activity_data') }}</p>
                                             <p class="text-sm mt-1">
-                                                Aktivitas akan muncul setelah data kategori, barang, atau peminjaman dikelola.
+                                                {{ __('app.activity_empty_desc') }}
                                             </p>
                                         </div>
                                     </div>

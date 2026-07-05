@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Borrowing</p>
-            <h2>Pengembalian Barang</h2>
+            <p class="gsm-eyebrow">{{ __('app.borrowing') }}</p>
+            <h2>{{ __('app.return_item') }}</h2>
         </div>
     </x-slot>
 
@@ -10,15 +10,15 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Return Item</p>
-                    <h3>Form Pengembalian Barang</h3>
+                    <p class="gsm-eyebrow">{{ __('app.return_process') }}</p>
+                    <h3>{{ __('app.return_item_form') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Catat kondisi barang saat dikembalikan dan tambahkan catatan bila diperlukan.
+                        {{ __('app.return_form_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
-                    Kembali
+                    {{ __('app.back') }}
                 </a>
             </div>
 
@@ -32,19 +32,19 @@
                             <table class="gsm-table">
                                 <tbody>
                                     <tr>
-                                        <td class="font-bold">Nama Peminjam</td>
+                                        <td class="font-bold">{{ __('app.borrower_name') }}</td>
                                         <td>{{ $borrowing->borrower_name }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold">Divisi</td>
+                                        <td class="font-bold">{{ __('app.division') }}</td>
                                         <td>{{ $borrowing->division ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold">Tanggal Pinjam</td>
+                                        <td class="font-bold">{{ __('app.borrow_date') }}</td>
                                         <td>{{ $borrowing->borrow_date?->format('d M Y') }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold">Jatuh Tempo</td>
+                                        <td class="font-bold">{{ __('app.due_date') }}</td>
                                         <td>{{ $borrowing->due_date?->format('d M Y') ?? '-' }}</td>
                                     </tr>
                                 </tbody>
@@ -56,9 +56,9 @@
                         <table class="gsm-table">
                             <thead>
                                 <tr>
-                                    <th>Kode</th>
-                                    <th>Nama Barang</th>
-                                    <th>Jumlah</th>
+                                    <th>{{ __('app.code') }}</th>
+                                    <th>{{ __('app.product_name') }}</th>
+                                    <th>{{ __('app.quantity') }}</th>
                                 </tr>
                             </thead>
 
@@ -76,13 +76,13 @@
 
                     <div class="gsm-form-grid">
                         <div class="gsm-field gsm-field-full">
-                            <label for="return_condition">Kondisi Saat Dikembalikan</label>
+                            <label for="return_condition">{{ __('app.return_condition') }}</label>
 
                             <select name="return_condition" id="return_condition">
-                                <option value="">Pilih Kondisi</option>
-                                <option value="Baik" {{ old('return_condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                                <option value="Rusak Ringan" {{ old('return_condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                                <option value="Rusak Berat" {{ old('return_condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                                <option value="">{{ __('app.choose_condition') }}</option>
+                                <option value="Baik" {{ old('return_condition') == 'Baik' ? 'selected' : '' }}>{{ __('app.good') }}</option>
+                                <option value="Rusak Ringan" {{ old('return_condition') == 'Rusak Ringan' ? 'selected' : '' }}>{{ __('app.minor_damage') }}</option>
+                                <option value="Rusak Berat" {{ old('return_condition') == 'Rusak Berat' ? 'selected' : '' }}>{{ __('app.major_damage') }}</option>
                             </select>
 
                             @error('return_condition')
@@ -91,13 +91,13 @@
                         </div>
 
                         <div class="gsm-field gsm-field-full">
-                            <label for="return_note">Catatan Pengembalian</label>
+                            <label for="return_note">{{ __('app.return_note') }}</label>
 
                             <textarea
                                 name="return_note"
                                 id="return_note"
                                 rows="5"
-                                placeholder="Contoh: Barang lengkap, ada lecet kecil, kabel hilang, dan sebagainya."
+                                placeholder="{{ __('app.return_note_placeholder') }}"
                             >{{ old('return_note') }}</textarea>
 
                             @error('return_note')
@@ -108,11 +108,11 @@
 
                     <div class="gsm-form-actions">
                         <button class="gsm-button-primary">
-                            Simpan Pengembalian
+                            {{ __('app.save_return') }}
                         </button>
 
                         <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
-                            Batal
+                            {{ __('app.cancel') }}
                         </a>
                     </div>
                 </div>
@@ -120,17 +120,17 @@
                 <aside class="gsm-helper-card">
                     <div class="gsm-helper-icon">✓</div>
 
-                    <h4>Checklist Pengembalian</h4>
+                    <h4>{{ __('app.return_checklist') }}</h4>
 
                     <div class="gsm-preview-box">
-                        <p>Status</p>
-                        <strong>Dipinjam</strong>
+                        <p>{{ __('app.status') }}</p>
+                        <strong>{{ __('app.borrowed') }}</strong>
                     </div>
 
                     <ul>
-                        <li>Periksa kondisi fisik barang sebelum disimpan kembali.</li>
-                        <li>Catat kerusakan atau kehilangan kelengkapan barang.</li>
-                        <li>Stok akan otomatis bertambah setelah pengembalian disimpan.</li>
+                        <li>{{ __('app.return_tip_1') }}</li>
+                        <li>{{ __('app.return_tip_2') }}</li>
+                        <li>{{ __('app.return_tip_3') }}</li>
                     </ul>
                 </aside>
             </form>

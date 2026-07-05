@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="gsm-eyebrow">Master Data</p>
-            <h2>Data Barang</h2>
+            <p class="gsm-eyebrow">{{ __('app.master_data') }}</p>
+            <h2>{{ __('app.product_data') }}</h2>
         </div>
     </x-slot>
 
@@ -12,7 +12,7 @@
                 <div class="gsm-alert-icon">✓</div>
 
                 <div>
-                    <h3>Berhasil</h3>
+                    <h3>{{ __('app.success') }}</h3>
                     <p>{{ session('success') }}</p>
                 </div>
             </div>
@@ -21,35 +21,35 @@
         <section class="gsm-panel">
             <div class="gsm-panel-header">
                 <div>
-                    <p class="gsm-eyebrow">Inventory Items</p>
-                    <h3>Master Data Barang</h3>
+                    <p class="gsm-eyebrow">{{ __('app.inventory_items') }}</p>
+                    <h3>{{ __('app.product_data') }}</h3>
                     <p class="text-sm text-slate-500 mt-1">
-                        Kelola data inventaris, stok, lokasi penyimpanan, dan kondisi barang.
+                        {{ __('app.product_index_desc') }}
                     </p>
                 </div>
 
                 <a href="{{ route('products.create') }}" class="gsm-button-primary">
-                    Tambah Barang
+                    {{ __('app.add_product') }}
                 </a>
             </div>
 
             <form method="GET" action="{{ route('products.index') }}" class="gsm-filter-card">
                 <div>
-                    <label>Cari Barang</label>
+                    <label>{{ __('app.search_product') }}</label>
 
                     <input
                         type="text"
                         name="search"
                         value="{{ request('search') }}"
-                        placeholder="Cari kode, nama, atau lokasi"
+                        placeholder="{{ __('app.search_products_placeholder') }}"
                     >
                 </div>
 
                 <div>
-                    <label>Kategori</label>
+                    <label>{{ __('app.category') }}</label>
 
                     <select name="category_id">
-                        <option value="">Semua Kategori</option>
+                        <option value="">{{ __('app.all_categories') }}</option>
 
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -60,21 +60,21 @@
                 </div>
 
                 <div>
-                    <label>Kondisi</label>
+                    <label>{{ __('app.condition') }}</label>
 
                     <select name="condition">
-                        <option value="">Semua Kondisi</option>
-                        <option value="Baik" {{ request('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                        <option value="Rusak Ringan" {{ request('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                        <option value="Rusak Berat" {{ request('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                        <option value="">{{ __('app.all_conditions') }}</option>
+                        <option value="Baik" {{ request('condition') == 'Baik' ? 'selected' : '' }}>{{ __('app.good') }}</option>
+                        <option value="Rusak Ringan" {{ request('condition') == 'Rusak Ringan' ? 'selected' : '' }}>{{ __('app.minor_damage') }}</option>
+                        <option value="Rusak Berat" {{ request('condition') == 'Rusak Berat' ? 'selected' : '' }}>{{ __('app.major_damage') }}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label>Lokasi</label>
+                    <label>{{ __('app.location') }}</label>
 
                     <select name="location">
-                        <option value="">Semua Lokasi</option>
+                        <option value="">{{ __('app.all_locations') }}</option>
 
                         @foreach($locations as $location)
                             <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>
@@ -85,36 +85,36 @@
                 </div>
 
                 <div>
-                    <label>Status Stok</label>
+                    <label>{{ __('app.status_stock') }}</label>
 
                     <select name="stock_status">
-                        <option value="">Semua Status</option>
-                        <option value="available" {{ request('stock_status') == 'available' ? 'selected' : '' }}>Tersedia</option>
-                        <option value="low_stock" {{ request('stock_status') == 'low_stock' ? 'selected' : '' }}>Stok Menipis</option>
-                        <option value="out_of_stock" {{ request('stock_status') == 'out_of_stock' ? 'selected' : '' }}>Habis</option>
-                        <option value="damaged" {{ request('stock_status') == 'damaged' ? 'selected' : '' }}>Rusak</option>
+                        <option value="">{{ __('app.all_statuses') }}</option>
+                        <option value="available" {{ request('stock_status') == 'available' ? 'selected' : '' }}>{{ __('app.available') }}</option>
+                        <option value="low_stock" {{ request('stock_status') == 'low_stock' ? 'selected' : '' }}>{{ __('app.low_stock') }}</option>
+                        <option value="out_of_stock" {{ request('stock_status') == 'out_of_stock' ? 'selected' : '' }}>{{ __('app.out_of_stock') }}</option>
+                        <option value="damaged" {{ request('stock_status') == 'damaged' ? 'selected' : '' }}>{{ __('app.damaged_products') }}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label>Urutkan</label>
+                    <label>{{ __('app.sort_by') }}</label>
 
                     <select name="sort">
-                        <option value="">Terbaru</option>
-                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A-Z</option>
-                        <option value="stock_asc" {{ request('sort') == 'stock_asc' ? 'selected' : '' }}>Stok Terendah</option>
-                        <option value="stock_desc" {{ request('sort') == 'stock_desc' ? 'selected' : '' }}>Stok Tertinggi</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+                        <option value="">{{ __('app.newest') }}</option>
+                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>{{ __('app.name_az') }}</option>
+                        <option value="stock_asc" {{ request('sort') == 'stock_asc' ? 'selected' : '' }}>{{ __('app.lowest_stock') }}</option>
+                        <option value="stock_desc" {{ request('sort') == 'stock_desc' ? 'selected' : '' }}>{{ __('app.highest_stock') }}</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('app.oldest') }}</option>
                     </select>
                 </div>
 
                 <div class="gsm-filter-actions">
                     <button class="gsm-button-primary">
-                        Filter
+                        {{ __('app.filter') }}
                     </button>
 
                     <a href="{{ route('products.index') }}" class="gsm-button-secondary">
-                        Reset
+                        {{ __('app.reset') }}
                     </a>
                 </div>
             </form>
@@ -123,14 +123,14 @@
                 <table class="gsm-table">
                     <thead>
                         <tr>
-                            <th>Kode</th>
-                            <th>Nama Barang</th>
-                            <th>Kategori</th>
-                            <th>Stok</th>
-                            <th>Lokasi</th>
-                            <th>Kondisi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th>{{ __('app.code') }}</th>
+                            <th>{{ __('app.product_name') }}</th>
+                            <th>{{ __('app.category') }}</th>
+                            <th>{{ __('app.stock') }}</th>
+                            <th>{{ __('app.location') }}</th>
+                            <th>{{ __('app.condition') }}</th>
+                            <th>{{ __('app.status') }}</th>
+                            <th>{{ __('app.actions') }}</th>
                         </tr>
                     </thead>
 
@@ -182,15 +182,15 @@
                                 <td>
                                     @if($product->condition === 'Baik')
                                         <span class="gsm-badge success">
-                                            Baik
+                                            {{ __('app.good') }}
                                         </span>
                                     @elseif($product->condition === 'Rusak Ringan')
                                         <span class="gsm-badge warning">
-                                            Rusak Ringan
+                                            {{ __('app.minor_damage') }}
                                         </span>
                                     @else
                                         <span class="gsm-badge danger">
-                                            Rusak Berat
+                                            {{ __('app.major_damage') }}
                                         </span>
                                     @endif
                                 </td>
@@ -198,19 +198,19 @@
                                 <td>
                                     @if($product->stock_status === 'available')
                                         <span class="gsm-badge success">
-                                            {{ $product->stock_status_label }}
+                                            {{ __('app.' . $product->stock_status) }}
                                         </span>
                                     @elseif($product->stock_status === 'low_stock')
                                         <span class="gsm-badge warning">
-                                            {{ $product->stock_status_label }}
+                                            {{ __('app.' . $product->stock_status) }}
                                         </span>
                                     @elseif($product->stock_status === 'out_of_stock')
                                         <span class="gsm-badge danger">
-                                            {{ $product->stock_status_label }}
+                                            {{ __('app.' . $product->stock_status) }}
                                         </span>
                                     @else
                                         <span class="gsm-badge info">
-                                            {{ $product->stock_status_label }}
+                                            {{ __('app.' . $product->stock_status) }}
                                         </span>
                                     @endif
                                 </td>
@@ -218,11 +218,11 @@
                                 <td>
                                     <div class="gsm-action-group">
                                         <a href="{{ route('products.show', $product) }}" class="gsm-action-link view">
-                                            Detail
+                                            {{ __('app.detail') }}
                                         </a>
 
                                         <a href="{{ route('products.edit', $product) }}" class="gsm-action-link edit">
-                                            Edit
+                                            {{ __('app.edit') }}
                                         </a>
 
                                         <form id="delete-product-{{ $product->id }}" action="{{ route('products.destroy', $product) }}" method="POST">
@@ -231,10 +231,10 @@
 
                                             <button
                                                 type="button"
-                                                onclick="openConfirmModal('Yakin ingin menghapus barang ini? Data yang dihapus tidak dapat dikembalikan.', 'delete-product-{{ $product->id }}')"
+                                                onclick="openConfirmModal('{{ __('app.confirm_delete_product') }}', 'delete-product-{{ $product->id }}')"
                                                 class="gsm-action-link delete"
                                             >
-                                                Hapus
+                                                {{ __('app.delete') }}
                                             </button>
                                         </form>
                                     </div>
@@ -245,9 +245,9 @@
                                 <td colspan="8">
                                     <div class="gsm-empty-state">
                                         <div>
-                                            <p class="font-bold">Belum ada data barang.</p>
+                                            <p class="font-bold">{{ __('app.no_product_data') }}</p>
                                             <p class="text-sm mt-1">
-                                                Klik tombol Tambah Barang untuk mulai mencatat inventaris.
+                                                {{ __('app.start_product_hint') }}
                                             </p>
                                         </div>
                                     </div>

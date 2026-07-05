@@ -1,60 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <title>Laporan Barang</title>
+    <title>{{ __('app.product_report') }}</title>
 
     <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 11px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .meta {
-            margin-bottom: 15px;
-            font-size: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #eeeeee;
-        }
-
-        th,
-        td {
-            border: 1px solid #444444;
-            padding: 6px;
-            text-align: left;
-        }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        .meta { margin-bottom: 15px; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #eeeeee; }
+        th, td { border: 1px solid #444444; padding: 6px; text-align: left; }
     </style>
 </head>
 
 <body>
-    <h2>Laporan Data Barang</h2>
+    <h2>{{ __('app.product_report') }}</h2>
 
     <div class="meta">
-        Dicetak pada: {{ now()->format('d M Y H:i') }}
+        {{ __('app.printed_at') }}: {{ now()->format('d M Y H:i') }}
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Kategori</th>
-                <th>Stok</th>
-                <th>Lokasi Penyimpanan</th>
-                <th>Kondisi Barang</th>
-                <th>Status Stok</th>
+                <th>{{ __('app.product_code') }}</th>
+                <th>{{ __('app.product_name') }}</th>
+                <th>{{ __('app.category') }}</th>
+                <th>{{ __('app.stock') }}</th>
+                <th>{{ __('app.storage_location') }}</th>
+                <th>{{ __('app.product_condition') }}</th>
+                <th>{{ __('app.status_stock') }}</th>
             </tr>
         </thead>
 
@@ -66,13 +42,21 @@
                     <td>{{ $product->category->name ?? '-' }}</td>
                     <td>{{ $product->stock }}</td>
                     <td>{{ $product->location }}</td>
-                    <td>{{ $product->condition }}</td>
-                    <td>{{ $product->stock_status_label }}</td>
+                    <td>
+                    @if($product->condition === 'Baik')
+                                            {{ __('app.good') }}
+                                        @elseif($product->condition === 'Rusak Ringan')
+                                            {{ __('app.minor_damage') }}
+                                        @else
+                                            {{ __('app.major_damage') }}
+                                        @endif
+                    </td>
+                    <td>{{ __('app.' . $product->stock_status) }}</td>
                 </tr>
             @empty
                 <tr>
                     <td colspan="7">
-                        Belum ada data barang.
+                        {{ __('app.no_product_data') }}
                     </td>
                 </tr>
             @endforelse

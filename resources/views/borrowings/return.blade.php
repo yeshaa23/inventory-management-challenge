@@ -1,89 +1,139 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Pengembalian Barang
-        </h2>
+        <div>
+            <p class="gsm-eyebrow">Borrowing</p>
+            <h2>Pengembalian Barang</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-2">Detail Peminjaman</h3>
-
-                <p><strong>Nama Peminjam:</strong> {{ $borrowing->borrower_name }}</p>
-                <p><strong>Divisi:</strong> {{ $borrowing->division ?? '-' }}</p>
-                <p><strong>Tanggal Pinjam:</strong> {{ $borrowing->borrow_date?->format('d M Y') }}</p>
-                <p><strong>Jatuh Tempo:</strong> {{ $borrowing->due_date?->format('d M Y') ?? '-' }}</p>
-            </div>
-
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-2">Barang Dipinjam</h3>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full border">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="border px-4 py-2 text-left">Kode</th>
-                                <th class="border px-4 py-2 text-left">Nama Barang</th>
-                                <th class="border px-4 py-2 text-left">Jumlah</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach($borrowing->details as $detail)
-                                <tr>
-                                    <td class="border px-4 py-2">{{ $detail->product->code ?? '-' }}</td>
-                                    <td class="border px-4 py-2">{{ $detail->product->name ?? '-' }}</td>
-                                    <td class="border px-4 py-2">{{ $detail->quantity }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+    <div class="gsm-dashboard">
+        <section class="gsm-panel">
+            <div class="gsm-panel-header">
+                <div>
+                    <p class="gsm-eyebrow">Return Item</p>
+                    <h3>Form Pengembalian Barang</h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Catat kondisi barang saat dikembalikan dan tambahkan catatan bila diperlukan.
+                    </p>
                 </div>
+
+                <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
+                    Kembali
+                </a>
             </div>
 
-            <form action="{{ route('borrowings.return', $borrowing) }}" method="POST">
+            <form action="{{ route('borrowings.return', $borrowing) }}" method="POST" class="gsm-form-layout">
                 @csrf
                 @method('PATCH')
 
-                <div class="mb-4">
-                    <label class="block mb-1">Kondisi Saat Dikembalikan</label>
+                <div class="gsm-form-main">
+                    <div class="gsm-panel !shadow-none !p-0 !border-0 mb-6">
+                        <div class="gsm-table-wrapper">
+                            <table class="gsm-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold">Nama Peminjam</td>
+                                        <td>{{ $borrowing->borrower_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Divisi</td>
+                                        <td>{{ $borrowing->division ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Tanggal Pinjam</td>
+                                        <td>{{ $borrowing->borrow_date?->format('d M Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Jatuh Tempo</td>
+                                        <td>{{ $borrowing->due_date?->format('d M Y') ?? '-' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                    <select name="return_condition" class="w-full border rounded px-3 py-2">
-                        <option value="">Pilih Kondisi</option>
-                        <option value="Baik" {{ old('return_condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                        <option value="Rusak Ringan" {{ old('return_condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                        <option value="Rusak Berat" {{ old('return_condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
-                    </select>
+                    <div class="gsm-table-wrapper mb-6">
+                        <table class="gsm-table">
+                            <thead>
+                                <tr>
+                                    <th>Kode</th>
+                                    <th>Nama Barang</th>
+                                    <th>Jumlah</th>
+                                </tr>
+                            </thead>
 
-                    @error('return_condition')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
+                            <tbody>
+                                @foreach($borrowing->details as $detail)
+                                    <tr>
+                                        <td class="font-bold text-slate-900">{{ $detail->product->code ?? '-' }}</td>
+                                        <td>{{ $detail->product->name ?? '-' }}</td>
+                                        <td>{{ $detail->quantity }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="gsm-form-grid">
+                        <div class="gsm-field gsm-field-full">
+                            <label for="return_condition">Kondisi Saat Dikembalikan</label>
+
+                            <select name="return_condition" id="return_condition">
+                                <option value="">Pilih Kondisi</option>
+                                <option value="Baik" {{ old('return_condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
+                                <option value="Rusak Ringan" {{ old('return_condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                                <option value="Rusak Berat" {{ old('return_condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                            </select>
+
+                            @error('return_condition')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field gsm-field-full">
+                            <label for="return_note">Catatan Pengembalian</label>
+
+                            <textarea
+                                name="return_note"
+                                id="return_note"
+                                rows="5"
+                                placeholder="Contoh: Barang lengkap, ada lecet kecil, kabel hilang, dan sebagainya."
+                            >{{ old('return_note') }}</textarea>
+
+                            @error('return_note')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="gsm-form-actions">
+                        <button class="gsm-button-primary">
+                            Simpan Pengembalian
+                        </button>
+
+                        <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
+                            Batal
+                        </a>
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block mb-1">Catatan Pengembalian</label>
+                <aside class="gsm-helper-card">
+                    <div class="gsm-helper-icon">✓</div>
 
-                    <textarea
-                        name="return_note"
-                        rows="4"
-                        placeholder="Contoh: Barang lengkap, ada lecet kecil, kabel hilang, dan sebagainya."
-                        class="w-full border rounded px-3 py-2"
-                    >{{ old('return_note') }}</textarea>
+                    <h4>Checklist Pengembalian</h4>
 
-                    @error('return_note')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
+                    <div class="gsm-preview-box">
+                        <p>Status</p>
+                        <strong>Dipinjam</strong>
+                    </div>
 
-                <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded">
-                    Simpan Pengembalian
-                </button>
-
-                <a href="{{ route('borrowings.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded">
-                    Kembali
-                </a>
+                    <ul>
+                        <li>Periksa kondisi fisik barang sebelum disimpan kembali.</li>
+                        <li>Catat kerusakan atau kehilangan kelengkapan barang.</li>
+                        <li>Stok akan otomatis bertambah setelah pengembalian disimpan.</li>
+                    </ul>
+                </aside>
             </form>
-        </div>
+        </section>
     </div>
 </x-app-layout>

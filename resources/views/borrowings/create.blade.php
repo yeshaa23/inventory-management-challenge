@@ -1,132 +1,197 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Tambah Peminjaman
-        </h2>
+        <div>
+            <p class="gsm-eyebrow">Borrowing</p>
+            <h2>Tambah Peminjaman</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <form action="{{ route('borrowings.store') }}" method="POST">
-                @csrf
-
-                <div class="mb-4">
-                    <label class="block mb-1">Nama Peminjam</label>
-
-                    <input
-                        type="text"
-                        name="borrower_name"
-                        value="{{ old('borrower_name') }}"
-                        class="w-full border rounded px-3 py-2"
-                    >
-
-                    @error('borrower_name')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
+    <div class="gsm-dashboard">
+        <section class="gsm-panel">
+            <div class="gsm-panel-header">
+                <div>
+                    <p class="gsm-eyebrow">New Borrowing</p>
+                    <h3>Form Tambah Peminjaman</h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Catat peminjaman barang berdasarkan nama peminjam, divisi, tanggal pinjam, dan tanggal jatuh tempo.
+                    </p>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block mb-1">Divisi</label>
-
-                    <select
-                        name="division"
-                        class="w-full border rounded px-3 py-2"
-                    >
-                        <option value="">Pilih Divisi</option>
-                        <option value="IT" {{ old('division') == 'IT' ? 'selected' : '' }}>IT</option>
-                        <option value="Finance" {{ old('division') == 'Finance' ? 'selected' : '' }}>Finance</option>
-                        <option value="Human Resources" {{ old('division') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
-                        <option value="Marketing" {{ old('division') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
-                        <option value="Sales" {{ old('division') == 'Sales' ? 'selected' : '' }}>Sales</option>
-                        <option value="Operations" {{ old('division') == 'Operations' ? 'selected' : '' }}>Operations</option>
-                        <option value="Customer Service" {{ old('division') == 'Customer Service' ? 'selected' : '' }}>Customer Service</option>
-                        <option value="General Affairs" {{ old('division') == 'General Affairs' ? 'selected' : '' }}>General Affairs</option>
-                        <option value="Lainnya" {{ old('division') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                    </select>
-
-                    @error('division')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block mb-1">Tanggal Pinjam</label>
-
-                        <input
-                            type="date"
-                            name="borrow_date"
-                            value="{{ old('borrow_date', date('Y-m-d')) }}"
-                            class="w-full border rounded px-3 py-2"
-                        >
-
-                        @error('borrow_date')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block mb-1">Tanggal Jatuh Tempo</label>
-
-                        <input
-                            type="date"
-                            name="due_date"
-                            value="{{ old('due_date') }}"
-                            class="w-full border rounded px-3 py-2"
-                        >
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Digunakan untuk mendeteksi peminjaman terlambat.
-                        </p>
-
-                        @error('due_date')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block mb-1">Barang</label>
-
-                    <select name="product_id" class="w-full border rounded px-3 py-2">
-                        <option value="">Pilih Barang</option>
-
-                        @foreach($products as $product)
-                            <option value="{{ $product->id }}" {{ old('product_id') == $product->id ? 'selected' : '' }}>
-                                {{ $product->code }} - {{ $product->name }} | Stok: {{ $product->stock }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('product_id')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block mb-1">Jumlah</label>
-
-                    <input
-                        type="number"
-                        name="quantity"
-                        value="{{ old('quantity', 1) }}"
-                        min="1"
-                        class="w-full border rounded px-3 py-2"
-                    >
-
-                    @error('quantity')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
-                    Simpan
-                </button>
-
-                <a href="{{ route('borrowings.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded">
+                <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
                     Kembali
                 </a>
+            </div>
+
+            <form action="{{ route('borrowings.store') }}" method="POST" class="gsm-form-layout">
+                @csrf
+
+                <div class="gsm-form-main">
+                    <div class="gsm-form-grid">
+                        <div class="gsm-field">
+                            <label for="borrower_name">Nama Peminjam</label>
+
+                            <input
+                                type="text"
+                                name="borrower_name"
+                                id="borrower_name"
+                                value="{{ old('borrower_name') }}"
+                                placeholder="Contoh: Ayesha Hana"
+                            >
+
+                            @error('borrower_name')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="division">Divisi</label>
+
+                            <select name="division" id="division">
+                                <option value="">Pilih Divisi</option>
+                                <option value="IT" {{ old('division') == 'IT' ? 'selected' : '' }}>IT</option>
+                                <option value="Finance" {{ old('division') == 'Finance' ? 'selected' : '' }}>Finance</option>
+                                <option value="Human Resources" {{ old('division') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
+                                <option value="Marketing" {{ old('division') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
+                                <option value="Sales" {{ old('division') == 'Sales' ? 'selected' : '' }}>Sales</option>
+                                <option value="Operations" {{ old('division') == 'Operations' ? 'selected' : '' }}>Operations</option>
+                                <option value="Customer Service" {{ old('division') == 'Customer Service' ? 'selected' : '' }}>Customer Service</option>
+                                <option value="General Affairs" {{ old('division') == 'General Affairs' ? 'selected' : '' }}>General Affairs</option>
+                                <option value="Lainnya" {{ old('division') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                            </select>
+
+                            @error('division')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="borrow_date">Tanggal Pinjam</label>
+
+                            <input
+                                type="date"
+                                name="borrow_date"
+                                id="borrow_date"
+                                value="{{ old('borrow_date', date('Y-m-d')) }}"
+                            >
+
+                            @error('borrow_date')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="due_date">Tanggal Jatuh Tempo</label>
+
+                            <input
+                                type="date"
+                                name="due_date"
+                                id="due_date"
+                                value="{{ old('due_date') }}"
+                            >
+
+                            <small>Digunakan untuk mendeteksi peminjaman terlambat.</small>
+
+                            @error('due_date')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field gsm-field-full">
+                            <label for="product_id">Barang</label>
+
+                            <select name="product_id" id="product_id">
+                                <option value="">Pilih Barang</option>
+
+                                @foreach($products as $product)
+                                    <option
+                                        value="{{ $product->id }}"
+                                        data-code="{{ $product->code }}"
+                                        data-name="{{ $product->name }}"
+                                        data-stock="{{ $product->stock }}"
+                                        {{ old('product_id') == $product->id ? 'selected' : '' }}
+                                    >
+                                        {{ $product->code }} - {{ $product->name }} | Stok: {{ $product->stock }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('product_id')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="quantity">Jumlah</label>
+
+                            <input
+                                type="number"
+                                name="quantity"
+                                id="quantity"
+                                value="{{ old('quantity', 1) }}"
+                                min="1"
+                                placeholder="1"
+                            >
+
+                            @error('quantity')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="gsm-form-actions">
+                        <button class="gsm-button-primary">
+                            Simpan Peminjaman
+                        </button>
+
+                        <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
+                            Batal
+                        </a>
+                    </div>
+                </div>
+
+                <aside class="gsm-helper-card">
+                    <div class="gsm-helper-icon">↔</div>
+
+                    <h4>Preview Peminjaman</h4>
+
+                    <div class="gsm-preview-box">
+                        <p>Barang Dipilih</p>
+                        <strong id="preview-product">Belum dipilih</strong>
+                    </div>
+
+                    <ul>
+                        <li>Pilih barang yang masih memiliki stok.</li>
+                        <li>Isi tanggal jatuh tempo agar status terlambat dapat terdeteksi.</li>
+                        <li>Pastikan divisi peminjam sudah sesuai.</li>
+                    </ul>
+                </aside>
             </form>
-        </div>
+        </section>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const productSelect = document.getElementById('product_id');
+            const previewProduct = document.getElementById('preview-product');
+
+            function updateProductPreview() {
+                const selectedOption = productSelect.options[productSelect.selectedIndex];
+
+                if (!selectedOption || !selectedOption.value) {
+                    previewProduct.textContent = 'Belum dipilih';
+                    return;
+                }
+
+                const code = selectedOption.dataset.code || '-';
+                const stock = selectedOption.dataset.stock || '0';
+
+                previewProduct.textContent = `${code} | Stok ${stock}`;
+            }
+
+            if (productSelect) {
+                productSelect.addEventListener('change', updateProductPreview);
+                updateProductPreview();
+            }
+        });
+    </script>
 </x-app-layout>

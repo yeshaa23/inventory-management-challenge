@@ -1,56 +1,81 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Tambah Kategori
-        </h2>
+        <div>
+            <p class="gsm-eyebrow">Master Data</p>
+            <h2>Tambah Kategori</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <form action="{{ route('categories.store') }}" method="POST">
-                @csrf
-
-                <div class="mb-4">
-                    <label class="block mb-1">
-                        Nama Kategori
-                    </label>
-
-                    <input
-                        type="text"
-                        name="name"
-                        value="{{ old('name') }}"
-                        class="w-full border rounded px-3 py-2"
-                    >
-
-                    @error('name')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
+    <div class="gsm-dashboard">
+        <section class="gsm-form-layout">
+            <div class="gsm-panel gsm-form-main">
+                <div class="gsm-panel-header">
+                    <div>
+                        <p class="gsm-eyebrow">Category Form</p>
+                        <h3>Form Tambah Kategori</h3>
+                        <p class="text-sm text-slate-500 mt-1">
+                            Tambahkan kategori baru untuk mengelompokkan barang inventaris.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block mb-1">
-                        Deskripsi
-                    </label>
+                <form action="{{ route('categories.store') }}" method="POST">
+                    @csrf
 
-                    <textarea
-                        name="description"
-                        rows="4"
-                        class="w-full border rounded px-3 py-2"
-                    >{{ old('description') }}</textarea>
+                    <div class="gsm-form-grid">
+                        <div class="gsm-field gsm-field-full">
+                            <label>Nama Kategori</label>
 
-                    @error('description')
-                        <p class="text-red-600 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
+                            <input
+                                type="text"
+                                name="name"
+                                value="{{ old('name') }}"
+                                placeholder="Contoh: Elektronik, ATK, Furniture"
+                            >
 
-                <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
-                    Simpan
-                </button>
+                            @error('name')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                <a href="{{ route('categories.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded">
-                    Kembali
-                </a>
-            </form>
-        </div>
+                        <div class="gsm-field gsm-field-full">
+                            <label>Deskripsi</label>
+
+                            <textarea
+                                name="description"
+                                rows="5"
+                                placeholder="Tulis deskripsi singkat kategori"
+                            >{{ old('description') }}</textarea>
+
+                            @error('description')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="gsm-form-actions">
+                        <button class="gsm-button-primary">
+                            Simpan Kategori
+                        </button>
+
+                        <a href="{{ route('categories.index') }}" class="gsm-button-secondary">
+                            Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="gsm-helper-card">
+                <div class="gsm-helper-icon">▦</div>
+
+                <h4>Tips Kategori</h4>
+
+                <ul>
+                    <li>Gunakan nama kategori yang singkat dan mudah dipahami.</li>
+                    <li>Contoh kategori: Elektronik, ATK, Furniture, Perangkat Jaringan.</li>
+                    <li>Kategori akan digunakan saat membuat kode barang otomatis.</li>
+                </ul>
+            </aside>
+        </section>
     </div>
 </x-app-layout>

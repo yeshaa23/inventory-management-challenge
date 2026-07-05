@@ -1,95 +1,123 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Data Kategori
-        </h2>
+        <div>
+            <p class="gsm-eyebrow">Master Data</p>
+            <h2>Data Kategori</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            @if(session('success'))
-                <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
+    <div class="gsm-dashboard">
+        @if(session('success'))
+            <div class="gsm-alert-card success">
+                <div class="gsm-alert-icon">✓</div>
 
-            <div class="mb-6 flex justify-between items-center">
                 <div>
-                    <h3 class="text-lg font-semibold">
-                        Master Data Kategori
-                    </h3>
+                    <h3>Berhasil</h3>
+                    <p>{{ session('success') }}</p>
+                </div>
+            </div>
+        @endif
 
-                    <p class="text-sm text-gray-500">
+        <section class="gsm-panel">
+            <div class="gsm-panel-header">
+                <div>
+                    <p class="gsm-eyebrow">Category Management</p>
+                    <h3>Master Data Kategori</h3>
+                    <p class="text-sm text-slate-500 mt-1">
                         Kelola kategori barang untuk membantu pengelompokan inventaris kantor.
                     </p>
                 </div>
 
-                <a href="{{ route('categories.create') }}" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                <a href="{{ route('categories.create') }}" class="gsm-button-primary">
                     Tambah Kategori
                 </a>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full border">
-                    <thead class="bg-gray-100 dark:bg-gray-700">
+            <div class="gsm-table-wrapper mt-6">
+                <table class="gsm-table">
+                    <thead>
                         <tr>
-                            <th class="border px-4 py-2 text-left">No</th>
-                            <th class="border px-4 py-2 text-left">Nama Kategori</th>
-                            <th class="border px-4 py-2 text-left">Deskripsi</th>
-                            <th class="border px-4 py-2 text-left">Jumlah Barang</th>
-                            <th class="border px-4 py-2 text-left">Aksi</th>
+                            <th>No</th>
+                            <th>Nama Kategori</th>
+                            <th>Deskripsi</th>
+                            <th>Jumlah Barang</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @forelse($categories as $category)
                             <tr>
-                                <td class="border px-4 py-2">
-                                    {{ $loop->iteration }}
+                                <td>
+                                    <span class="font-bold text-slate-900">
+                                        {{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}
+                                    </span>
                                 </td>
 
-                                <td class="border px-4 py-2">
-                                    {{ $category->name }}
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 grid place-items-center font-bold">
+                                            {{ strtoupper(substr($category->name, 0, 1)) }}
+                                        </div>
+
+                                        <div>
+                                            <p class="font-bold text-slate-900">
+                                                {{ $category->name }}
+                                            </p>
+
+                                            <p class="text-xs text-slate-500">
+                                                Dibuat {{ $category->created_at?->format('d M Y') }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </td>
 
-                                <td class="border px-4 py-2">
+                                <td>
                                     {{ $category->description ?? '-' }}
                                 </td>
 
-                                <td class="border px-4 py-2">
-                                    {{ $category->products()->count() }}
+                                <td>
+                                    <span class="gsm-badge info">
+                                        {{ $category->products()->count() }} barang
+                                    </span>
                                 </td>
 
-                                <td class="border px-4 py-2">
-                                    <a href="{{ route('categories.show', $category) }}" class="text-blue-600">
-                                        Detail
-                                    </a>
-                                    |
-                                    <a href="{{ route('categories.edit', $category) }}" class="text-yellow-600">
-                                        Edit
-                                    </a>
-                                    |
-                                    <form id="delete-category-{{ $category->id }}" action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
+                                <td>
+                                    <div class="gsm-action-group">
+                                        <a href="{{ route('categories.show', $category) }}" class="gsm-action-link view">
+                                            Detail
+                                        </a>
 
-                                        <button
-                                            type="button"
-                                            onclick="openConfirmModal('Yakin ingin menghapus kategori ini? Barang pada kategori ini juga dapat ikut terhapus.', 'delete-category-{{ $category->id }}')"
-                                            class="text-red-600"
-                                        >
-                                            Hapus
-                                        </button>
-                                    </form>
+                                        <a href="{{ route('categories.edit', $category) }}" class="gsm-action-link edit">
+                                            Edit
+                                        </a>
+
+                                        <form id="delete-category-{{ $category->id }}" action="{{ route('categories.destroy', $category) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button
+                                                type="button"
+                                                onclick="openConfirmModal('Yakin ingin menghapus kategori ini? Pastikan tidak ada barang penting yang masih terhubung dengan kategori ini.', 'delete-category-{{ $category->id }}')"
+                                                class="gsm-action-link delete"
+                                            >
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="border px-4 py-10 text-center text-gray-500">
-                                    <p class="font-semibold">Belum ada data kategori.</p>
-                                    <p class="text-sm mt-1">
-                                        Klik Tambah Kategori untuk mulai mengelompokkan barang inventaris.
-                                    </p>
+                                <td colspan="5">
+                                    <div class="gsm-empty-state">
+                                        <div>
+                                            <p class="font-bold">Belum ada data kategori.</p>
+                                            <p class="text-sm mt-1">
+                                                Klik Tambah Kategori untuk mulai mengelompokkan barang inventaris.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -97,9 +125,9 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-6">
                 {{ $categories->links() }}
             </div>
-        </div>
+        </section>
     </div>
 </x-app-layout>

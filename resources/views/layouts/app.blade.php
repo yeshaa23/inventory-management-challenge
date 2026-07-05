@@ -8,13 +8,10 @@
         <title>{{ config('app.name', 'Telkomsel Inventory') }}</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet">
 
         <script>
-            if (
-                localStorage.getItem('theme') === 'dark' ||
-                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            ) {
+            if (localStorage.getItem('theme') === 'dark') {
                 document.documentElement.classList.add('dark');
             } else {
                 document.documentElement.classList.remove('dark');
@@ -24,153 +21,170 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        <div class="min-h-screen flex">
-            <aside class="w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700 hidden md:block">
-                <div class="p-6 border-b dark:border-gray-700">
-                    <h1 class="text-xl font-bold text-red-600">
-                        Telkomsel Inventory
-                    </h1>
+    <body class="font-sans antialiased text-slate-900 dark:text-white">
+        <div class="gsm-shell">
+            <aside class="gsm-sidebar hidden lg:flex">
+                <div>
+                    <div class="gsm-brand-card">
+                        <div class="gsm-logo-mark">T</div>
+                        <div>
+                            <h1>Telkomsel</h1>
+                            <p>Inventory Center</p>
+                        </div>
+                    </div>
 
-                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">
-                        Sistem Manajemen Inventaris
-                    </p>
+                    <div class="gsm-user-mini">
+                        <div class="gsm-avatar">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+
+                        <div>
+                            <p class="gsm-user-name">{{ auth()->user()->name }}</p>
+                            <p class="gsm-user-role">{{ auth()->user()->role->name ?? 'User' }}</p>
+                        </div>
+                    </div>
+
+                    <nav class="gsm-nav">
+                        <p class="gsm-nav-title">Menu Utama</p>
+
+                        <a href="{{ route('dashboard') }}"
+                            class="gsm-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <span class="gsm-nav-icon">⌂</span>
+                            <span>Dashboard</span>
+                        </a>
+
+                        @if(auth()->user()->hasRole(['Admin', 'Staff']))
+                            <a href="{{ route('categories.index') }}"
+                                class="gsm-nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                                <span class="gsm-nav-icon">▦</span>
+                                <span>Kategori</span>
+                            </a>
+
+                            <a href="{{ route('products.index') }}"
+                                class="gsm-nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                                <span class="gsm-nav-icon">◈</span>
+                                <span>Barang</span>
+                            </a>
+
+                            <a href="{{ route('borrowings.index') }}"
+                                class="gsm-nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}">
+                                <span class="gsm-nav-icon">↔</span>
+                                <span>Peminjaman</span>
+                            </a>
+                        @endif
+
+                        @if(auth()->user()->hasRole(['Admin', 'Manager']))
+                            <a href="{{ route('reports.index') }}"
+                                class="gsm-nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                                <span class="gsm-nav-icon">▤</span>
+                                <span>Laporan</span>
+                            </a>
+                        @endif
+
+                        @if(auth()->user()->hasRole('Admin'))
+                            <a href="{{ route('activity-logs.index') }}"
+                                class="gsm-nav-link {{ request()->routeIs('activity-logs.*') ? 'active' : '' }}">
+                                <span class="gsm-nav-icon">◎</span>
+                                <span>Riwayat Aktivitas</span>
+                            </a>
+                        @endif
+                    </nav>
                 </div>
 
-                <nav class="p-4 space-y-2">
+                <div class="gsm-sidebar-footer">
+                    <p class="font-semibold">Inventory Monitoring</p>
+                    <span>Kelola aset kantor secara cepat, rapi, dan terkontrol.</span>
+                </div>
+            </aside>
+
+            <div class="gsm-main">
+                <header class="gsm-topbar">
+                    <div class="gsm-page-title">
+                        @isset($header)
+                            {{ $header }}
+                        @else
+                            <h2>Dashboard</h2>
+                        @endisset
+                    </div>
+
+                    <div class="gsm-top-actions">
+                        <div class="gsm-search hidden md:flex">
+                            <span>⌕</span>
+                            <input type="text" placeholder="Search inventory" readonly>
+                        </div>
+
+                        <button type="button" id="theme-toggle" class="gsm-icon-button">
+                            <span id="theme-toggle-text">Dark Mode</span>
+                        </button>
+
+                        <a href="{{ route('profile.edit') }}" class="gsm-profile-pill">
+                            <span>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            <strong>{{ auth()->user()->name }}</strong>
+                        </a>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <button class="gsm-logout-button">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </header>
+
+                <div class="gsm-mobile-nav lg:hidden">
                     <a href="{{ route('dashboard') }}"
-                        class="block px-4 py-2 rounded transition {{ request()->routeIs('dashboard') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         Dashboard
                     </a>
 
                     @if(auth()->user()->hasRole(['Admin', 'Staff']))
                         <a href="{{ route('categories.index') }}"
-                            class="block px-4 py-2 rounded transition {{ request()->routeIs('categories.*') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
                             Kategori
                         </a>
 
                         <a href="{{ route('products.index') }}"
-                            class="block px-4 py-2 rounded transition {{ request()->routeIs('products.*') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
                             Barang
                         </a>
 
                         <a href="{{ route('borrowings.index') }}"
-                            class="block px-4 py-2 rounded transition {{ request()->routeIs('borrowings.*') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            class="{{ request()->routeIs('borrowings.*') ? 'active' : '' }}">
                             Peminjaman
                         </a>
                     @endif
 
                     @if(auth()->user()->hasRole(['Admin', 'Manager']))
                         <a href="{{ route('reports.index') }}"
-                            class="block px-4 py-2 rounded transition {{ request()->routeIs('reports.*') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
                             Laporan
                         </a>
                     @endif
+                </div>
 
-                    @if(auth()->user()->hasRole('Admin'))
-                        <a href="{{ route('activity-logs.index') }}"
-                            class="block px-4 py-2 rounded transition {{ request()->routeIs('activity-logs.*') ? 'bg-red-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                            Riwayat Aktivitas
-                        </a>
-                    @endif
-                </nav>
-            </aside>
-
-            <div class="flex-1 min-w-0">
-                <header class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 sticky top-0 z-30">
-                    <div class="px-6 py-4 flex justify-between items-center gap-4">
-                        <div>
-                            @isset($header)
-                                {{ $header }}
-                            @else
-                                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-                                    Dashboard
-                                </h2>
-                            @endisset
-                        </div>
-
-                        <div class="flex items-center gap-3">
-                            <button
-                                type="button"
-                                id="theme-toggle"
-                                class="px-3 py-2 rounded bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100 text-sm"
-                            >
-                                <span id="theme-toggle-text">Dark Mode</span>
-                            </button>
-
-                            <a href="{{ route('profile.edit') }}" class="text-sm hover:underline">
-                                {{ auth()->user()->name }}
-                            </a>
-
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <button class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-sm">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="md:hidden px-4 pb-4">
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <a href="{{ route('dashboard') }}"
-                                class="px-3 py-2 rounded text-center {{ request()->routeIs('dashboard') ? 'bg-red-600 text-white' : 'bg-gray-100 dark:bg-gray-700' }}">
-                                Dashboard
-                            </a>
-
-                            @if(auth()->user()->hasRole(['Admin', 'Staff']))
-                                <a href="{{ route('products.index') }}"
-                                    class="px-3 py-2 rounded text-center {{ request()->routeIs('products.*') ? 'bg-red-600 text-white' : 'bg-gray-100 dark:bg-gray-700' }}">
-                                    Barang
-                                </a>
-
-                                <a href="{{ route('borrowings.index') }}"
-                                    class="px-3 py-2 rounded text-center {{ request()->routeIs('borrowings.*') ? 'bg-red-600 text-white' : 'bg-gray-100 dark:bg-gray-700' }}">
-                                    Peminjaman
-                                </a>
-                            @endif
-
-                            @if(auth()->user()->hasRole(['Admin', 'Manager']))
-                                <a href="{{ route('reports.index') }}"
-                                    class="px-3 py-2 rounded text-center {{ request()->routeIs('reports.*') ? 'bg-red-600 text-white' : 'bg-gray-100 dark:bg-gray-700' }}">
-                                    Laporan
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </header>
-
-                <main>
+                <main class="gsm-content">
                     {{ $slot }}
                 </main>
             </div>
         </div>
 
-        <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 px-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6">
-                <h3 class="text-lg font-semibold mb-2">
-                    Konfirmasi Aksi
-                </h3>
+        <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-sm items-center justify-center z-50 px-4">
+            <div class="gsm-modal-card">
+                <div class="gsm-modal-icon">!</div>
 
-                <p id="confirm-message" class="text-gray-600 dark:text-gray-300 mb-6">
+                <h3>Konfirmasi Aksi</h3>
+
+                <p id="confirm-message">
                     Apakah Anda yakin?
                 </p>
 
-                <div class="flex justify-end gap-2">
-                    <button
-                        type="button"
-                        onclick="closeConfirmModal()"
-                        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
-                    >
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeConfirmModal()" class="gsm-button-secondary">
                         Batal
                     </button>
 
-                    <button
-                        type="button"
-                        onclick="submitConfirmForm()"
-                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
-                    >
+                    <button type="button" onclick="submitConfirmForm()" class="gsm-button-danger">
                         Ya, Lanjutkan
                     </button>
                 </div>
@@ -210,11 +224,9 @@
                         return;
                     }
 
-                    if (document.documentElement.classList.contains('dark')) {
-                        toggleText.textContent = 'Light Mode';
-                    } else {
-                        toggleText.textContent = 'Dark Mode';
-                    }
+                    toggleText.textContent = document.documentElement.classList.contains('dark')
+                        ? 'Light Mode'
+                        : 'Dark Mode';
                 }
 
                 updateThemeText();
@@ -223,11 +235,10 @@
                     toggleButton.addEventListener('click', function () {
                         document.documentElement.classList.toggle('dark');
 
-                        if (document.documentElement.classList.contains('dark')) {
-                            localStorage.setItem('theme', 'dark');
-                        } else {
-                            localStorage.setItem('theme', 'light');
-                        }
+                        localStorage.setItem(
+                            'theme',
+                            document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+                        );
 
                         updateThemeText();
                     });

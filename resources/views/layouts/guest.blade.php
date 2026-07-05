@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,43 +7,67 @@
 
         <title>{{ config('app.name', 'Telkomsel Inventory') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet">
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-red-700 via-red-600 to-gray-900 px-4">
+    <body class="font-sans text-slate-900 antialiased">
+        <div class="gsm-auth-page">
+            <div class="gsm-auth-left">
+                <div class="gsm-auth-brand">
+                    <div class="gsm-logo-mark">T</div>
 
-            <!-- Brand Section -->
-            <div class="mb-6 text-center">
-                <a href="/" class="inline-flex items-center justify-center">
-                    <div class="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center">
-                        <span class="text-4xl font-bold text-red-600">T</span>
+                    <div>
+                        <h1>Telkomsel Inventory</h1>
+                        <p>Internal Asset Management System</p>
                     </div>
-                </a>
+                </div>
 
-                <h1 class="mt-4 text-2xl font-bold text-white">
-                    Telkomsel Inventory
-                </h1>
+                <div class="gsm-auth-hero">
+                    <span class="gsm-auth-badge">
+                        Inventory Center
+                    </span>
 
-                <p class="mt-1 text-sm text-red-100">
-                    Sistem Manajemen Inventaris Kantor
-                </p>
+                    <h2>
+                        One dashboard for all your inventory needs
+                    </h2>
+
+                    <p>
+                        Kelola data barang, kategori, peminjaman, pengembalian,
+                        serta laporan inventaris dalam satu sistem yang rapi dan terkontrol.
+                    </p>
+                </div>
+
+                <div class="gsm-auth-features">
+                    <div>
+                        <strong>Role Access</strong>
+                        <span>Admin, Staff, dan Manager</span>
+                    </div>
+
+                    <div>
+                        <strong>Inventory Tracking</strong>
+                        <span>Stok, lokasi, kondisi, dan status barang</span>
+                    </div>
+
+                    <div>
+                        <strong>Reports</strong>
+                        <span>Dashboard, export, dan audit log</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Auth Card -->
-            <div class="w-full sm:max-w-md px-6 py-6 bg-white dark:bg-gray-800 shadow-xl overflow-hidden sm:rounded-2xl border border-gray-100">
-                {{ $slot }}
-            </div>
+            <div class="gsm-auth-right">
+                <div class="gsm-auth-card">
+                    <div class="gsm-auth-card-header">
+                        <h2>Welcome Back</h2>
+                        <p>Masuk untuk mengelola inventaris kantor.</p>
+                    </div>
 
-            <!-- Footer -->
-            <p class="mt-6 text-xs text-red-100 text-center">
-                © {{ date('Y') }} Telkomsel Inventory Management System
-            </p>
+                    {{ $slot }}
+                </div>
+            </div>
         </div>
     </body>
 </html>

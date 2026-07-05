@@ -1,201 +1,235 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">
-            Tambah Barang
-        </h2>
+        <div>
+            <p class="gsm-eyebrow">Master Data</p>
+            <h2>Tambah Barang</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+    <div class="gsm-dashboard">
+        <section class="gsm-panel">
+            <div class="gsm-panel-header">
+                <div>
+                    <p class="gsm-eyebrow">New Inventory Item</p>
+                    <h3>Form Tambah Barang</h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Tambahkan data barang baru beserta kategori, stok, lokasi penyimpanan, kondisi, dan gambar barang.
+                    </p>
+                </div>
+
+                <a href="{{ route('products.index') }}" class="gsm-button-secondary">
+                    Kembali
+                </a>
+            </div>
+
+            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="gsm-form-layout">
                 @csrf
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block mb-1">Kode Barang</label>
-
-                        <input
-                            type="text"
-                            name="code"
-                            id="code"
-                            value="{{ old('code') }}"
-                            placeholder="Pilih kategori untuk membuat kode otomatis"
-                            class="w-full border rounded px-3 py-2 bg-gray-100 dark:bg-gray-700"
-                            readonly
-                        >
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Kode barang akan dibuat otomatis berdasarkan kategori.
-                        </p>
-
-                        @error('code')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block mb-1">Nama Barang</label>
-
-                        <input
-                            type="text"
-                            name="name"
-                            value="{{ old('name') }}"
-                            class="w-full border rounded px-3 py-2"
-                        >
-
-                        @error('name')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block mb-1">Kategori</label>
-
-                        <select name="category_id" id="category_id" class="w-full border rounded px-3 py-2">
-                            <option value="">Pilih Kategori</option>
-
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('category_id')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block mb-1">Stok</label>
-
-                        <input
-                            type="number"
-                            name="stock"
-                            value="{{ old('stock', 0) }}"
-                            min="0"
-                            class="w-full border rounded px-3 py-2"
-                        >
-
-                        @error('stock')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block mb-1">Lokasi Penyimpanan</label>
-
-                        @php
-                            $defaultLocations = [
-                                'Gudang Utama',
-                                'Ruang IT',
-                                'Ruang Administrasi',
-                                'Ruang Meeting',
-                                'Kantor Cabang',
-                            ];
-
-                            $allLocations = collect($locations)
-                                ->merge($defaultLocations)
-                                ->unique()
-                                ->values();
-                        @endphp
-
-                        <select
-                            name="location_select"
-                            id="location_select"
-                            class="w-full border rounded px-3 py-2"
-                        >
-                            <option value="">Pilih Lokasi Penyimpanan</option>
-
-                            @foreach($allLocations as $location)
-                                <option value="{{ $location }}" {{ old('location_select') == $location ? 'selected' : '' }}>
-                                    {{ $location }}
-                                </option>
-                            @endforeach
-
-                            <option value="other" {{ old('location_select') == 'other' ? 'selected' : '' }}>
-                                Lokasi Lainnya
-                            </option>
-                        </select>
-
-                        @error('location_select')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-
-                        <div id="location_other_wrapper" class="mt-3 hidden">
-                            <label class="block mb-1">Masukkan Lokasi Baru</label>
+                <div class="gsm-form-main">
+                    <div class="gsm-form-grid">
+                        <div class="gsm-field">
+                            <label for="code">Kode Barang</label>
 
                             <input
                                 type="text"
-                                name="location_other"
-                                id="location_other"
-                                value="{{ old('location_other') }}"
-                                placeholder="Contoh: Gudang Cabang Surabaya, Luar Kantor Pusat"
-                                class="w-full border rounded px-3 py-2"
+                                name="code"
+                                id="code"
+                                value="{{ old('code') }}"
+                                placeholder="Pilih kategori untuk membuat kode otomatis"
+                                readonly
                             >
 
-                            @error('location_other')
-                                <p class="text-red-600 text-sm">{{ $message }}</p>
+                            <small>Kode barang dibuat otomatis berdasarkan kategori.</small>
+
+                            @error('code')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="name">Nama Barang</label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value="{{ old('name') }}"
+                                placeholder="Contoh: Laptop Lenovo ThinkPad"
+                            >
+
+                            @error('name')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="category_id">Kategori</label>
+
+                            <select name="category_id" id="category_id">
+                                <option value="">Pilih Kategori</option>
+
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('category_id')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="stock">Stok</label>
+
+                            <input
+                                type="number"
+                                name="stock"
+                                id="stock"
+                                value="{{ old('stock', 0) }}"
+                                min="0"
+                                placeholder="0"
+                            >
+
+                            @error('stock')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="location_select">Lokasi Penyimpanan</label>
+
+                            @php
+                                $defaultLocations = [
+                                    'Gudang Utama',
+                                    'Ruang IT',
+                                    'Ruang Administrasi',
+                                    'Ruang Meeting',
+                                    'Kantor Cabang',
+                                ];
+
+                                $allLocations = collect($locations)
+                                    ->merge($defaultLocations)
+                                    ->unique()
+                                    ->values();
+                            @endphp
+
+                            <select name="location_select" id="location_select">
+                                <option value="">Pilih Lokasi Penyimpanan</option>
+
+                                @foreach($allLocations as $location)
+                                    <option value="{{ $location }}" {{ old('location_select') == $location ? 'selected' : '' }}>
+                                        {{ $location }}
+                                    </option>
+                                @endforeach
+
+                                <option value="other" {{ old('location_select') == 'other' ? 'selected' : '' }}>
+                                    Lokasi Lainnya
+                                </option>
+                            </select>
+
+                            @error('location_select')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+
+                            <div id="location_other_wrapper" class="gsm-nested-field hidden">
+                                <label for="location_other">Masukkan Lokasi Baru</label>
+
+                                <input
+                                    type="text"
+                                    name="location_other"
+                                    id="location_other"
+                                    value="{{ old('location_other') }}"
+                                    placeholder="Contoh: Gudang Cabang Surabaya"
+                                >
+
+                                @error('location_other')
+                                    <p class="gsm-error-text">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="gsm-field">
+                            <label for="condition">Kondisi Barang</label>
+
+                            <select name="condition" id="condition">
+                                <option value="">Pilih Kondisi</option>
+                                <option value="Baik" {{ old('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
+                                <option value="Rusak Ringan" {{ old('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                                <option value="Rusak Berat" {{ old('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                            </select>
+
+                            @error('condition')
+                                <p class="gsm-error-text">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="gsm-field gsm-field-full">
+                            <label for="image">Upload Gambar Barang</label>
+
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                accept="image/png, image/jpeg, image/jpg"
+                            >
+
+                            <small>Format gambar: JPG, JPEG, atau PNG. Maksimal 2 MB.</small>
+
+                            @error('image')
+                                <p class="gsm-error-text">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block mb-1">Kondisi Barang</label>
+                    <div class="gsm-form-actions">
+                        <button class="gsm-button-primary">
+                            Simpan Barang
+                        </button>
 
-                        <select name="condition" class="w-full border rounded px-3 py-2">
-                            <option value="">Pilih Kondisi</option>
-                            <option value="Baik" {{ old('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                            <option value="Rusak Ringan" {{ old('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                            <option value="Rusak Berat" {{ old('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
-                        </select>
-
-                        @error('condition')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="block mb-1">Upload Gambar Barang</label>
-
-                        <input
-                            type="file"
-                            name="image"
-                            class="w-full border rounded px-3 py-2"
-                        >
-
-                        @error('image')
-                            <p class="text-red-600 text-sm">{{ $message }}</p>
-                        @enderror
+                        <a href="{{ route('products.index') }}" class="gsm-button-secondary">
+                            Batal
+                        </a>
                     </div>
                 </div>
 
-                <div class="mt-6">
-                    <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
-                        Simpan
-                    </button>
+                <aside class="gsm-helper-card">
+                    <div class="gsm-helper-icon">◈</div>
 
-                    <a href="{{ route('products.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded">
-                        Kembali
-                    </a>
-                </div>
+                    <h4>Preview Data Barang</h4>
+
+                    <div class="gsm-preview-box">
+                        <p>Kode Barang</p>
+                        <strong id="preview-code">Belum dibuat</strong>
+                    </div>
+
+                    <ul>
+                        <li>Pilih kategori untuk membuat kode otomatis.</li>
+                        <li>Gunakan lokasi yang sudah tersedia atau pilih Lokasi Lainnya.</li>
+                        <li>Pastikan stok dan kondisi barang sesuai data fisik.</li>
+                    </ul>
+                </aside>
             </form>
-        </div>
+        </section>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const categorySelect = document.getElementById('category_id');
             const codeInput = document.getElementById('code');
+            const previewCode = document.getElementById('preview-code');
 
             async function generateCode(categoryId) {
                 if (!categoryId) {
                     codeInput.value = '';
                     codeInput.placeholder = 'Pilih kategori untuk membuat kode otomatis';
+                    previewCode.textContent = 'Belum dibuat';
                     return;
                 }
 
                 codeInput.value = 'Membuat kode...';
+                previewCode.textContent = 'Membuat kode...';
 
                 try {
                     const response = await fetch(`{{ route('products.generate-code') }}?category_id=${categoryId}`);
@@ -203,13 +237,16 @@
 
                     if (data.code) {
                         codeInput.value = data.code;
+                        previewCode.textContent = data.code;
                     } else {
                         codeInput.value = '';
                         codeInput.placeholder = 'Kode gagal dibuat';
+                        previewCode.textContent = 'Kode gagal dibuat';
                     }
                 } catch (error) {
                     codeInput.value = '';
                     codeInput.placeholder = 'Terjadi kesalahan saat membuat kode';
+                    previewCode.textContent = 'Gagal membuat kode';
                 }
             }
 

@@ -195,7 +195,7 @@
                     </div>
                 </div>
 
-                <div class="gsm-table-wrapper">
+                <div class="gsm-table-wrapper gsm-dashboard-table-scroll">
                     <table class="gsm-table">
                         <thead>
                             <tr>
@@ -234,7 +234,7 @@
                     </div>
                 </div>
 
-                <div class="gsm-table-wrapper">
+                <div class="gsm-table-wrapper gsm-dashboard-table-scroll">
                     <table class="gsm-table">
                         <thead>
                             <tr>

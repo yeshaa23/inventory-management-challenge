@@ -22,7 +22,12 @@
                 </a>
             </div>
 
-            <form action="{{ route('products.update', $product) }}" method="POST" enctype="multipart/form-data" class="gsm-form-layout">
+            <form
+                action="{{ route('products.update', $product) }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="gsm-form-layout"
+            >
                 @csrf
                 @method('PUT')
 
@@ -64,7 +69,10 @@
 
                             <select name="category_id" id="category_id">
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                    <option
+                                        value="{{ $category->id }}"
+                                        {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}
+                                    >
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -116,14 +124,18 @@
                                 <option value="">{{ __('app.choose_location') }}</option>
 
                                 @foreach($allLocations as $location)
-                                    <option value="{{ $location }}"
+                                    <option
+                                        value="{{ $location }}"
                                         {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == $location ? 'selected' : '' }}
                                     >
                                         {{ $location }}
                                     </option>
                                 @endforeach
 
-                                <option value="other" {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == 'other' ? 'selected' : '' }}>
+                                <option
+                                    value="other"
+                                    {{ old('location_select', $isCustomLocation ? 'other' : $product->location) == 'other' ? 'selected' : '' }}
+                                >
                                     {{ __('app.other_location') }}
                                 </option>
                             </select>
@@ -153,9 +165,17 @@
                             <label for="condition">{{ __('app.product_condition') }}</label>
 
                             <select name="condition" id="condition">
-                                <option value="Baik" {{ old('condition', $product->condition) == 'Baik' ? 'selected' : '' }}>{{ __('app.good') }}</option>
-                                <option value="Rusak Ringan" {{ old('condition', $product->condition) == 'Rusak Ringan' ? 'selected' : '' }}>{{ __('app.minor_damage') }}</option>
-                                <option value="Rusak Berat" {{ old('condition', $product->condition) == 'Rusak Berat' ? 'selected' : '' }}>{{ __('app.major_damage') }}</option>
+                                <option value="Baik" {{ old('condition', $product->condition) == 'Baik' ? 'selected' : '' }}>
+                                    {{ __('app.good') }}
+                                </option>
+
+                                <option value="Rusak Ringan" {{ old('condition', $product->condition) == 'Rusak Ringan' ? 'selected' : '' }}>
+                                    {{ __('app.minor_damage') }}
+                                </option>
+
+                                <option value="Rusak Berat" {{ old('condition', $product->condition) == 'Rusak Berat' ? 'selected' : '' }}>
+                                    {{ __('app.major_damage') }}
+                                </option>
                             </select>
 
                             @error('condition')
@@ -166,21 +186,20 @@
                         <div class="gsm-field gsm-field-full">
                             <label for="image">{{ __('app.product_image') }}</label>
 
-                            @if($product->image)
-                                <div class="mb-3">
-                                    <img
-                                        src="{{ asset('storage/' . $product->image) }}"
-                                        alt="{{ $product->name }}"
-                                        class="w-32 h-32 object-cover rounded-3xl border border-slate-200"
-                                    >
-                                </div>
-                            @endif
+                            <div class="mb-3">
+                                <img
+                                    id="product-image-preview"
+                                    src="{{ $product->image ? asset('storage/' . $product->image) : '' }}"
+                                    alt="{{ $product->name }}"
+                                    class="w-32 h-32 object-cover rounded-3xl border border-slate-200 {{ $product->image ? '' : 'hidden' }}"
+                                >
+                            </div>
 
                             <input
                                 type="file"
                                 name="image"
                                 id="image"
-                                accept="image/png, image/jpeg, image/jpg"
+                                accept="image/png, image/jpeg, image/jpg, image/webp"
                             >
 
                             <small>{{ __('app.update_image_hint') }}</small>
@@ -229,6 +248,10 @@
             const locationOtherInput = document.getElementById('location_other');
 
             function toggleLocationOther() {
+                if (!locationSelect || !locationOtherWrapper || !locationOtherInput) {
+                    return;
+                }
+
                 if (locationSelect.value === 'other') {
                     locationOtherWrapper.classList.remove('hidden');
                     locationOtherInput.setAttribute('required', 'required');
@@ -241,6 +264,28 @@
             if (locationSelect) {
                 locationSelect.addEventListener('change', toggleLocationOther);
                 toggleLocationOther();
+            }
+
+            const imageInput = document.getElementById('image');
+            const imagePreview = document.getElementById('product-image-preview');
+
+            if (imageInput && imagePreview) {
+                imageInput.addEventListener('change', function () {
+                    const file = this.files && this.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    const previewUrl = URL.createObjectURL(file);
+
+                    imagePreview.src = previewUrl;
+                    imagePreview.classList.remove('hidden');
+
+                    imagePreview.onload = function () {
+                        URL.revokeObjectURL(previewUrl);
+                    };
+                });
             }
         });
     </script>

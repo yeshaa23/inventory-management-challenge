@@ -119,4 +119,4 @@ jobs:
       - name: Post-deploy smoke test
         run: |
           sleep 20
-          curl -f -L https://inventory-management-ayesha.azurewebsites.net/login
+          curl -f -L https://inventory-management-ayesha-e0gphndhftgacyd8.indonesiacentral-01.azurewebsites.net/login

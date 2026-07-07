@@ -33,19 +33,28 @@ class ProductController extends Controller
                 $query->where('category_id', $request->category_id);
             })
             ->when($request->condition, function ($query) use ($request) {
-                $query->where('condition', $request->condition);
+                if ($request->condition === Product::CONDITION_GOOD) {
+                    $query->where('good_stock', '>', 0);
+                }
+
+                if ($request->condition === Product::CONDITION_MINOR_DAMAGE) {
+                    $query->where('minor_damage_stock', '>', 0);
+                }
+
+                if ($request->condition === Product::CONDITION_MAJOR_DAMAGE) {
+                    $query->where('major_damage_stock', '>', 0);
+                }
             })
             ->when($request->location, function ($query) use ($request) {
                 $query->where('location', $request->location);
             })
             ->when($request->stock_status, function ($query) use ($request) {
                 if ($request->stock_status === 'available') {
-                    $query->where('stock', '>', 5)
-                        ->where('condition', 'Baik');
+                    $query->where('good_stock', '>', 5);
                 }
 
                 if ($request->stock_status === 'low_stock') {
-                    $query->whereBetween('stock', [1, 5]);
+                    $query->whereBetween('good_stock', [1, 5]);
                 }
 
                 if ($request->stock_status === 'out_of_stock') {
@@ -53,7 +62,10 @@ class ProductController extends Controller
                 }
 
                 if ($request->stock_status === 'damaged') {
-                    $query->where('condition', '!=', 'Baik');
+                    $query->where(function ($subQuery) {
+                        $subQuery->where('minor_damage_stock', '>', 0)
+                            ->orWhere('major_damage_stock', '>', 0);
+                    });
                 }
             });
 
@@ -77,51 +89,37 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
+
         $locations = Product::select('location')
             ->whereNotNull('location')
             ->distinct()
             ->orderBy('location')
             ->pluck('location');
+
         return view('products.create', compact('categories', 'locations'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'code' => 'nullable|string|max:255|unique:products,code',
-            'name' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'location_select' => 'required|string|max:255',
-            'location_other' => 'nullable|required_if:location_select,other|string|max:255',
-            'condition' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        $validated = $request->validate($this->productRules());
 
-        $location = $request->location_select === 'other'
-            ? $request->location_other
-            : $request->location_select;
+        $location = $this->resolveLocation($request);
 
-        $duplicateExists = Product::where('name', $request->name)
-            ->where('category_id', $request->category_id)
-            ->where('location', $location)
-            ->exists();
-
-        if ($duplicateExists) {
+        if ($this->duplicateProductExists($request, $location)) {
             return back()
                 ->withErrors([
-                    'name' => 'Barang dengan nama, kategori, dan lokasi yang sama sudah tersedia.',
+                    'name' => __('app.error_duplicate_product'),
                 ])
                 ->withInput();
         }
 
-        $data = $request->only([
-            'category_id',
-            'name',
-            'stock',
-            'condition',
-        ]);
-        $data['location'] = $location;
+        $data = [
+            'category_id' => $validated['category_id'],
+            'name' => $validated['name'],
+            'location' => $location,
+        ];
+
+        $data = array_merge($data, $this->stockData($request));
 
         $data['code'] = $request->filled('code')
             ? $request->code
@@ -143,7 +141,6 @@ class ProductController extends Controller
         return redirect()
             ->route('products.index')
             ->with('success', __('app.success_create_product'));
-
     }
 
     public function show(Product $product)
@@ -156,55 +153,40 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::orderBy('name')->get();
+
         $locations = Product::select('location')
             ->whereNotNull('location')
             ->distinct()
             ->orderBy('location')
             ->pluck('location');
+
         return view('products.edit', compact('product', 'categories', 'locations'));
     }
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'code' => 'required|string|max:255|unique:products,code,' . $product->id,
-            'name' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'location_select' => 'required|string|max:255',
-            'location_other' => 'nullable|required_if:location_select,other|string|max:255',
-            'condition' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        $validated = $request->validate($this->productRules($product));
 
-        $location = $request->location_select === 'other'
-            ? $request->location_other
-            : $request->location_select;
+        $location = $this->resolveLocation($request);
 
-        $duplicateExists = Product::where('name', $request->name)
-            ->where('category_id', $request->category_id)
-            ->where('location', $location)
-            ->where('id', '!=', $product->id)
-            ->exists();
-
-        if ($duplicateExists) {
+        if ($this->duplicateProductExists($request, $location, $product)) {
             return back()
                 ->withErrors([
-                    'name' => 'Barang dengan nama, kategori, dan lokasi yang sama sudah tersedia.',
+                    'name' => __('app.error_duplicate_product'),
                 ])
                 ->withInput();
         }
 
         $oldData = $product->toArray();
 
-        $data = $request->only([
-            'category_id',
-            'code',
-            'name',
-            'stock',
-            'condition',
-        ]);
-        $data['location'] = $location;
+        $data = [
+            'category_id' => $validated['category_id'],
+            'code' => $validated['code'],
+            'name' => $validated['name'],
+            'location' => $location,
+        ];
+
+        $data = array_merge($data, $this->stockData($request));
 
         if ($request->hasFile('image')) {
             if ($product->image) {
@@ -265,6 +247,54 @@ class ProductController extends Controller
         return response()->json([
             'code' => $code,
         ]);
+    }
+
+    private function productRules(?Product $product = null): array
+    {
+        $productId = $product?->id;
+
+        return [
+            'category_id' => 'required|exists:categories,id',
+            'code' => $product ? 'required|string|max:255|unique:products,code,' . $productId : 'nullable|string|max:255|unique:products,code',
+            'name' => 'required|string|max:255',
+            'good_stock' => 'required|integer|min:0',
+            'minor_damage_stock' => 'required|integer|min:0',
+            'major_damage_stock' => 'required|integer|min:0',
+            'location_select' => 'required|string|max:255',
+            'location_other' => 'nullable|required_if:location_select,other|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ];
+    }
+
+    private function stockData(Request $request): array
+    {
+        $goodStock = (int) $request->input('good_stock', 0);
+        $minorDamageStock = (int) $request->input('minor_damage_stock', 0);
+        $majorDamageStock = (int) $request->input('major_damage_stock', 0);
+
+        return [
+            'good_stock' => $goodStock,
+            'minor_damage_stock' => $minorDamageStock,
+            'major_damage_stock' => $majorDamageStock,
+            'stock' => Product::totalFromCounts($goodStock, $minorDamageStock, $majorDamageStock),
+            'condition' => Product::conditionFromCounts($goodStock, $minorDamageStock, $majorDamageStock),
+        ];
+    }
+
+    private function resolveLocation(Request $request): string
+    {
+        return $request->location_select === 'other'
+            ? $request->location_other
+            : $request->location_select;
+    }
+
+    private function duplicateProductExists(Request $request, string $location, ?Product $product = null): bool
+    {
+        return Product::where('name', $request->name)
+            ->where('category_id', $request->category_id)
+            ->where('location', $location)
+            ->when($product, fn ($query) => $query->where('id', '!=', $product->id))
+            ->exists();
     }
 
     private function generateProductCode(int $categoryId): string

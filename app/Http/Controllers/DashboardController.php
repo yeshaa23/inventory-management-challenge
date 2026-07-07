@@ -13,15 +13,16 @@ class DashboardController extends Controller
     public function index()
     {
         $totalProducts = Product::count();
-
-        $availableStock = Product::sum('stock');
+        $totalStock = Product::sum('stock');
+        $availableStock = Product::sum('good_stock');
+        $damagedStock = Product::sum('minor_damage_stock') + Product::sum('major_damage_stock');
 
         $borrowedItems = BorrowingDetail::whereHas('borrowing', function ($query) {
             $query->where('status', 'borrowed');
         })->sum('quantity');
 
         $lowStockProducts = Product::with('category')
-            ->whereBetween('stock', [1, 5])
+            ->whereBetween('good_stock', [1, 5])
             ->get();
 
         $outOfStockProducts = Product::with('category')
@@ -29,7 +30,10 @@ class DashboardController extends Controller
             ->get();
 
         $damagedProducts = Product::with('category')
-            ->where('condition', '!=', 'Baik')
+            ->where(function ($query) {
+                $query->where('minor_damage_stock', '>', 0)
+                    ->orWhere('major_damage_stock', '>', 0);
+            })
             ->get();
 
         $overdueBorrowings = Borrowing::with('details.product')
@@ -62,7 +66,9 @@ class DashboardController extends Controller
         $categorySummaries = Product::select(
                 'categories.name as category_name',
                 DB::raw('COUNT(products.id) as total_product'),
-                DB::raw('SUM(products.stock) as total_stock')
+                DB::raw('SUM(products.stock) as total_stock'),
+                DB::raw('SUM(products.good_stock) as good_stock'),
+                DB::raw('SUM(products.minor_damage_stock + products.major_damage_stock) as damaged_stock')
             )
             ->join('categories', 'categories.id', '=', 'products.category_id')
             ->groupBy('categories.name')
@@ -82,7 +88,9 @@ class DashboardController extends Controller
 
         return view('dashboard', compact(
             'totalProducts',
+            'totalStock',
             'availableStock',
+            'damagedStock',
             'borrowedItems',
             'lowStockProducts',
             'outOfStockProducts',

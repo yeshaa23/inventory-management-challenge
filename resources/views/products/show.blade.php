@@ -66,25 +66,28 @@
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>{{ __('app.stock') }}</span>
-                            <strong>{{ $product->stock }}</strong>
-                        </div>
-
-                        <div class="gsm-detail-card">
                             <span>{{ __('app.storage_location') }}</span>
                             <strong>{{ $product->location }}</strong>
                         </div>
 
                         <div class="gsm-detail-card">
-                            <span>{{ __('app.condition') }}</span>
+                            <span>{{ __('app.total_stock') }}</span>
+                            <strong>{{ $product->stock }}</strong>
+                        </div>
 
-                            @if($product->condition === 'Baik')
-                                <strong><span class="gsm-badge success">{{ __('app.good') }}</span></strong>
-                            @elseif($product->condition === 'Rusak Ringan')
-                                <strong><span class="gsm-badge warning">{{ __('app.minor_damage') }}</span></strong>
-                            @else
-                                <strong><span class="gsm-badge danger">{{ __('app.major_damage') }}</span></strong>
-                            @endif
+                        <div class="gsm-detail-card">
+                            <span>{{ __('app.good_stock') }}</span>
+                            <strong><span class="gsm-badge success">{{ $product->good_stock }}</span></strong>
+                        </div>
+
+                        <div class="gsm-detail-card">
+                            <span>{{ __('app.minor_damage_stock') }}</span>
+                            <strong><span class="gsm-badge warning">{{ $product->minor_damage_stock }}</span></strong>
+                        </div>
+
+                        <div class="gsm-detail-card">
+                            <span>{{ __('app.major_damage_stock') }}</span>
+                            <strong><span class="gsm-badge danger">{{ $product->major_damage_stock }}</span></strong>
                         </div>
 
                         <div class="gsm-detail-card md:col-span-2">

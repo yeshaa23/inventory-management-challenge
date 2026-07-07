@@ -89,23 +89,6 @@
                         </div>
 
                         <div class="gsm-field">
-                            <label for="stock">{{ __('app.stock') }}</label>
-
-                            <input
-                                type="number"
-                                name="stock"
-                                id="stock"
-                                value="{{ old('stock', 0) }}"
-                                min="0"
-                                placeholder="0"
-                            >
-
-                            @error('stock')
-                                <p class="gsm-error-text">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="gsm-field">
                             <label for="location_select">{{ __('app.storage_location') }}</label>
 
                             @php
@@ -162,28 +145,69 @@
                             </div>
                         </div>
 
-                        <div class="gsm-field">
-                            <label for="condition">{{ __('app.product_condition') }}</label>
+                        <div class="gsm-field gsm-field-full">
+                            <label>{{ __('app.stock_by_condition') }}</label>
 
-                            <select name="condition" id="condition">
-                                <option value="">{{ __('app.choose_condition') }}</option>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="good_stock" class="text-xs font-bold text-slate-500 uppercase tracking-[0.16em]">
+                                        {{ __('app.good_stock') }}
+                                    </label>
 
-                                <option value="Baik" {{ old('condition') == 'Baik' ? 'selected' : '' }}>
-                                    {{ __('app.good') }}
-                                </option>
+                                    <input
+                                        type="number"
+                                        name="good_stock"
+                                        id="good_stock"
+                                        value="{{ old('good_stock', 0) }}"
+                                        min="0"
+                                        placeholder="0"
+                                    >
 
-                                <option value="Rusak Ringan" {{ old('condition') == 'Rusak Ringan' ? 'selected' : '' }}>
-                                    {{ __('app.minor_damage') }}
-                                </option>
+                                    @error('good_stock')
+                                        <p class="gsm-error-text">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
-                                <option value="Rusak Berat" {{ old('condition') == 'Rusak Berat' ? 'selected' : '' }}>
-                                    {{ __('app.major_damage') }}
-                                </option>
-                            </select>
+                                <div>
+                                    <label for="minor_damage_stock" class="text-xs font-bold text-slate-500 uppercase tracking-[0.16em]">
+                                        {{ __('app.minor_damage_stock') }}
+                                    </label>
 
-                            @error('condition')
-                                <p class="gsm-error-text">{{ $message }}</p>
-                            @enderror
+                                    <input
+                                        type="number"
+                                        name="minor_damage_stock"
+                                        id="minor_damage_stock"
+                                        value="{{ old('minor_damage_stock', 0) }}"
+                                        min="0"
+                                        placeholder="0"
+                                    >
+
+                                    @error('minor_damage_stock')
+                                        <p class="gsm-error-text">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="major_damage_stock" class="text-xs font-bold text-slate-500 uppercase tracking-[0.16em]">
+                                        {{ __('app.major_damage_stock') }}
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        name="major_damage_stock"
+                                        id="major_damage_stock"
+                                        value="{{ old('major_damage_stock', 0) }}"
+                                        min="0"
+                                        placeholder="0"
+                                    >
+
+                                    @error('major_damage_stock')
+                                        <p class="gsm-error-text">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <small>{{ __('app.stock_condition_help') }}</small>
                         </div>
 
                         <div class="gsm-field gsm-field-full">
@@ -234,9 +258,14 @@
                         <strong id="preview-code">{{ __('app.code_not_generated') }}</strong>
                     </div>
 
+                    <div class="gsm-preview-box">
+                        <p>{{ __('app.total_stock') }}</p>
+                        <strong id="preview-total-stock">0</strong>
+                    </div>
+
                     <ul>
                         <li>{{ __('app.choose_category_auto_code') }}.</li>
-                        <li>{{ __('app.product_create_tip_2') }}</li>
+                        <li>{{ __('app.stock_condition_tip') }}</li>
                         <li>{{ __('app.product_create_tip_3') }}</li>
                     </ul>
                 </aside>
@@ -319,6 +348,31 @@
                 locationSelect.addEventListener('change', toggleLocationOther);
                 toggleLocationOther();
             }
+
+            const stockInputs = [
+                document.getElementById('good_stock'),
+                document.getElementById('minor_damage_stock'),
+                document.getElementById('major_damage_stock'),
+            ];
+            const previewTotalStock = document.getElementById('preview-total-stock');
+
+            function updateTotalStockPreview() {
+                const total = stockInputs.reduce(function (sum, input) {
+                    return sum + Number(input?.value || 0);
+                }, 0);
+
+                if (previewTotalStock) {
+                    previewTotalStock.textContent = total;
+                }
+            }
+
+            stockInputs.forEach(function (input) {
+                if (input) {
+                    input.addEventListener('input', updateTotalStockPreview);
+                }
+            });
+
+            updateTotalStockPreview();
 
             const imageInput = document.getElementById('image');
             const imagePreview = document.getElementById('product-image-preview');

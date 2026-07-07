@@ -24,9 +24,11 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, WithT
             __('app.product_code'),
             __('app.product_name'),
             __('app.category'),
-            __('app.stock'),
+            __('app.total_stock'),
+            __('app.good_stock'),
+            __('app.minor_damage_stock'),
+            __('app.major_damage_stock'),
             __('app.storage_location'),
-            __('app.product_condition'),
             __('app.status_stock'),
         ];
     }
@@ -38,13 +40,10 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, WithT
             $product->name,
             $product->category->name ?? '-',
             $product->stock,
+            $product->good_stock,
+            $product->minor_damage_stock,
+            $product->major_damage_stock,
             $product->location,
-            match ($product->condition) {
-                'Baik' => __('app.good'),
-                'Rusak Ringan' => __('app.minor_damage'),
-                'Rusak Berat' => __('app.major_damage'),
-                default => $product->condition,
-            },
             $product->stock_status_label,
         ];
     }

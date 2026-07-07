@@ -80,8 +80,8 @@
             </div>
 
             <div class="gsm-detail-card">
-                <span>{{ __('app.damaged_products') }}</span>
-                <strong>{{ $damagedProducts->count() }}</strong>
+                <span>{{ __('app.damaged_stock') }}</span>
+                <strong>{{ $totalDamagedStock }}</strong>
             </div>
 
             <div class="gsm-detail-card">
@@ -162,9 +162,11 @@
                             <th>{{ __('app.code') }}</th>
                             <th>{{ __('app.product_name') }}</th>
                             <th>{{ __('app.category') }}</th>
-                            <th>{{ __('app.stock') }}</th>
+                            <th>{{ __('app.total_stock') }}</th>
+                            <th>{{ __('app.good') }}</th>
+                            <th>{{ __('app.minor_damage_short') }}</th>
+                            <th>{{ __('app.major_damage_short') }}</th>
                             <th>{{ __('app.location') }}</th>
-                            <th>{{ __('app.condition') }}</th>
                             <th>{{ __('app.status') }}</th>
                         </tr>
                     </thead>
@@ -176,16 +178,10 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->category->name ?? '-' }}</td>
                                 <td class="font-bold">{{ $product->stock }}</td>
+                                <td><span class="gsm-badge success">{{ $product->good_stock }}</span></td>
+                                <td><span class="gsm-badge warning">{{ $product->minor_damage_stock }}</span></td>
+                                <td><span class="gsm-badge danger">{{ $product->major_damage_stock }}</span></td>
                                 <td>{{ $product->location }}</td>
-                                <td>
-                                @if($product->condition === 'Baik')
-                                                                    {{ __('app.good') }}
-                                                                @elseif($product->condition === 'Rusak Ringan')
-                                                                    {{ __('app.minor_damage') }}
-                                                                @else
-                                                                    {{ __('app.major_damage') }}
-                                                                @endif
-                                </td>
                                 <td>
                                     @if($product->stock_status === 'available')
                                         <span class="gsm-badge success">{{ __('app.' . $product->stock_status) }}</span>
@@ -200,7 +196,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7">
+                                <td colspan="9">
                                     <div class="gsm-empty-state small">
                                         {{ __('app.no_product_data') }}
                                     </div>
@@ -301,7 +297,7 @@
                             <tr>
                                 <th>{{ __('app.code') }}</th>
                                 <th>{{ __('app.product_name') }}</th>
-                                <th>{{ __('app.stock') }}</th>
+                                <th>{{ __('app.available_good_stock') }}</th>
                             </tr>
                         </thead>
 
@@ -311,7 +307,7 @@
                                     <td class="font-bold text-slate-900">{{ $product->code }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>
-                                        <span class="gsm-badge warning">{{ $product->stock }}</span>
+                                        <span class="gsm-badge warning">{{ $product->good_stock }}</span>
                                     </td>
                                 </tr>
                             @empty

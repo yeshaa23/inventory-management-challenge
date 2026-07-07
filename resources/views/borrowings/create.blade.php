@@ -107,10 +107,10 @@
                                         value="{{ $product->id }}"
                                         data-code="{{ $product->code }}"
                                         data-name="{{ $product->name }}"
-                                        data-stock="{{ $product->stock }}"
+                                        data-stock="{{ $product->good_stock }}"
                                         {{ old('product_id') == $product->id ? 'selected' : '' }}
                                     >
-                                        {{ $product->code }} - {{ $product->name }} | {{ __('app.stock') }}: {{ $product->stock }}
+                                        {{ $product->code }} - {{ $product->name }} | {{ __('app.available_good_stock') }}: {{ $product->good_stock }}
                                     </option>
                                 @endforeach
                             </select>
@@ -185,7 +185,7 @@
                 const code = selectedOption.dataset.code || '-';
                 const stock = selectedOption.dataset.stock || '0';
 
-                const stockText = @json(__('app.stock'));
+                const stockText = @json(__('app.available_good_stock'));
 
                 previewProduct.textContent = `${code} | ${stockText} ${stock}`;
             }

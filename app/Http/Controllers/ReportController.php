@@ -23,6 +23,8 @@ class ReportController extends Controller
 
         $totalProducts = Product::count();
         $totalStock = Product::sum('stock');
+        $totalAvailableStock = Product::sum('good_stock');
+        $totalDamagedStock = Product::sum('minor_damage_stock') + Product::sum('major_damage_stock');
         $totalBorrowings = Borrowing::count();
 
         $totalBorrowedItems = BorrowingDetail::whereHas('borrowing', function ($query) {
@@ -30,7 +32,7 @@ class ReportController extends Controller
         })->sum('quantity');
 
         $lowStockProducts = Product::with('category')
-            ->whereBetween('stock', [1, 5])
+            ->whereBetween('good_stock', [1, 5])
             ->get();
 
         $outOfStockProducts = Product::with('category')
@@ -38,7 +40,10 @@ class ReportController extends Controller
             ->get();
 
         $damagedProducts = Product::with('category')
-            ->where('condition', '!=', 'Baik')
+            ->where(function ($query) {
+                $query->where('minor_damage_stock', '>', 0)
+                    ->orWhere('major_damage_stock', '>', 0);
+            })
             ->get();
 
         $overdueBorrowings = Borrowing::with('details.product')
@@ -53,6 +58,8 @@ class ReportController extends Controller
             'borrowings',
             'totalProducts',
             'totalStock',
+            'totalAvailableStock',
+            'totalDamagedStock',
             'totalBorrowings',
             'totalBorrowedItems',
             'lowStockProducts',

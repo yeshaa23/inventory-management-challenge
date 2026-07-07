@@ -126,9 +126,11 @@
                             <th>{{ __('app.code') }}</th>
                             <th>{{ __('app.product_name') }}</th>
                             <th>{{ __('app.category') }}</th>
-                            <th>{{ __('app.stock') }}</th>
+                            <th>{{ __('app.total_stock') }}</th>
+                            <th>{{ __('app.good') }}</th>
+                            <th>{{ __('app.minor_damage_short') }}</th>
+                            <th>{{ __('app.major_damage_short') }}</th>
                             <th>{{ __('app.location') }}</th>
-                            <th>{{ __('app.condition') }}</th>
                             <th>{{ __('app.status') }}</th>
                             <th>{{ __('app.actions') }}</th>
                         </tr>
@@ -177,23 +179,25 @@
                                     </span>
                                 </td>
 
-                                <td>{{ $product->location }}</td>
+                                <td>
+                                    <span class="gsm-badge success">
+                                        {{ $product->good_stock }}
+                                    </span>
+                                </td>
 
                                 <td>
-                                    @if($product->condition === 'Baik')
-                                        <span class="gsm-badge success">
-                                            {{ __('app.good') }}
-                                        </span>
-                                    @elseif($product->condition === 'Rusak Ringan')
-                                        <span class="gsm-badge warning">
-                                            {{ __('app.minor_damage') }}
-                                        </span>
-                                    @else
-                                        <span class="gsm-badge danger">
-                                            {{ __('app.major_damage') }}
-                                        </span>
-                                    @endif
+                                    <span class="gsm-badge warning">
+                                        {{ $product->minor_damage_stock }}
+                                    </span>
                                 </td>
+
+                                <td>
+                                    <span class="gsm-badge danger">
+                                        {{ $product->major_damage_stock }}
+                                    </span>
+                                </td>
+
+                                <td>{{ $product->location }}</td>
 
                                 <td>
                                     @if($product->stock_status === 'available')
@@ -242,7 +246,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8">
+                                <td colspan="10">
                                     <div class="gsm-empty-state">
                                         <div>
                                             <p class="font-bold">{{ __('app.no_product_data') }}</p>

@@ -38,14 +38,14 @@
 
                     <div class="gsm-phone-content">
                         <span>{{ __('app.total_stock') }}</span>
-                        <strong>{{ $availableStock }}</strong>
+                        <strong>{{ $totalStock }}</strong>
                         <p>{{ $totalProducts }} {{ __('app.items_recorded') }}</p>
                     </div>
 
                     <div class="gsm-phone-mini-grid">
                         <div>
-                            <span>{{ __('app.borrowed_short') }}</span>
-                            <strong>{{ $borrowedItems }}</strong>
+                            <span>{{ __('app.available_good_stock') }}</span>
+                            <strong>{{ $availableStock }}</strong>
                         </div>
 
                         <div>
@@ -98,8 +98,8 @@
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon blue">◈</div>
                 <p>{{ __('app.total_stock') }}</p>
-                <h3>{{ $availableStock }}</h3>
-                <span>{{ __('app.available_units') }}</span>
+                <h3>{{ $totalStock }}</h3>
+                <span>{{ __('app.all_condition_units') }}</span>
             </div>
 
             <div class="gsm-stat-card">
@@ -132,8 +132,8 @@
 
             <div class="gsm-stat-card">
                 <div class="gsm-stat-icon orange">⚠</div>
-                <p>{{ __('app.damaged_products') }}</p>
-                <h3>{{ $damagedProducts->count() }}</h3>
+                <p>{{ __('app.damaged_stock') }}</p>
+                <h3>{{ $damagedStock }}</h3>
                 <span>{{ __('app.needs_checking') }}</span>
             </div>
 
@@ -202,6 +202,8 @@
                                 <th>{{ __('app.category') }}</th>
                                 <th>{{ __('app.product_types') }}</th>
                                 <th>{{ __('app.total_stock') }}</th>
+                                <th>{{ __('app.good_stock') }}</th>
+                                <th>{{ __('app.damaged_stock') }}</th>
                             </tr>
                         </thead>
 
@@ -211,10 +213,12 @@
                                     <td>{{ $category->category_name }}</td>
                                     <td>{{ $category->total_product }}</td>
                                     <td>{{ $category->total_stock }}</td>
+                                    <td>{{ $category->good_stock }}</td>
+                                    <td>{{ $category->damaged_stock }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="5">
                                         <div class="gsm-empty-state small">
                                             {{ __('app.no_category_product_data') }}
                                         </div>

@@ -22,7 +22,7 @@ class BorrowingController extends Controller
 
     public function create()
     {
-        $products = Product::where('stock', '>', 0)
+        $products = Product::availableForBorrowing()
             ->orderBy('name')
             ->get();
 
@@ -42,10 +42,10 @@ class BorrowingController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        if ($product->stock < $request->quantity) {
+        if ($product->good_stock < $request->quantity) {
             return back()
                 ->withErrors([
-                    'quantity' => __('app.error_insufficient_stock'),
+                    'quantity' => __('app.error_insufficient_good_stock'),
                 ])
                 ->withInput();
         }
@@ -65,6 +65,7 @@ class BorrowingController extends Controller
                 'quantity' => $request->quantity,
             ]);
 
+            $product->decrement('good_stock', $request->quantity);
             $product->decrement('stock', $request->quantity);
 
             ActivityLog::record(
@@ -73,7 +74,7 @@ class BorrowingController extends Controller
                 'Mencatat peminjaman barang oleh: ' . $borrowing->borrower_name,
                 [
                     'borrowing' => $borrowing->toArray(),
-                    'product' => $product->toArray(),
+                    'product' => $product->fresh()->toArray(),
                     'quantity' => $request->quantity,
                 ]
             );
@@ -121,13 +122,11 @@ class BorrowingController extends Controller
             $borrowing->load('details.product');
 
             foreach ($borrowing->details as $detail) {
-                $detail->product->increment('stock', $detail->quantity);
-
-                if ($request->return_condition !== 'Baik') {
-                    $detail->product->update([
-                        'condition' => $request->return_condition,
-                    ]);
-                }
+                $this->restoreReturnedStock(
+                    $detail->product,
+                    (int) $detail->quantity,
+                    $request->return_condition
+                );
             }
 
             $borrowing->update([
@@ -161,7 +160,11 @@ class BorrowingController extends Controller
 
             if ($borrowing->status === 'borrowed') {
                 foreach ($borrowing->details as $detail) {
-                    $detail->product->increment('stock', $detail->quantity);
+                    $this->restoreReturnedStock(
+                        $detail->product,
+                        (int) $detail->quantity,
+                        Product::CONDITION_GOOD
+                    );
                 }
             }
 
@@ -178,5 +181,25 @@ class BorrowingController extends Controller
         return redirect()
             ->route('borrowings.index')
             ->with('success', __('app.success_delete_borrowing'));
+    }
+
+    private function restoreReturnedStock(Product $product, int $quantity, string $condition): void
+    {
+        $column = match ($condition) {
+            Product::CONDITION_MINOR_DAMAGE => 'minor_damage_stock',
+            Product::CONDITION_MAJOR_DAMAGE => 'major_damage_stock',
+            default => 'good_stock',
+        };
+
+        $product->increment($column, $quantity);
+        $product->increment('stock', $quantity);
+
+        $product->refresh();
+        $product->condition = Product::conditionFromCounts(
+            (int) $product->good_stock,
+            (int) $product->minor_damage_stock,
+            (int) $product->major_damage_stock
+        );
+        $product->save();
     }
 }

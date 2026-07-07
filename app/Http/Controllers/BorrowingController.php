@@ -11,13 +11,56 @@ use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $borrowings = Borrowing::with('details.product')
-            ->latest()
-            ->paginate(10);
+        $search = trim((string) $request->query('search', ''));
 
-        return view('borrowings.index', compact('borrowings'));
+        $borrowings = Borrowing::with('details.product')
+            ->when($search !== '', function ($query) use ($search) {
+                $likeSearch = '%' . $search . '%';
+                $lowerSearch = strtolower($search);
+
+                $query->where(function ($query) use ($likeSearch, $lowerSearch) {
+                    $query
+                        ->where('borrower_name', 'like', $likeSearch)
+                        ->orWhere('division', 'like', $likeSearch)
+                        ->orWhere('borrow_date', 'like', $likeSearch)
+                        ->orWhere('due_date', 'like', $likeSearch)
+                        ->orWhere('return_date', 'like', $likeSearch)
+                        ->orWhere('status', 'like', $likeSearch)
+                        ->orWhereHas('details.product', function ($productQuery) use ($likeSearch) {
+                            $productQuery
+                                ->where('name', 'like', $likeSearch)
+                                ->orWhere('code', 'like', $likeSearch)
+                                ->orWhere('location', 'like', $likeSearch);
+                        });
+
+                    if (str_contains($lowerSearch, 'pinjam') || str_contains($lowerSearch, 'borrow')) {
+                        $query->orWhere('status', 'borrowed');
+                    }
+
+                    if (str_contains($lowerSearch, 'kembali') || str_contains($lowerSearch, 'return')) {
+                        $query->orWhere('status', 'returned');
+                    }
+
+                    if (str_contains($lowerSearch, 'terlambat') || str_contains($lowerSearch, 'overdue')) {
+                        $query->orWhere(function ($overdueQuery) {
+                            $overdueQuery
+                                ->where('status', 'borrowed')
+                                ->whereNotNull('due_date')
+                                ->whereDate('due_date', '<', now());
+                        });
+                    }
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('borrowings.index', [
+            'borrowings' => $borrowings,
+            'search' => $search,
+        ]);
     }
 
     public function create()

@@ -39,9 +39,35 @@
                     </p>
                 </div>
 
-                <a href="{{ route('borrowings.create') }}" class="gsm-button-primary">
-                    {{ __('app.add_borrowing') }}
-                </a>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <form
+                        method="GET"
+                        action="{{ route('borrowings.index') }}"
+                        class="flex w-full gap-2 sm:w-auto"
+                    >
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ $search }}"
+                            placeholder="{{ __('app.search_borrowings_placeholder') }}"
+                            class="min-h-10 w-full rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-red-500 focus:ring-2 focus:ring-red-100 sm:w-72"
+                        >
+
+                        <button type="submit" class="gsm-button-secondary">
+                            {{ __('app.search') }}
+                        </button>
+
+                        @if($search !== '')
+                            <a href="{{ route('borrowings.index') }}" class="gsm-button-secondary">
+                                {{ __('app.reset') }}
+                            </a>
+                        @endif
+                    </form>
+
+                    <a href="{{ route('borrowings.create') }}" class="gsm-button-primary">
+                        {{ __('app.add_borrowing') }}
+                    </a>
+                </div>
             </div>
 
             <div class="gsm-table-wrapper mt-6">
@@ -132,9 +158,12 @@
                                 <td colspan="7">
                                     <div class="gsm-empty-state">
                                         <div>
-                                            <p class="font-bold">{{ __('app.no_borrowing_data') }}</p>
+                                            <p class="font-bold">
+                                                {{ $search !== '' ? __('app.no_borrowing_search_result') : __('app.no_borrowing_data') }}
+                                            </p>
+
                                             <p class="text-sm mt-1">
-                                                {{ __('app.add_borrowing_hint') }}
+                                                {{ $search !== '' ? __('app.try_another_search_keyword') : __('app.add_borrowing_hint') }}
                                             </p>
                                         </div>
                                     </div>

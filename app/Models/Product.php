@@ -81,9 +81,13 @@ class Product extends Model
 
     public function syncStockFromConditionCounts(): void
     {
-        $goodStock = (int) $this->good_stock;
-        $minorDamageStock = (int) $this->minor_damage_stock;
-        $majorDamageStock = (int) $this->major_damage_stock;
+        $goodStock = max((int) $this->good_stock, 0);
+        $minorDamageStock = max((int) $this->minor_damage_stock, 0);
+        $majorDamageStock = max((int) $this->major_damage_stock, 0);
+
+        $this->good_stock = $goodStock;
+        $this->minor_damage_stock = $minorDamageStock;
+        $this->major_damage_stock = $majorDamageStock;
 
         $this->stock = self::totalFromCounts(
             $goodStock,
@@ -126,6 +130,8 @@ class Product extends Model
             $this->minor_damage_stock = $condition === self::CONDITION_MINOR_DAMAGE ? $stock : 0;
             $this->major_damage_stock = $condition === self::CONDITION_MAJOR_DAMAGE ? $stock : 0;
 
+            $this->syncStockFromConditionCounts();
+
             return;
         }
 
@@ -136,40 +142,71 @@ class Product extends Model
 
     public function getAvailableStockAttribute(): int
     {
-        if (! array_key_exists('good_stock', $this->getAttributes())) {
+        if (! $this->hasConditionStockColumns()) {
             return $this->condition === self::CONDITION_GOOD
                 ? max((int) $this->stock, 0)
                 : 0;
         }
 
-        return (int) ($this->good_stock ?? 0);
+        return max((int) ($this->good_stock ?? 0), 0);
     }
 
     public function getDamagedStockAttribute(): int
     {
-        if (
-            ! array_key_exists('minor_damage_stock', $this->getAttributes())
-            && ! array_key_exists('major_damage_stock', $this->getAttributes())
-        ) {
+        if (! $this->hasConditionStockColumns()) {
             return $this->condition !== self::CONDITION_GOOD
                 ? max((int) $this->stock, 0)
                 : 0;
         }
 
-        return (int) ($this->minor_damage_stock ?? 0)
-            + (int) ($this->major_damage_stock ?? 0);
+        return max((int) ($this->minor_damage_stock ?? 0), 0)
+            + max((int) ($this->major_damage_stock ?? 0), 0);
     }
 
     public function getConditionSummaryAttribute(): string
     {
         return __('app.good') . ': ' . (int) $this->available_stock
-            . ' | ' . __('app.minor_damage') . ': ' . (int) ($this->minor_damage_stock ?? 0)
-            . ' | ' . __('app.major_damage') . ': ' . (int) ($this->major_damage_stock ?? 0);
+            . ' | ' . __('app.minor_damage') . ': ' . max((int) ($this->minor_damage_stock ?? 0), 0)
+            . ' | ' . __('app.major_damage') . ': ' . max((int) ($this->major_damage_stock ?? 0), 0);
     }
 
     public function getStockStatusAttribute(): string
     {
-        $availableStock = (int) $this->available_stock;
+        /*
+         * Legacy compatibility:
+         * Product::make([
+         *     'stock' => 10,
+         *     'condition' => 'Rusak Ringan',
+         * ]);
+         *
+         * Unit tests may use an unsaved model like this, so condition stock
+         * columns are not available yet. In that case, keep the old status.
+         */
+        if (! $this->hasConditionStockColumns()) {
+            $stock = max((int) ($this->stock ?? 0), 0);
+            $condition = $this->condition ?? self::CONDITION_GOOD;
+
+            if ($stock <= 0) {
+                return 'out_of_stock';
+            }
+
+            if ($condition !== self::CONDITION_GOOD) {
+                return 'damaged';
+            }
+
+            if ($stock <= 5) {
+                return 'low_stock';
+            }
+
+            return 'available';
+        }
+
+        /*
+         * New logic:
+         * Main stock status is based on good stock only.
+         * Damaged units are shown in separate minor/major damage columns.
+         */
+        $availableStock = max((int) ($this->good_stock ?? 0), 0);
 
         if ($availableStock <= 0) {
             return 'out_of_stock';
@@ -187,7 +224,17 @@ class Product extends Model
         return match ($this->stock_status) {
             'out_of_stock' => __('app.out_of_stock'),
             'low_stock' => __('app.low_stock'),
+            'damaged' => app()->getLocale() === 'id' ? 'Perlu Perhatian' : 'Needs Attention',
             default => __('app.available'),
         };
+    }
+
+    private function hasConditionStockColumns(): bool
+    {
+        $attributes = $this->getAttributes();
+
+        return array_key_exists('good_stock', $attributes)
+            || array_key_exists('minor_damage_stock', $attributes)
+            || array_key_exists('major_damage_stock', $attributes);
     }
 }

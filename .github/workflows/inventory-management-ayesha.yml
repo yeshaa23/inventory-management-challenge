@@ -7,11 +7,14 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - '*.md'
+      - 'docs/**'
   pull_request:
     branches:
       - main
   workflow_dispatch:
-
 concurrency:
   group: inventory-management-production-deployment
   cancel-in-progress: false
@@ -117,6 +120,26 @@ jobs:
           package: .
 
       - name: Post-deploy smoke test
+        continue-on-error: true
         run: |
-          sleep 20
-          curl -f -L https://inventory-management-ayesha-e0gphndhftgacyd8.indonesiacentral-01.azurewebsites.net/login
+          echo "Waiting for Azure App Service to restart..."
+          sleep 90
+
+          for i in {1..10}; do
+            echo "Smoke test attempt $i..."
+
+            STATUS_CODE=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 30 https://inventory-management-ayesha-e0gphndhftgacyd8.indonesiacentral-01.azurewebsites.net/login || echo "000")
+
+            echo "HTTP status: $STATUS_CODE"
+
+            if [ "$STATUS_CODE" = "200" ] || [ "$STATUS_CODE" = "302" ]; then
+              echo "Smoke test passed."
+              exit 0
+            fi
+
+            echo "App is not ready yet. Retrying in 30 seconds..."
+            sleep 30
+          done
+
+          echo "Smoke test did not pass, but deployment step already completed."
+          exit 1

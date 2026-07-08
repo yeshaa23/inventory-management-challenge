@@ -449,4 +449,5 @@ return [
     'category_results' => 'Hasil Kategori',
     'activity_log_results' => 'Hasil Riwayat Aktivitas',
     'view_all' => 'Lihat Semua',
+    'search_borrowings_placeholder' => 'Cari nama, divisi, barang, status...',
 ];

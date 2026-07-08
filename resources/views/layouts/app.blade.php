@@ -192,6 +192,42 @@
                             >
                         </form>
 
+                        <form
+                            method="GET"
+                            action="{{ route('search.index') }}"
+                            class="flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 shadow-sm"
+                        >
+                            <button
+                                type="submit"
+                                class="text-slate-500 hover:text-red-600"
+                                aria-label="{{ __('app.search') }}"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    />
+                                </svg>
+                            </button>
+
+                            <input
+                                type="search"
+                                name="q"
+                                value="{{ request('q') }}"
+                                placeholder="{{ __('app.global_search_placeholder') }}"
+                                autocomplete="off"
+                                class="w-46 border-0 bg-transparent text-sm font-semibold text-slate-700 placeholder:text-slate-400 focus:ring-0"
+                            >
+                        </form>
+
                         <div class="gsm-profile-menu">
                             <button
                                 type="button"

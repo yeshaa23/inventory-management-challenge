@@ -449,4 +449,5 @@ return [
     'category_results' => 'Category Results',
     'activity_log_results' => 'Activity Log Results',
     'view_all' => 'View All',
+    'search_borrowings_placeholder' => 'Search name, division, item, status...',
 ];
